@@ -23,11 +23,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-<<<<<<< Updated upstream
         m_Texture: {fileID: 2800000, guid: 50cd234e51ec5d5439d841b7df9c6ed6, type: 3}
-=======
-        m_Texture: {fileID: 2800000, guid: a8715e412fe45f149bd7fa4ae4a4dd66, type: 3}
->>>>>>> Stashed changes
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -43,19 +39,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-<<<<<<< Updated upstream
         m_Texture: {fileID: 2800000, guid: 4bbdf796179cc2d4b9c97a2d6926130c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 47667cbe0239de04fb5c3bf6cf3473b7, type: 3}
-=======
-        m_Texture: {fileID: 2800000, guid: e31ec34b593c59f489f6f63ee1cec550, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: d57d97295c6ff7f4fba60ec3eaf5e0e0, type: 3}
->>>>>>> Stashed changes
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
