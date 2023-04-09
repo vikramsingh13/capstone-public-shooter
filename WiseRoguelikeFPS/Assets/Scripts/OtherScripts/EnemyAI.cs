@@ -77,12 +77,16 @@ public class EnemyAI : MonoBehaviour
 
     }
 
-    // Set the enemy's Animator component to move and set its destination to the target's position
     private void ChaseTarget()
     {
         GetComponent<Animator>().SetBool("attack", false);
         GetComponent<Animator>().SetTrigger("move");
-        navMeshAgent.SetDestination(target.position);
+
+        // Check if the NavMeshAgent is enabled before setting the destination
+        if (navMeshAgent.enabled)
+        {
+            navMeshAgent.SetDestination(target.position);
+        }
     }
 
     // Set the enemy's Animator component to attack

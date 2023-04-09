@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.UI;
 using TMPro;
 
 public class GunController : MonoBehaviour
@@ -256,30 +255,25 @@ public class GunController : MonoBehaviour
     //This coroutine is in charge of slowly reducing heat when the player is NOT shooting
     private IEnumerator PassiveCooldown()
     {
-        while(true)
+        float cooldownTime = 0.1f; // cooldown time in seconds
+        float deductionAmount = coolDownPerSecond * cooldownTime;
+        
+        while (true)
         {
-            //If the player is shooting, the gun overheated, is reloading, or a semi-automatic gun is between shots. Do not cool
-            if (shooting || currentHeat >= maxHeat || reload || singleShot)
+            if (!shooting && currentHeat < maxHeat && !reload && !singleShot)
             {
-                //This while loop blocks execution such that the next line will only run when all the values are false
-                while(shooting || currentHeat >= maxHeat || reload || singleShot)
+                // gradually decrease the heat value
+                while (currentHeat > 0)
                 {
-                    yield return null;
+                    currentHeat -= deductionAmount;
+                    yield return new WaitForSeconds(cooldownTime);
                 }
-                //Brief delay before the cooldown begins
-                yield return new WaitForSeconds(1.5f);
-            }
-            else
-            {
-                //cooldown the weapon based on the coolDownPerSecond param in increments of 1/5 (This is just for asthetics)
-                float deduction = (currentHeat - (coolDownPerSecond / 5));
 
-                //This just makes sure the currentHeat value is never lower than 0
-                currentHeat = deduction < 0 ? 0 : deduction; 
-
-                //Wait 1/5 of a second
-                yield return new WaitForSeconds(0.2f);
+                // make sure the currentHeat value is never negative
+                currentHeat = 0f;
             }
+
+            yield return null;
         }
     }
 
