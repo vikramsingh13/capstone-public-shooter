@@ -1839,7 +1839,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   automaticFiring: 1
   fireRate: 12
-  burstFiring: 1
+  burstFiring: 0
   burstFireDelay: 250
   bulletsPerBurst: 5
   maxHeat: 100

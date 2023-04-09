@@ -18,7 +18,7 @@ public class EnemyHealth : MonoBehaviour
         hitpoints -= damage;
         if (hitpoints <= 0)
         {
-            GetComponent<Animator>().SetTrigger("hit");
+            GetComponent<Animator>().SetTrigger("attack");
             Invoke("DestroyEnemy", 0F);
         }
         //sets the healthbar value and color
