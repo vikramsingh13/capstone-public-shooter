@@ -16,7 +16,7 @@ public class Rikayon : MonoBehaviour {
 	void Update () {
 
         if (Input.GetKeyDown(KeyCode.Space)) {
-            animator.SetTrigger("Attack_1");
+            animator.SetTrigger("attack");
         }
 
 	}
