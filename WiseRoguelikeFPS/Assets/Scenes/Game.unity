@@ -1816,7 +1816,7 @@ TerrainCollider:
   m_GameObject: {fileID: 2147314616}
   m_Material: {fileID: 0}
   m_Enabled: 1
-  m_TerrainData: {fileID: 15600000, guid: fb2590728e1281f4095183515ae4e756, type: 2}
+  m_TerrainData: {fileID: 15600000, guid: b06f5adbcb5cd174babbdc1bb6b7e956, type: 2}
   m_EnableTreeColliders: 1
 --- !u!218 &2147314618
 Terrain:
@@ -1827,7 +1827,7 @@ Terrain:
   m_GameObject: {fileID: 2147314616}
   m_Enabled: 1
   serializedVersion: 6
-  m_TerrainData: {fileID: 15600000, guid: fb2590728e1281f4095183515ae4e756, type: 2}
+  m_TerrainData: {fileID: 15600000, guid: b06f5adbcb5cd174babbdc1bb6b7e956, type: 2}
   m_TreeDistance: 5000
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
@@ -1884,14 +1884,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbc3dc0548f853c49bdde2d70af9a24b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  automaticFiring: 0
+  automaticFiring: 1
   fireRate: 12
   burstFiring: 0
   burstFireDelay: 250
   bulletsPerBurst: 5
   maxHeat: 100
   heatPerShot: 2.5
-  coolDownPerSecond: 2.5
+  coolDownPerSecond: 20
   overheatCooldown: 5000
   manualCooldown: 2000
   myCameraHead: {fileID: 1895849168}
@@ -1981,6 +1981,14 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 398765000374143108, guid: 4955b7de559f29342b373b98b8286ea4, type: 3}
       propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 398765000374143114, guid: 4955b7de559f29342b373b98b8286ea4, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b2eb3426375620a4ea4b9a9285596846, type: 2}
+    - target: {fileID: 3636511715798667396, guid: 4955b7de559f29342b373b98b8286ea4, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3715312281951667755, guid: 4955b7de559f29342b373b98b8286ea4, type: 3}
