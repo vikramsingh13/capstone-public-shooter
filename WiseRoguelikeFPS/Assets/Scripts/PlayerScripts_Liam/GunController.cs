@@ -263,14 +263,16 @@ public class GunController : MonoBehaviour
             if (!shooting && currentHeat < maxHeat && !reload && !singleShot)
             {
                 // gradually decrease the heat value
-                while (currentHeat > 0)
+                if (currentHeat > 0)
                 {
                     currentHeat -= deductionAmount;
                     yield return new WaitForSeconds(cooldownTime);
                 }
-
-                // make sure the currentHeat value is never negative
-                currentHeat = 0f;
+                else
+                {
+                    // make sure the currentHeat value is never negative
+                    currentHeat = 0f;
+                }
             }
 
             yield return null;

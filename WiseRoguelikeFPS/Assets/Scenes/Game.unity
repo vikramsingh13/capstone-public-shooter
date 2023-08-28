@@ -1816,7 +1816,7 @@ TerrainCollider:
   m_GameObject: {fileID: 2147314616}
   m_Material: {fileID: 0}
   m_Enabled: 1
-  m_TerrainData: {fileID: 15600000, guid: ca632e095bdcdb64a8d0f8575f75e562, type: 2}
+  m_TerrainData: {fileID: 15600000, guid: b06f5adbcb5cd174babbdc1bb6b7e956, type: 2}
   m_EnableTreeColliders: 1
 --- !u!218 &2147314618
 Terrain:
@@ -1827,7 +1827,7 @@ Terrain:
   m_GameObject: {fileID: 2147314616}
   m_Enabled: 1
   serializedVersion: 6
-  m_TerrainData: {fileID: 15600000, guid: ca632e095bdcdb64a8d0f8575f75e562, type: 2}
+  m_TerrainData: {fileID: 15600000, guid: b06f5adbcb5cd174babbdc1bb6b7e956, type: 2}
   m_TreeDistance: 5000
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
@@ -1890,8 +1890,8 @@ MonoBehaviour:
   burstFireDelay: 250
   bulletsPerBurst: 5
   maxHeat: 100
-  heatPerShot: 1
-  coolDownPerSecond: 10
+  heatPerShot: 2.5
+  coolDownPerSecond: 20
   overheatCooldown: 5000
   manualCooldown: 2000
   myCameraHead: {fileID: 1895849168}
@@ -1900,7 +1900,7 @@ MonoBehaviour:
   muzzleFlash: {fileID: 93221075}
   heatText: {fileID: 1396198678}
   hitScan: 1
-  damage: 25
+  damage: 50
   hitEffect: {fileID: 2708598583397607911, guid: 6398d43fe79ea0140913dc5530c646af, type: 3}
   gunShot: {fileID: 8300000, guid: c6c5505d6e096ba4d9768c5fa2796ec2, type: 3}
 --- !u!1001 &5651939559458064753
@@ -1981,6 +1981,14 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 398765000374143108, guid: 4955b7de559f29342b373b98b8286ea4, type: 3}
       propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 398765000374143114, guid: 4955b7de559f29342b373b98b8286ea4, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b2eb3426375620a4ea4b9a9285596846, type: 2}
+    - target: {fileID: 3636511715798667396, guid: 4955b7de559f29342b373b98b8286ea4, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3715312281951667755, guid: 4955b7de559f29342b373b98b8286ea4, type: 3}
