@@ -2088,8 +2088,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4090570804751785110, guid: 4955b7de559f29342b373b98b8286ea4, type: 3}
+      propertyPath: TopClamp
+      value: 89
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090570804751785110, guid: 4955b7de559f29342b373b98b8286ea4, type: 3}
       propertyPath: MoveSpeed
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4090570804751785110, guid: 4955b7de559f29342b373b98b8286ea4, type: 3}
+      propertyPath: BottomClamp
+      value: -89
       objectReference: {fileID: 0}
     - target: {fileID: 4090570804751785110, guid: 4955b7de559f29342b373b98b8286ea4, type: 3}
       propertyPath: SprintSpeed

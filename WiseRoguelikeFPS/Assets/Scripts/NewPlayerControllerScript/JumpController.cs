@@ -6,11 +6,11 @@ public class JumpController : MonoBehaviour
 {
     public float jumpHeight = 10f;
 
-    public void Jump(bool isGrounded, float gravity, ref Vector3 verticalVelocityVector)
+    public void Jump(bool isGrounded, float gravity, ref float ySpeed)
     {
         if (isGrounded)
         {
-            verticalVelocityVector.y = Mathf.Sqrt(jumpHeight* (-2f * gravity));
+            ySpeed = Mathf.Sqrt(jumpHeight* (-2f * gravity));
         }
     }
 }

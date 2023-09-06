@@ -15,7 +15,14 @@ public class MovementController : MonoBehaviour
 
     //Movement Variables
     private Vector3 movement;
-    private Vector3 movementVertical;
+    //private Vector3 movementVertical;
+
+    public float raycastDistance = 1.5f;
+
+
+    private Vector3 movementDirection;
+    private float ySpeed;
+    private float magnitude;
 
     //Boolean tracker variables
     private bool isCrouching = false;
@@ -39,37 +46,43 @@ public class MovementController : MonoBehaviour
         bool jumpInput = false,
         bool isGrounded = false)
     {
-        movement = transform.right * x + transform.forward * z;
+
+        movementDirection = transform.right * x + transform.forward * z;
+        magnitude = Mathf.Clamp01(movementDirection.magnitude) * moveSpeed;
+        movementDirection.Normalize();
+
+        if (jumpInput)
+        {
+            jump.Jump(isGrounded, gravity.GetGravity(), ref ySpeed);
+        }
+
+        gravity.Apply(isGrounded, ref ySpeed);
 
         Crouch(crouchInput);
 
         if (sprintInput && !isCrouching && !isSliding)
         {
             Debug.Log("Sprint");
-            controller.Move(moveSpeed * sprintMod * Time.deltaTime * movement);
+            magnitude *= sprintMod;
             isSprinting = true;
         }
         else if (isCrouching)
         {
             Debug.Log("Crouch");
-            controller.Move(moveSpeed * crouchMod * Time.deltaTime * movement);
+            magnitude *= crouchMod;
             isSprinting = false;
         }
         else
         {
             Debug.Log("Walk");
-            controller.Move(moveSpeed * Time.deltaTime * movement);
             isSprinting = false;
         }
 
-        if(jumpInput)
-        {
-            jump.Jump(isGrounded, gravity.GetGravity(), ref movementVertical);
-        }
+        movement = movementDirection * magnitude;
+        movement = AdjustVelocityToSlope(movement);
+        movement.y += ySpeed;
 
-        gravity.Apply(isGrounded, ref movementVertical);
-
-        controller.Move(movementVertical * Time.deltaTime);
+        controller.Move(movement * Time.deltaTime);
     }
 
     private void Crouch(bool crouchInput)
@@ -90,6 +103,25 @@ public class MovementController : MonoBehaviour
                 //Change player height
             }
         }
+    }
+
+
+    private Vector3 AdjustVelocityToSlope(Vector3 velocity)
+    {
+        var ray = new Ray(transform.position, Vector3.down);
+
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, raycastDistance))
+        {
+            var slopeRotation = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
+            var adjustedVelocity = slopeRotation * velocity;
+
+            if(adjustedVelocity.y < 0)
+            {
+                return adjustedVelocity;
+            }
+        }
+
+        return velocity;
     }
 
 }

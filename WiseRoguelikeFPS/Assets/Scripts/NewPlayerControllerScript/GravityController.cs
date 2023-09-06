@@ -11,13 +11,13 @@ public class GravityController : MonoBehaviour
         return gravity;
     }
     
-    public void Apply(bool isGrounded, ref Vector3 verticalVelocityVector)
+    public void Apply(bool isGrounded, ref float ySpeed)
     {
-        if (isGrounded && verticalVelocityVector.y < 0)
+        if (isGrounded && ySpeed < 0)
         {
-            verticalVelocityVector.y = -0.5f;
+            ySpeed = -0.5f;
         }
 
-        verticalVelocityVector.y += gravity * 2f * Time.deltaTime;
+        ySpeed += gravity * 2f * Time.deltaTime;
     }
 }
