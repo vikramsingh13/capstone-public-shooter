@@ -1983,6 +1983,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 398765000374143108, guid: 4955b7de559f29342b373b98b8286ea4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 398765000374143114, guid: 4955b7de559f29342b373b98b8286ea4, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
