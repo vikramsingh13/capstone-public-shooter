@@ -2,12 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputController : MonoBehaviour
+public class InputController
 {
     private KeyCode kc_jump = KeyCode.Space;
     private KeyCode kc_sprint = KeyCode.LeftShift;
     private KeyCode kc_crouch = KeyCode.LeftControl;
 
+
+    public InputController()
+    {
+
+    }
 
     public float GetX()
     {

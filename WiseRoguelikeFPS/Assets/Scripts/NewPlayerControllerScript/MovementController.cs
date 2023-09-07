@@ -33,8 +33,8 @@ public class MovementController : MonoBehaviour
     private void Start()
     {
         controller = GetComponent<CharacterController>();
-        gravity = GetComponent<GravityController>();
-        jump = GetComponent<JumpController>();
+        gravity = new GravityController();
+        jump = new JumpController();
     }
 
     public void Move(float x = 0, 

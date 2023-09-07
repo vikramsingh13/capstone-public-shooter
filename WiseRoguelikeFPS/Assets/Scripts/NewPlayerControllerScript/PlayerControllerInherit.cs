@@ -40,7 +40,7 @@ public class PlayerControllerInherit : MonoBehaviour
     void Start()
     {
         movement = GetComponent<MovementController>();
-        input = GetComponent<InputController>();
+        input = new InputController();
     }
 
     // Update is called once per frame

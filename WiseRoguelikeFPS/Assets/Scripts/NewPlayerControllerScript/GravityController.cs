@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GravityController : MonoBehaviour
+public class GravityController
 {
     public float gravity = -9.81f;
 
