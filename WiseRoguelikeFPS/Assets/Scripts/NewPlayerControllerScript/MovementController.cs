@@ -15,14 +15,15 @@ public class MovementController : MonoBehaviour
 
     //Movement Variables
     private Vector3 movement;
-    //private Vector3 movementVertical;
 
     public float raycastDistance = 1.5f;
-
 
     private Vector3 movementDirection;
     private float ySpeed;
     private float magnitude;
+
+    //Sliding variables
+    private Vector3 slopeSlideVelocity;
 
     //Boolean tracker variables
     private bool isCrouching = false;
@@ -51,12 +52,24 @@ public class MovementController : MonoBehaviour
         magnitude = Mathf.Clamp01(movementDirection.magnitude) * moveSpeed;
         movementDirection.Normalize();
 
-        if (jumpInput)
+        if (jumpInput && !isSliding)
         {
             jump.Jump(isGrounded, gravity.GetGravity(), ref ySpeed);
         }
 
-        gravity.Apply(isGrounded, ref ySpeed);
+        gravity.Apply(isGrounded, isSliding, ref ySpeed);
+
+
+        SetSlopeVelocity();
+
+        if(slopeSlideVelocity == Vector3.zero)
+        {
+            isSliding = false;
+        }
+        else if(isGrounded && slopeSlideVelocity != Vector3.zero)
+        {
+            isSliding = true;
+        }
 
         Crouch(crouchInput);
 
@@ -81,6 +94,12 @@ public class MovementController : MonoBehaviour
         movement = movementDirection * magnitude;
         movement = AdjustVelocityToSlope(movement);
         movement.y += ySpeed;
+
+        if(isSliding)
+        {
+            movement = slopeSlideVelocity;
+            movement.y = ySpeed;
+        }
 
         controller.Move(movement * Time.deltaTime);
     }
@@ -122,6 +141,23 @@ public class MovementController : MonoBehaviour
         }
 
         return velocity;
+    }
+
+    private void SetSlopeVelocity()
+    {
+        if(Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, 5))
+        {
+            float angle = Vector3.Angle(hitInfo.normal, Vector3.up);
+
+            if (angle >= controller.slopeLimit)
+            {
+                slopeSlideVelocity = Vector3.ProjectOnPlane(new Vector3(0, ySpeed, 0), hitInfo.normal);
+                return;
+            }
+        }
+
+        slopeSlideVelocity = Vector3.zero;
+
     }
 
 }

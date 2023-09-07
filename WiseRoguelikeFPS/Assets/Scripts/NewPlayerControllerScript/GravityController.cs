@@ -11,9 +11,9 @@ public class GravityController : MonoBehaviour
         return gravity;
     }
     
-    public void Apply(bool isGrounded, ref float ySpeed)
+    public void Apply(bool isGrounded, bool isSliding, ref float ySpeed)
     {
-        if (isGrounded && ySpeed < 0)
+        if (isGrounded && !isSliding && ySpeed < 0)
         {
             ySpeed = -0.5f;
         }
