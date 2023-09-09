@@ -18,6 +18,6 @@ public class GravityController
             ySpeed = -0.5f;
         }
 
-        ySpeed += gravity * 2f * Time.deltaTime;
+        ySpeed += gravity * 4f * Time.deltaTime;
     }
 }
