@@ -8,6 +8,7 @@ public class PlayerControllerInherit : MonoBehaviour
 
     //Player Stats
     public float movementSpeed = 12f;
+    public float jumpHeight = 10f;
 
     public float sprintSpeedMod = 1.5f;
     public float crouchSpeedMod = 0.75f;
@@ -48,6 +49,12 @@ public class PlayerControllerInherit : MonoBehaviour
     {
         bool isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        movement.Move(input.GetX(), input.GetZ(), movementSpeed, sprintSpeedMod, crouchSpeedMod, input.GetSprint(), input.GetCrouch(), input.GetJump(), isGrounded);
+        movement.Move(input.GetX(), input.GetZ(), movementSpeed, jumpHeight , sprintSpeedMod, crouchSpeedMod, input.GetSprint(), input.GetCrouch(), input.GetJump(), isGrounded);
+    }
+
+    private void OnDrawGizmos()
+    {
+        //Gizmos.color = Color.red;
+        //Gizmos.DrawSphere(groundCheck.position, groundDistance);
     }
 }

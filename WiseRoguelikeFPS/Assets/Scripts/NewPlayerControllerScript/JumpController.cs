@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class JumpController
 {
-    public float jumpHeight = 10f;
-
-    public void Jump(bool isGrounded, float gravity, ref float ySpeed)
+    public void Jump(bool isGrounded, float jumpHeight , float gravity, ref float ySpeed)
     {
         if (isGrounded)
         {

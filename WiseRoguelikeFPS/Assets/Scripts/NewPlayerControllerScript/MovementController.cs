@@ -40,6 +40,7 @@ public class MovementController : MonoBehaviour
     public void Move(float x = 0, 
         float z = 0, 
         float moveSpeed = 0, 
+        float jumpHeight = 0,
         float sprintMod = 0, 
         float crouchMod = 0,
         bool sprintInput = false,
@@ -54,7 +55,7 @@ public class MovementController : MonoBehaviour
 
         if (jumpInput && !isSliding)
         {
-            jump.Jump(isGrounded, gravity.GetGravity(), ref ySpeed);
+            jump.Jump(isGrounded, jumpHeight, gravity.GetGravity(), ref ySpeed);
         }
 
         gravity.Apply(isGrounded, isSliding, ref ySpeed);
