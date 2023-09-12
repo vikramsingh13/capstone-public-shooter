@@ -54,7 +54,7 @@ public class PlayerControllerInherit : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        //Gizmos.color = Color.red;
-        //Gizmos.DrawSphere(groundCheck.position, groundDistance);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(groundCheck.position, groundDistance);
     }
 }

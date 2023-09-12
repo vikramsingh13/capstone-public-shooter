@@ -149,10 +149,15 @@ public class MovementController : MonoBehaviour
         if(Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, 5))
         {
             float angle = Vector3.Angle(hitInfo.normal, Vector3.up);
+            Debug.Log("Slope Angle: " + angle);
 
             if (angle >= controller.slopeLimit)
             {
-                slopeSlideVelocity = Vector3.ProjectOnPlane(new Vector3(0, ySpeed, 0), hitInfo.normal);
+                Vector3 slopeDirection = Vector3.ProjectOnPlane(transform.forward, hitInfo.normal).normalized;
+                Vector3 inputDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical")).normalized;
+
+                //slopeSlideVelocity = Vector3.ProjectOnPlane(new Vector3(0, ySpeed, 0), hitInfo.normal);
+                slopeSlideVelocity = slopeDirection * -ySpeed + inputDirection * 3f;
                 return;
             }
         }

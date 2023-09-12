@@ -17,7 +17,13 @@ public class GravityController
         {
             ySpeed = -0.5f;
         }
+        else if(isSliding && ySpeed < -30)
+        {
+            ySpeed = -30f;
+        }
 
         ySpeed += gravity * 4f * Time.deltaTime;
+
+        
     }
 }
