@@ -2,23 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControllerInherit : MonoBehaviour
+public class Player : MonoBehaviour
 {
-    
+    public const float BASE_SPRINTSPEEDMOD = 1.5f;
+    public const float BASE_CROUCHSPEEDMOD = 0.75f;
 
-    //Player Stats
-    public float movementSpeed = 12f;
-    public float jumpHeight = 10f;
+    public const float BASE_HEALTH = 100f;
 
-    public float sprintSpeedMod = 1.5f;
-    public float crouchSpeedMod = 0.75f;
+    //Player Current Stats
+    private float sprintSpeedMod;
+    private float crouchSpeedMod;
 
-    public float health = 100f;
-    public float resistance = 0f;
-    
-    
-    private List<Object> Items;
-
+    private PlayerStats stats;
 
     //Contollers
     private InputController input;
@@ -42,6 +37,10 @@ public class PlayerControllerInherit : MonoBehaviour
     {
         movement = GetComponent<MovementController>();
         input = new InputController();
+        stats = GetComponent<PlayerStats>();
+
+        this.sprintSpeedMod = BASE_SPRINTSPEEDMOD;
+        this.crouchSpeedMod = BASE_CROUCHSPEEDMOD;
     }
 
     // Update is called once per frame
@@ -49,7 +48,19 @@ public class PlayerControllerInherit : MonoBehaviour
     {
         bool isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        movement.Move(input.GetX(), input.GetZ(), movementSpeed, jumpHeight , sprintSpeedMod, crouchSpeedMod, input.GetSprint(), input.GetCrouch(), input.GetJump(), isGrounded);
+
+        movement.Move(
+            input.GetX(), 
+            input.GetZ(), 
+            stats.MovementSpeed.GetCurrentValue(), 
+            stats.JumpHeight.GetCurrentValue(), 
+            sprintSpeedMod, 
+            crouchSpeedMod, 
+            input.GetSprint(), 
+            input.GetCrouch(), 
+            input.GetJump(), 
+            isGrounded
+            );
     }
 
     private void OnDrawGizmos()
@@ -57,4 +68,5 @@ public class PlayerControllerInherit : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(groundCheck.position, groundDistance);
     }
+
 }
