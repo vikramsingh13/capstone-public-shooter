@@ -45,6 +45,9 @@ public class GunController : MonoBehaviour
     [Tooltip("Set the amount of time in MILLISECONDS you must wait when you reload")]
     public float manualCooldown = 2000f;
 
+    [Tooltip("Activates when the weapon is unavailable, either due to reloading or overheating.")]
+    public bool weaponUnavailable = false;
+
     //Required Attributes for the GunController
 
     [Space(4)]
@@ -66,6 +69,7 @@ public class GunController : MonoBehaviour
     public ParticleSystem muzzleFlash;
 
     public TMP_Text heatText;
+    public TMP_Text heatMonitorText;
 
     public bool hitScan = false;
 
@@ -73,9 +77,11 @@ public class GunController : MonoBehaviour
 
     [SerializeField] GameObject hitEffect;  // The gameobject to instantiate at the hit location
 
-    private AudioSource audioSource;   // The audio source to play when firing
+    public AudioSource audioSource;   // The audio source to play when firing
 
     public AudioClip gunShot; // Update is called once per frame
+
+    public AudioClip overheatAlarm;
 
     //[Tooltip("Set a reference to the staticVariable library, to access particle effects")]
     //public GameObject BulletImpactStaticData;
@@ -84,13 +90,13 @@ public class GunController : MonoBehaviour
     //Private Member Variables-----------------------------------------------------------------------------
     private bool shooting, readyToShoot = true, reload = false, singleShot=false;
     private int currentBulletsShot = 0;
-    private float currentHeat;
+    public float currentHeat;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource>();
+        //audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource>();
         if (burstFiring)
         {
             automaticFiring = true;
@@ -110,6 +116,20 @@ public class GunController : MonoBehaviour
         Shoot();
         GunManager();
         heatText.text = "Heat:\n" + currentHeat + " / " + maxHeat;
+        
+        if(weaponUnavailable)
+        {
+
+            heatMonitorText.text = "!!!";
+
+        }
+        else
+        {
+
+            heatMonitorText.text = currentHeat.ToString("0");
+
+        }
+
     }
 
     //Method to handle processes other than "Shooting"
@@ -134,8 +154,17 @@ public class GunController : MonoBehaviour
     //Beefy method that 
     private void Shoot()
     {
+        
+        FireModeCheck();
+        MainFireShoot();
+        
+    }
+
+    private void FireModeCheck()
+    {
+
         //If the weapon is set to fire automatically, otherwise set it to fire once per trigger
-        if(automaticFiring)
+        if (automaticFiring)
         {
             shooting = Input.GetMouseButton(0);
         }
@@ -144,25 +173,33 @@ public class GunController : MonoBehaviour
             shooting = Input.GetMouseButtonDown(0);
         }
 
+    }
+
+    private void MainFireShoot()
+    {
+
         //If the player shoots, the gun is able to shoot, and they are not in the process of reloading
         if (shooting && readyToShoot && !reload)
         {
             muzzleFlash.Play();
-            audioSource.PlayOneShot(gunShot);
+            //audioSource.PlayOneShot(gunShot);
+
+            AudioManager.instance.PlaySFX(audioSource, gunShot);
+
             //If burst firing is enabled, count the bullets in the burst
-            if(burstFiring)
+            if (burstFiring)
             {
                 currentBulletsShot++;
             }
             //If the gun is semi-automatic, trigger the singleShot bool which makes the overheat mechanic work properly
-            if(!automaticFiring)
+            if (!automaticFiring)
             {
                 singleShot = true;
             }
-            
+
             //Stop the gun from firing based on the fire rate
             readyToShoot = false;
-            
+
             //Create raycast variable
             RaycastHit hit;
 
@@ -170,7 +207,7 @@ public class GunController : MonoBehaviour
             //If hits nothing (shooting in air) Raycast to a limited distance of 50f away (bullet will delete itself by the time it gets that far)
             if (Physics.Raycast(myCameraHead.position, myCameraHead.forward, out hit, 100f))
             {
-                if(hitScan)
+                if (hitScan)
                 {
                     GameObject impact = Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
                     Destroy(impact, .1F);  // Destroy the hit effect after a short delay
@@ -183,6 +220,7 @@ public class GunController : MonoBehaviour
                 else
                 {
                     //If the player isnt standing really close to something, shoot the bullet towards the object the raycast hit or the center 50f away
+                    /*
                     if (Vector3.Distance(myCameraHead.position, hit.point) > 2f)
                     {
                         //Make the bullet travel along the raycast line
@@ -194,13 +232,13 @@ public class GunController : MonoBehaviour
                         {
                             Instantiate(StaticData.particleDictionary[tag], hit.point, Quaternion.LookRotation(hit.normal));
                         }
-                    }
+                    }*/
                 }
 
-        }
+            }
             else    //If the raycast doesnt hit anything, shoot the bullet to follow the max raycast length
             {
-                if(!hitScan)
+                if (!hitScan)
                 {
                     firePosition.LookAt(myCameraHead.position + (myCameraHead.forward * 100f));
                 }
@@ -210,7 +248,7 @@ public class GunController : MonoBehaviour
             //Instantiate(muzzleFlash, firePosition.position, firePosition.rotation, firePosition);
 
             //Shoot bullet
-            if(!hitScan)
+            if (!hitScan)
             {
                 Instantiate(bullet, firePosition.position, firePosition.rotation);
             }
@@ -221,6 +259,7 @@ public class GunController : MonoBehaviour
             //Start coroutine that handles fire rate, and overheating
             StartCoroutine(ResetReadyToShoot());
         }
+
     }
 
     //This coroutine handles the fire rate of the gun, and handles the situation where the gun overheats
@@ -239,6 +278,7 @@ public class GunController : MonoBehaviour
         //If the gun overheated, pause for the overheat cooldown param then reset the heat values/reset bullet count if its burst
         if(currentHeat >= maxHeat)
         {
+            weaponUnavailable = true;
             yield return new WaitForSeconds(overheatCooldown/1000);
             currentHeat = 0;
             currentBulletsShot = 0;
@@ -250,6 +290,9 @@ public class GunController : MonoBehaviour
 
         //Let the gun shoot again
         readyToShoot = true;
+
+        //Flags the gun as being available for use.
+        weaponUnavailable = false;
     }
 
     //This coroutine is in charge of slowly reducing heat when the player is NOT shooting
@@ -282,8 +325,10 @@ public class GunController : MonoBehaviour
     //If the player reloads, wait the reload time then call the Reload() function
     private IEnumerator ReloadCoroutine()
     {
+        weaponUnavailable = true;
         yield return new WaitForSeconds(manualCooldown / 1000);
         reload = false;
+        weaponUnavailable = false;
         Reload();
     }
 }
