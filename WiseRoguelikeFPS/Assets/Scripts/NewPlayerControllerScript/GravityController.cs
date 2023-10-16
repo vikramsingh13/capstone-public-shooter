@@ -1,0 +1,29 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GravityController
+{
+    public float gravity = -9.81f;
+
+    public float GetGravity()
+    {
+        return gravity;
+    }
+    
+    public void Apply(bool isGrounded, bool isSliding, ref float ySpeed)
+    {
+        if (isGrounded && !isSliding && ySpeed < 0)
+        {
+            ySpeed = -0.5f;
+        }
+        else if(isSliding && ySpeed < -30)
+        {
+            ySpeed = -30f;
+        }
+
+        ySpeed += gravity * 4f * Time.deltaTime;
+
+        
+    }
+}
