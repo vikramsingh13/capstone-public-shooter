@@ -4,14 +4,10 @@ using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
-
-    //Controllers
-    GravityController gravity;
-    JumpController jump;
-    SlideController slide;
-
     //Player Variables
     private CharacterController controller;
+
+    public float gravity = -9.81f;
 
     //Movement Variables
     private Vector3 movement;
@@ -22,19 +18,32 @@ public class MovementController : MonoBehaviour
     private float ySpeed;
     private float magnitude;
 
+    //GroundCheck
+    //Ground check empty game object near base of player
+    [Tooltip("Empty game object near base of player")]
+    public Transform groundCheck;
+
+    //Radius of sphere created around groundCheck object
+    [Tooltip("Radius of sphere created around groundCheck object")]
+    public float groundDistance = 0.5f;
+
+    //Layer mask to make sure the ground check only considers certain objects
+    [Tooltip("Layer mask to make sure the ground check only considers certain objects")]
+    public LayerMask groundMask;
+
     //Sliding variables
     private Vector3 slopeSlideVelocity;
 
-    //Boolean tracker variables
-    private bool isCrouching = false;
-    private bool isSprinting = false;
-    private bool isSliding = false;
+    //Boolean flag variables
+    private bool isCrouching = false;       //If crouch key is held down
+    private bool isSprinting = false;       //If sprint key is held down
+    private bool isSteepSliding = false;    //If player is sliding due to steep slope
+    private bool isSliding = false;         //If player is sliding by command (Sprint + Crouch)
+    private bool isGrounded = false;        //If player is touching the ground
 
     private void Start()
     {
         controller = GetComponent<CharacterController>();
-        gravity = new GravityController();
-        jump = new JumpController();
     }
 
     public void Move(float x = 0, 
@@ -45,61 +54,74 @@ public class MovementController : MonoBehaviour
         float crouchMod = 0,
         bool sprintInput = false,
         bool crouchInput = false,
-        bool jumpInput = false,
-        bool isGrounded = false)
+        bool jumpInput = false)
     {
+
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         movementDirection = transform.right * x + transform.forward * z;
         magnitude = Mathf.Clamp01(movementDirection.magnitude) * moveSpeed;
         movementDirection.Normalize();
 
-        if (jumpInput && !isSliding)
-        {
-            jump.Jump(isGrounded, jumpHeight, gravity.GetGravity(), ref ySpeed);
-        }
+        
 
-        gravity.Apply(isGrounded, isSliding, ref ySpeed);
-
+        Gravity();
 
         SetSlopeVelocity();
 
         if(slopeSlideVelocity == Vector3.zero)
         {
-            isSliding = false;
+            isSteepSliding = false;
         }
         else if(isGrounded && slopeSlideVelocity != Vector3.zero)
         {
-            isSliding = true;
+            isSteepSliding = true;
         }
 
         Crouch(crouchInput);
 
-        if (sprintInput && !isCrouching && !isSliding)
+
+        if(!isSteepSliding)
         {
-            Debug.Log("Sprint");
-            magnitude *= sprintMod;
-            isSprinting = true;
-        }
-        else if (isCrouching)
-        {
-            Debug.Log("Crouch");
-            magnitude *= crouchMod;
-            isSprinting = false;
-        }
-        else
-        {
-            Debug.Log("Walk");
-            isSprinting = false;
+            if (jumpInput)
+            {
+                Jump(jumpHeight);
+            }
+
+            if (sprintInput && !isCrouching)
+            {
+                Debug.Log("Sprint");
+                magnitude *= sprintMod;
+                isSprinting = true;
+            }
+            else if (isCrouching)
+            {
+                Debug.Log("Crouch");
+                magnitude *= crouchMod;
+                isSprinting = false;
+            }
+            else
+            {
+                Debug.Log("Walk");
+                isSprinting = false;
+            }
         }
 
         movement = movementDirection * magnitude;
         movement = AdjustVelocityToSlope(movement);
         movement.y += ySpeed;
 
-        if(isSliding)
+        if(isSteepSliding)
         {
             movement = slopeSlideVelocity;
+            
             movement.y = ySpeed;
+            
+            movement.x += x * moveSpeed / 3;
+            movement.z += z * moveSpeed / 3;
+
+            Debug.DrawRay(transform.position, movement.normalized, Color.black);
+            Debug.Log("Sloped Angle: " + Vector3.Angle(transform.forward, movement.normalized));
         }
 
         controller.Move(movement * Time.deltaTime);
@@ -126,6 +148,32 @@ public class MovementController : MonoBehaviour
     }
 
 
+    public void Jump(float jumpHeight)
+    {
+        if (isGrounded)
+        {
+            ySpeed = Mathf.Sqrt(jumpHeight * (-2f * gravity));
+        }
+    }
+
+    public void Gravity()
+    {
+        if (isGrounded && !isSteepSliding && ySpeed < 0)
+        {
+            ySpeed = -0.5f;
+        }
+        else if (isSteepSliding && ySpeed < -30)
+        {
+            ySpeed = -30f;
+        }
+
+        ySpeed += gravity * 4f * Time.deltaTime;
+
+
+    }
+
+
+    //This method allows the player to move smoothly down slopes without "bumping"
     private Vector3 AdjustVelocityToSlope(Vector3 velocity)
     {
         var ray = new Ray(transform.position, Vector3.down);
@@ -144,6 +192,7 @@ public class MovementController : MonoBehaviour
         return velocity;
     }
 
+    //Forces the player to slide down slopes that are too steep 
     private void SetSlopeVelocity()
     {
         if(Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, 5))
@@ -153,17 +202,21 @@ public class MovementController : MonoBehaviour
 
             if (angle >= controller.slopeLimit)
             {
-                Vector3 slopeDirection = Vector3.ProjectOnPlane(transform.forward, hitInfo.normal).normalized;
-                Vector3 inputDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical")).normalized;
-
-                //slopeSlideVelocity = Vector3.ProjectOnPlane(new Vector3(0, ySpeed, 0), hitInfo.normal);
-                slopeSlideVelocity = slopeDirection * -ySpeed + inputDirection * 3f;
+                slopeSlideVelocity = Vector3.ProjectOnPlane(new Vector3(0, ySpeed, 0), hitInfo.normal);
                 return;
             }
         }
 
         slopeSlideVelocity = Vector3.zero;
 
+    }
+
+
+    //Debugging--------------------------------------------------------------------------------------------------
+    private void OnDrawGizmos()
+    {
+        //Gizmos.color = Color.red;
+        //Gizmos.DrawSphere(groundCheck.position, groundDistance);
     }
 
 }

@@ -3,10 +3,9 @@ using UnityEngine;
 [System.Serializable]
 public class Stat
 {
-    [SerializeField]
-    private float baseValue;
+    [SerializeField] private float baseValue;
 
-    private float currentValue;
+    [SerializeField]  private float currentValue;
 
     //Initialize sets current value to base value, gets called at start of game
     public void Init()

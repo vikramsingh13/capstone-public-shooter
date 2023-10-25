@@ -4979,6 +4979,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!4 &303708677 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7620701018237118738, guid: 5aa55e73440eaa649a84961ba7e20747, type: 3}
+  m_PrefabInstance: {fileID: 1019300711}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &340138453
 GameObject:
   m_ObjectHideFlags: 0
@@ -60460,6 +60465,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbc3dc0548f853c49bdde2d70af9a24b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1700567279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1700567273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecdd6b10614a9bf499f60359b4064062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   automaticFiring: 1
   fireRate: 5
   burstFiring: 0
@@ -60470,22 +60487,27 @@ MonoBehaviour:
   coolDownPerSecond: 5
   overheatCooldown: 5000
   manualCooldown: 2000
+  weaponUnavailable: 0
   myCameraHead: {fileID: 424119386}
-  bullet: {fileID: 0}
-  firePosition: {fileID: 0}
+  bullet: {fileID: 4865900152243900235, guid: c2372be630de8c24b9785fab39457654, type: 3}
+  firePosition: {fileID: 303708677}
   muzzleFlash: {fileID: 3614249443508621660, guid: 4a60d8477aafac045a1f56d3a60c7813, type: 3}
   heatText: {fileID: 485584104}
+  heatMonitorText: {fileID: 485584104}
   hitScan: 1
   damage: 25
-  hitEffect: {fileID: 2708598583397607911, guid: 6398d43fe79ea0140913dc5530c646af, type: 3}
+  hitEffect: {fileID: 3360542172024696037, guid: 4a60d8477aafac045a1f56d3a60c7813, type: 3}
+  audioSource: {fileID: 424119388}
   gunShot: {fileID: 8300000, guid: c6c5505d6e096ba4d9768c5fa2796ec2, type: 3}
+  overheatAlarm: {fileID: 8300000, guid: 644a18cb1795c0f42b3b81e107a9a1f4, type: 3}
+  currentHeat: 0
 --- !u!43 &1713433408
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh29768
+  m_Name: pb_Mesh29270
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -63336,6 +63358,7 @@ GameObject:
   - component: {fileID: 1839357628}
   - component: {fileID: 1839357630}
   - component: {fileID: 1839357635}
+  - component: {fileID: 1839357636}
   m_Layer: 0
   m_Name: PlayerObject
   m_TagString: Untagged
@@ -63374,11 +63397,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 190b341629564f94193712e20ad3174c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundCheck: {fileID: 2062364644}
-  groundDistance: 0.5
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 8
 --- !u!114 &1839357630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63391,7 +63409,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3771a4e92bc2346438f2d0a0430a3830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gravity: -9.81
   raycastDistance: 1.5
+  groundCheck: {fileID: 2062364644}
+  groundDistance: 0.5
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!143 &1839357634
 CharacterController:
   m_ObjectHideFlags: 0
@@ -63425,8 +63449,22 @@ MonoBehaviour:
   HitPoints: 100
   MovementSpeed:
     baseValue: 12
+    currentValue: 0
   JumpHeight:
     baseValue: 15
+    currentValue: 0
+--- !u!114 &1839357636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1839357626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07e219160ee4d0942aefabc6da62134e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1864958502
 GameObject:
   m_ObjectHideFlags: 0
