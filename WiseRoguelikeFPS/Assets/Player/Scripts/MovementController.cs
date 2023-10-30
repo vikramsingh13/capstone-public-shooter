@@ -49,6 +49,7 @@ public class MovementController : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("Got here");
         controller = GetComponent<CharacterController>();
     }
 
@@ -62,6 +63,7 @@ public class MovementController : MonoBehaviour
         bool crouchInput = false,
         bool jumpInput = false)
     {
+        Debug.Log("Got Here");
         Gravity();
 
         HandleSprintCrouchSlideInput(sprintInput, crouchInput, moveSpeed);
@@ -83,7 +85,7 @@ public class MovementController : MonoBehaviour
             movement += slopeSlideVelocity;
         }
 
-        Debug.DrawLine(transform.position, transform.position + movement, Color.green, 0.5f, false);
+        //Debug.DrawLine(transform.position, transform.position + movement, Color.green, 0.5f, false);
 
         currentMoveSpeed = movement.magnitude;
 
