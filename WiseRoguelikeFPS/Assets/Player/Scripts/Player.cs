@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
-    public Transform testSlope;
+    //public Transform testSlope;
 
     public const float BASE_SPRINTSPEEDMOD = 1.5f;
     public const float BASE_CROUCHSPEEDMOD = 0.75f;
@@ -49,10 +49,11 @@ public class Player : MonoBehaviour
             );
 
 
+        /*
         if(Input.GetKeyDown(KeyCode.X))
         {
             gameObject.transform.position = testSlope.transform.position;
-        }
+        }*/
     }
 
 }
