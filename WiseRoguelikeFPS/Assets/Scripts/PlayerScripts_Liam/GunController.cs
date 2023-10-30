@@ -182,9 +182,9 @@ public class GunController : MonoBehaviour
         if (shooting && readyToShoot && !reload)
         {
             muzzleFlash.Play();
-            //audioSource.PlayOneShot(gunShot);
+            audioSource.PlayOneShot(gunShot);
 
-            AudioManager.instance.PlaySFX(audioSource, gunShot);
+            //AudioManager.instance.PlaySFX(audioSource, gunShot);
 
             //If burst firing is enabled, count the bullets in the burst
             if (burstFiring)

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+
+    public Transform testSlope;
+
     public const float BASE_SPRINTSPEEDMOD = 1.5f;
     public const float BASE_CROUCHSPEEDMOD = 0.75f;
 
@@ -19,24 +22,11 @@ public class Player : MonoBehaviour
     private InputController input;
     private MovementController movement;
 
-    //GroundCheck
-    //Ground check empty game object near base of player
-    [Tooltip("Empty game object near base of player")]
-    public Transform groundCheck;
-
-    //Radius of sphere created around groundCheck object
-    [Tooltip("Radius of sphere created around groundCheck object")]
-    public float groundDistance = 0.5f;
-
-    //Layer mask to make sure the ground check only considers certain objects
-    [Tooltip("Layer mask to make sure the ground check only considers certain objects")]
-    public LayerMask groundMask;
-
     // Start is called before the first frame update
     void Start()
     {
         movement = GetComponent<MovementController>();
-        input = new InputController();
+        input = GetComponent<InputController>();
         stats = GetComponent<PlayerStats>();
 
         this.sprintSpeedMod = BASE_SPRINTSPEEDMOD;
@@ -46,9 +36,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-
-
         movement.Move(
             input.GetX(), 
             input.GetZ(), 
@@ -58,15 +45,14 @@ public class Player : MonoBehaviour
             crouchSpeedMod, 
             input.GetSprint(), 
             input.GetCrouch(), 
-            input.GetJump(), 
-            isGrounded
+            input.GetJump()
             );
-    }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(groundCheck.position, groundDistance);
+
+        if(Input.GetKeyDown(KeyCode.X))
+        {
+            gameObject.transform.position = testSlope.transform.position;
+        }
     }
 
 }

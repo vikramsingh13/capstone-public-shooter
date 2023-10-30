@@ -1,40 +1,55 @@
-using System.Collections;
+                                                                                                                                                                      using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
-
-    //Controllers
-    GravityController gravity;
-    JumpController jump;
-    SlideController slide;
-
     //Player Variables
     private CharacterController controller;
 
+
     //Movement Variables
-    private Vector3 movement;
+    [SerializeField] private float gravity = -9.81f;
 
-    public float raycastDistance = 1.5f;
+    private float ySpeed;               //Track Up/Down speed
 
-    private Vector3 movementDirection;
-    private float ySpeed;
-    private float magnitude;
+    private float currentMoveSpeed = 0f;
+
+    private Vector3 movementDirection;  //Stores the normal of the vector created by X and Z (ie the direction)
+    private float speedMagnitude;       //Used to store the magnitude of movementDirection * moveSpeed to find the correct movement speed at any angle
+    private Vector3 movement;           //Vector to store the movement of the character, (direction * magnitude)
+
+
+    //GroundCheck
+    public Transform groundCheck;            //Ground check empty game object near base of player
+    public float groundDistance = 0.5f;      //Radius of sphere created around groundCheck object
+    public LayerMask groundMask;             //Layer mask to make sure the ground check only considers certain objects
+
 
     //Sliding variables
+    /*
+    [SerializeField] private float slideMaxTime = 3f;
+    private float slideTimer = 0f;
+
+    private bool startSlideTimer = false;
+
+    private Vector3 slideVelocity;
+    private Vector3 slideDirection;*/
+
+    //Slope handling variables
+    [SerializeField] private float slopeRaycastDistance = 1.5f;
     private Vector3 slopeSlideVelocity;
 
-    //Boolean tracker variables
-    private bool isCrouching = false;
+    //Boolean flag variables
+    private bool isCrouching = false;       //If player is holding crouch key
     private bool isSprinting = false;
-    private bool isSliding = false;
+    private bool isSteepSliding = false;    //If player is sliding due to steep slope
+    //private bool isSliding = false;         //If player is sliding by command (Sprint + Crouch)
+    private bool isGrounded = false;        //If player is touching the ground
 
     private void Start()
     {
         controller = GetComponent<CharacterController>();
-        gravity = new GravityController();
-        jump = new JumpController();
     }
 
     public void Move(float x = 0, 
@@ -45,92 +60,147 @@ public class MovementController : MonoBehaviour
         float crouchMod = 0,
         bool sprintInput = false,
         bool crouchInput = false,
-        bool jumpInput = false,
-        bool isGrounded = false)
+        bool jumpInput = false)
     {
+        Gravity();
 
-        movementDirection = transform.right * x + transform.forward * z;
-        magnitude = Mathf.Clamp01(movementDirection.magnitude) * moveSpeed;
-        movementDirection.Normalize();
+        HandleSprintCrouchSlideInput(sprintInput, crouchInput, moveSpeed);
 
-        if (jumpInput && !isSliding)
-        {
-            jump.Jump(isGrounded, jumpHeight, gravity.GetGravity(), ref ySpeed);
-        }
-
-        gravity.Apply(isGrounded, isSliding, ref ySpeed);
-
+        CalculateBaseMovement(x, z, moveSpeed, sprintMod, crouchMod);
 
         SetSlopeVelocity();
 
-        if(slopeSlideVelocity == Vector3.zero)
+        if(!isSteepSliding)
+        {
+            Jump(jumpInput, jumpHeight);
+        }
+        
+
+        CalculateFinalMovement();
+
+        if (isSteepSliding)
+        {
+            movement += slopeSlideVelocity;
+        }
+
+        Debug.DrawLine(transform.position, transform.position + movement, Color.green, 0.5f, false);
+
+        currentMoveSpeed = movement.magnitude;
+
+        controller.Move(movement * Time.deltaTime);
+
+
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+    }
+
+    private void AerialMovement(
+        float x = 0,
+        float z = 0,
+        float moveSpeed = 0
+        )
+    {
+        movement.z += z * moveSpeed;
+        movement.x += x * moveSpeed;
+    }
+
+    private void CalculateBaseMovement(float x, float z, float moveSpeed, float sprintMod, float crouchMod)
+    {
+        movementDirection = transform.right * x + transform.forward * z;                //Find horizontal movement based on player input
+        speedMagnitude = Mathf.Clamp01(movementDirection.magnitude) * moveSpeed * (isSprinting ? sprintMod : isCrouching ? crouchMod : 1); ;       //Find the proper speed of the movement
+        movementDirection.Normalize();                                                  //Normalize to get the direction of the movement
+    }
+
+    private void CalculateFinalMovement()
+    {
+        movement = movementDirection * speedMagnitude;      //Find the movement vector (direction * speed)
+        movement = AdjustVelocityToSlope(movement);         //Adjust the direction of the vector to walk smoothly down slopes (that arent steep)
+        movement.y += ySpeed;                               //Apply ySpeed, (jumping and gravity)
+    }
+
+    private void HandleSprintCrouchSlideInput(bool sprintInput , bool crouchInput, float moveSpeed)
+    {
+        if (!isSteepSliding)
+        {
+            if (sprintInput || isSprinting)
+            {
+                isSprinting = true;
+
+                if (!sprintInput && isSprinting)
+                {
+                    isSprinting = false;
+                }
+            }
+            if (crouchInput || isCrouching)
+            {
+                isCrouching = true;
+
+                if(!crouchInput && isCrouching)
+                {
+                    isCrouching = false;
+                }
+            }
+        }
+    }
+
+    public void Jump(bool jumpInput, float jumpHeight)
+    {
+        if (isGrounded && jumpInput)
+        {
+            ySpeed = Mathf.Sqrt(jumpHeight * (-2f * gravity));
+        }
+    }
+
+    public void Gravity()
+    {
+        if (isGrounded && !isSteepSliding && ySpeed < 0)
+        {
+            ySpeed = -0.5f;
+        }
+        else if (isSteepSliding && ySpeed < -30)
+        {
+            ySpeed = -30f;
+        }
+
+        ySpeed += gravity * 4f * Time.deltaTime;
+
+
+    }
+
+    /*
+    private void Slide()
+    {
+        Debug.Log("SLIDING");
+        if (startSlideTimer)
+        {
+            slideDirection = transform.forward;
+            slideTimer = 0f;
+            startSlideTimer = false;
+        }
+        if (!isCrouching)
         {
             isSliding = false;
         }
-        else if(isGrounded && slopeSlideVelocity != Vector3.zero)
-        {
-            isSliding = true;
-        }
 
-        Crouch(crouchInput);
+        slideTimer += Time.deltaTime;
 
-        if (sprintInput && !isCrouching && !isSliding)
+        if (slideTimer < slideMaxTime)
         {
-            Debug.Log("Sprint");
-            magnitude *= sprintMod;
-            isSprinting = true;
-        }
-        else if (isCrouching)
-        {
-            Debug.Log("Crouch");
-            magnitude *= crouchMod;
-            isSprinting = false;
+            controller.Move(slideDirection * currentMoveSpeed * Time.deltaTime);
+            currentMoveSpeed *= 2f - (2f * (slideTimer / slideMaxTime));
         }
         else
         {
-            Debug.Log("Walk");
-            isSprinting = false;
+            isSliding = false;
         }
-
-        movement = movementDirection * magnitude;
-        movement = AdjustVelocityToSlope(movement);
-        movement.y += ySpeed;
-
-        if(isSliding)
-        {
-            movement = slopeSlideVelocity;
-            movement.y = ySpeed;
-        }
-
-        controller.Move(movement * Time.deltaTime);
-    }
-
-    private void Crouch(bool crouchInput)
-    {
-        if (crouchInput)
-        {
-            if (!isCrouching && !isSprinting)
-            {
-                isCrouching = true;
-                //Change player height
-            }
-        }
-        else
-        {
-            if (isCrouching)
-            {
-                isCrouching = false;
-                //Change player height
-            }
-        }
-    }
+    }*/
 
 
+    //Allows the player to move smoothly down slopes without "bumping"
     private Vector3 AdjustVelocityToSlope(Vector3 velocity)
     {
         var ray = new Ray(transform.position, Vector3.down);
 
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, raycastDistance))
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, slopeRaycastDistance))
         {
             var slopeRotation = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
             var adjustedVelocity = slopeRotation * velocity;
@@ -144,6 +214,7 @@ public class MovementController : MonoBehaviour
         return velocity;
     }
 
+    //Forces the player to slide down slopes that are too steep 
     private void SetSlopeVelocity()
     {
         if(Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, 5))
@@ -153,17 +224,23 @@ public class MovementController : MonoBehaviour
 
             if (angle >= controller.slopeLimit)
             {
-                Vector3 slopeDirection = Vector3.ProjectOnPlane(transform.forward, hitInfo.normal).normalized;
-                Vector3 inputDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical")).normalized;
+                slopeSlideVelocity = Vector3.ProjectOnPlane(new Vector3(0, ySpeed, 0), hitInfo.normal);
+                isSteepSliding = true;
 
-                //slopeSlideVelocity = Vector3.ProjectOnPlane(new Vector3(0, ySpeed, 0), hitInfo.normal);
-                slopeSlideVelocity = slopeDirection * -ySpeed + inputDirection * 3f;
                 return;
             }
         }
-
+        isSteepSliding = false;
         slopeSlideVelocity = Vector3.zero;
 
+    }
+
+
+    //Debugging--------------------------------------------------------------------------------------------------
+    private void OnDrawGizmos()
+    {
+        //Gizmos.color = Color.red;
+        //Gizmos.DrawSphere(groundCheck.position, groundDistance);
     }
 
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputController
+public class InputController : MonoBehaviour
 {
     private KeyCode kc_jump = KeyCode.Space;
     private KeyCode kc_sprint = KeyCode.LeftShift;
