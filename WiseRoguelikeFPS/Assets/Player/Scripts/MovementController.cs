@@ -63,7 +63,7 @@ public class MovementController : MonoBehaviour
         bool crouchInput = false,
         bool jumpInput = false)
     {
-        Debug.Log("Got Here");
+        //Debug.Log("Got Here");
         Gravity();
 
         HandleSprintCrouchSlideInput(sprintInput, crouchInput, moveSpeed);
@@ -222,7 +222,7 @@ public class MovementController : MonoBehaviour
         if(Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, 5))
         {
             float angle = Vector3.Angle(hitInfo.normal, Vector3.up);
-            Debug.Log("Slope Angle: " + angle);
+            //Debug.Log("Slope Angle: " + angle);
 
             if (angle >= controller.slopeLimit)
             {
