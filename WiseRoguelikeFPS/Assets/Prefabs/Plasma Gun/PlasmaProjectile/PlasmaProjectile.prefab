@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 8610057274172537195}
   - component: {fileID: 7045165369024326941}
   - component: {fileID: 1980759404235798794}
-  - component: {fileID: 5212551715195163896}
-  - component: {fileID: 2166247966955684013}
+  - component: {fileID: 1924378690313851369}
+  - component: {fileID: 6934308142296391924}
+  - component: {fileID: 3172077666723878372}
   m_Layer: 0
   m_Name: PlasmaProjectile
   m_TagString: Untagged
@@ -99,7 +100,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5212551715195163896
+--- !u!114 &1924378690313851369
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,7 +109,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 3318529881749646553}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6b0def442334644e91648fc1df38c2e, type: 3}
+  m_Script: {fileID: 11500000, guid: 699dfabd4185d3f468fdbcff7a5be646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0
+  bulletLife: 0
+  bulletDamage: 0
+  hasAreaOfEffect: 0
+  splashDamage: 0
+  splashDistance: 0
+  bulletBody: {fileID: 0}
+--- !u!114 &6934308142296391924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3318529881749646553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 699dfabd4185d3f468fdbcff7a5be646, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 70
@@ -117,8 +137,8 @@ MonoBehaviour:
   hasAreaOfEffect: 1
   splashDamage: 30
   splashDistance: 3
-  bulletBody: {fileID: 2166247966955684013}
---- !u!54 &2166247966955684013
+  bulletBody: {fileID: 3172077666723878372}
+--- !u!54 &3172077666723878372
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
