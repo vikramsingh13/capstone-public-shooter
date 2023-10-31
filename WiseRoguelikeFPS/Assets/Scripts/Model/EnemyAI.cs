@@ -25,7 +25,7 @@ public class EnemyAI : MonoBehaviour
     void Start()
     {
         // Find the target object by name
-        _target = GameObject.Find("Player").transform;
+        _target = GameObject.FindGameObjectWithTag("Player").transform;
         // Get the NavMeshAgent component attached to this GameObject
         _navMeshAgent = GetComponent<NavMeshAgent>();
         // Get the NavMeshObstacle component attached to this GameObject
@@ -38,7 +38,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (_target == null)
         {
-            _target = GameObject.Find("Player").transform;
+            _target = GameObject.FindGameObjectWithTag("Player").transform;
         }
 
         // Calculate the distance to the target
@@ -98,7 +98,7 @@ public class EnemyAI : MonoBehaviour
     private void AttackTarget()
     {
         GetComponent<Animator>().SetBool("attack", true);
-        _navMeshObstacle.enabled = true; // Enable the NavMeshObstacle to avoid objects
+        //_navMeshObstacle.enabled = true; // Enable the NavMeshObstacle to avoid objects
     }
 
 }
