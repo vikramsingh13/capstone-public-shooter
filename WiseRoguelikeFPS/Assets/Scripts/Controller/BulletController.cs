@@ -80,7 +80,7 @@ public class BulletController : MonoBehaviour
             if (pos != null)
             {
                 Projectile projectile = Instantiate(handle.Result, pos.position, pos.rotation).GetComponent<Projectile>();
-                projectile.Init(false, projectileName, source, 10, 2, targetPos, isFiredByPlayer);
+                //projectile.Init(false, projectileName, source, 10, 2, targetPos, isFiredByPlayer);
                 projectile.Fire();
             }
         }
