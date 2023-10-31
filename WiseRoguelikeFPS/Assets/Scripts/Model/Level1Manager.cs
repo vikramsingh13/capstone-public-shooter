@@ -41,6 +41,8 @@ public class Level1Manager : MonoBehaviour
 
         }
 
+        AudioManager.instance.StartMusic(StandardMusic);
+
     }
 
     // Update is called once per frame
@@ -84,6 +86,7 @@ public class Level1Manager : MonoBehaviour
         {
 
             EndgameToggle = true;
+            AudioManager.instance.StartMusic(EndgameMusic);
 
         }
 

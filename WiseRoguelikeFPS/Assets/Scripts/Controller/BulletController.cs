@@ -50,7 +50,7 @@ public class BulletController : MonoBehaviour
             EnemyHealth target = other.transform.GetComponent<EnemyHealth>();  // Get the EnemyHealth component of the hit object
             target.TakeDamage(bulletDamage);
         }
-        Destroy(this);
+        Destroy(gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -76,7 +76,7 @@ public class BulletController : MonoBehaviour
         }
 
         //Destroy the projectile at the end.
-        Destroy(this.gameObject);
+        Destroy(gameObject);
 
     }
 

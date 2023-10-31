@@ -49,10 +49,11 @@ public class AudioManager : MonoBehaviour
     }
 
     //Music Related Properites
-    public void StartMusic()
+    public void StartMusic(AudioClip music)
     {
 
-        musicSource.Play();
+        musicSource.Stop();
+        musicSource.PlayOneShot(music);
 
     }
 

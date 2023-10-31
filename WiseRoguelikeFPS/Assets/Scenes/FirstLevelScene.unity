@@ -27406,8 +27406,8 @@ MonoBehaviour:
   EndCountdown: 60
   Player: {fileID: 26414396}
   LevelEnd: {fileID: 88131684}
-  StandardMusic: {fileID: 0}
-  EndgameMusic: {fileID: 0}
+  StandardMusic: {fileID: 8300000, guid: 6d2104cca0aec7e4a8c698eb0cc11500, type: 3}
+  EndgameMusic: {fileID: 8300000, guid: 5e249677f05cbfb4baefdae05d29cbd9, type: 3}
   winPanel: {fileID: 2089420068}
   losePanel: {fileID: 1596594215}
   gameUIPanel: {fileID: 2023699778}
