@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     public const float BASE_HEALTH = 100f;
 
     //Player Current Stats
+    private float health;
+
     private float sprintSpeedMod;
     private float crouchSpeedMod;
 
@@ -31,6 +33,7 @@ public class Player : MonoBehaviour
 
         this.sprintSpeedMod = BASE_SPRINTSPEEDMOD;
         this.crouchSpeedMod = BASE_CROUCHSPEEDMOD;
+        this.health = BASE_HEALTH;
     }
 
     // Update is called once per frame
@@ -56,4 +59,9 @@ public class Player : MonoBehaviour
         }*/
     }
 
+
+    public void TakeDamage(float damage)
+    {
+        this.health -= damage;
+    }
 }

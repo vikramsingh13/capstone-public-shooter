@@ -98,6 +98,16 @@ public class EnemyAI : MonoBehaviour
     private void AttackTarget()
     {
         GetComponent<Animator>().SetBool("attack", true);
+
+        if(Physics.Raycast(new Ray(transform.position + new Vector3(0, 1f, 0), Vector3.right), out RaycastHit hitInfo, 10f))
+        {
+            Debug.DrawLine(transform.position, hitInfo.point, Color.red, 2f);
+            if (hitInfo.collider.gameObject.CompareTag("Player"))
+            {
+                Debug.Log("ATTACK PLAYER");
+                hitInfo.collider.gameObject.GetComponent<Player>().TakeDamage(10);
+            }
+        }
         //_navMeshObstacle.enabled = true; // Enable the NavMeshObstacle to avoid objects
     }
 

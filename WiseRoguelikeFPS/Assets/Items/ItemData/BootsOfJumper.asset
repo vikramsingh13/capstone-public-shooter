@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79a40afcc63e60e4a8470c857ecb969b, type: 3}
-  m_Name: BootsOfTraveler
+  m_Name: BootsOfJumper
   m_EditorClassIdentifier: 
-  id: 1
+  id: 2
   type: 0
-  itemName: BootsOfTraveler
-  tooltip: Increases all mobility by 5
+  itemName: BootsOfJumper
+  tooltip: Makes u jump
   stackable: 1
   quantity: 1
   icon: {fileID: 0}
   effectByPercent: 1
   hpMod: 0
-  movementSpeedMod: 10
-  jumpHeightMod: 0
+  movementSpeedMod: 0
+  jumpHeightMod: 10
