@@ -2,28 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletController : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
 
     public float speed;
-    public float bulletLife;
-    public int bulletDamage;
+    public float projectileLife;
+    public int projectileDamage;
 
     public bool hasAreaOfEffect;
     public float splashDamage;
     public float splashDistance;
 
 
-    public Rigidbody bulletBody;
+    public Rigidbody projectileBody;
+
+    public void Init()
+    {
+
+    }
 
     // Update is called once per frame
     void Update()
     {
         BulletMovement();
 
-        bulletLife -= Time.deltaTime;
+        projectileLife -= Time.deltaTime;
 
-        if (bulletLife < 0)
+        if (projectileLife < 0)
         {
             Destroy(gameObject);
         }
@@ -31,12 +36,13 @@ public class BulletController : MonoBehaviour
 
     private void BulletMovement()
     {
-        bulletBody.velocity = transform.forward * speed;
+        projectileBody.velocity = transform.forward * speed;
         
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        /*DEFUNCT
         if(other.CompareTag("Enemy"))
         {
 
@@ -48,21 +54,22 @@ public class BulletController : MonoBehaviour
             }
 
             EnemyHealth target = other.transform.GetComponent<EnemyHealth>();  // Get the EnemyHealth component of the hit object
-            target.TakeDamage(bulletDamage);
+            target.TakeDamage(projectileDamage);
         }
         Destroy(gameObject);
+        */
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-
+        /*DEFUNCT
         //If the projectile hit an enemy.
         if (collision.gameObject.tag == ("Enemy"))
         {
 
             //Do damage.
             EnemyHealth target = collision.transform.GetComponent<EnemyHealth>();  // Get the EnemyHealth component of the hit object
-            target.TakeDamage(bulletDamage);
+            target.TakeDamage(projectileDamage);
             //Destroy(this.gameObject);
 
         }
@@ -77,12 +84,13 @@ public class BulletController : MonoBehaviour
 
         //Destroy the projectile at the end.
         Destroy(gameObject);
+        */
 
     }
 
     private void DealSplashDamage()
     {
-
+        /*DEFUNCT
         //Get the colliders of everything within [splashDistance] meters of the impact point.
         Collider[] colliders = Physics.OverlapSphere(this.transform.position, splashDistance);
         
@@ -98,6 +106,7 @@ public class BulletController : MonoBehaviour
             }
         
         }
+        */
 
     }
 

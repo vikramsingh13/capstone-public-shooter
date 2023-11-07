@@ -18,4 +18,6 @@ public class ItemStatModifier : Item
     public float movementSpeedMod;
 
     public float jumpHeightMod;
+
+    public float damageMod;
 }
