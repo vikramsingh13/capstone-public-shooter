@@ -23,7 +23,7 @@ public class PlayerStats : EntityStats
         {
             //If the item modifies stats cast it, perform the modification either by literal or percent
             case ItemType.StatModifier:
-                if(item is Item_StatModifier statModifier)
+                if(item is ItemStatModifier statModifier)
                 {
                     if(statModifier.effectByPercent)
                     {
@@ -50,7 +50,7 @@ public class PlayerStats : EntityStats
         {
             //If the item modifies stats cast it, perform the modification either by literal or percent
             case ItemType.StatModifier:
-                if (item is Item_StatModifier statModifier)
+                if (item is ItemStatModifier statModifier)
                 {
                     if (statModifier.effectByPercent)
                     {
