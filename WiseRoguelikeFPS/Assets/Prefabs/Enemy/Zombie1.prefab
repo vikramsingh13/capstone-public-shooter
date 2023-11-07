@@ -2703,9 +2703,8 @@ GameObject:
   - component: {fileID: 6412812717849409800}
   - component: {fileID: 3924008501383386226}
   - component: {fileID: 5834463209310474342}
+  - component: {fileID: 8925853533416357558}
   - component: {fileID: 5834463209310474339}
-  - component: {fileID: 5834463209310474338}
-  - component: {fileID: 5834463209310474343}
   m_Layer: 0
   m_Name: Zombie1
   m_TagString: Untagged
@@ -2777,6 +2776,24 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.8, z: 0}
+--- !u!114 &8925853533416357558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7972984222351854363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3efd5622813beb04d95b62be3dad59c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _target: {fileID: 0}
+  _aggroRange: 9
+  _navMeshAgent: {fileID: 0}
+  _distanceToTarget: 5
+  _isAggro: 0
+  attackSound: {fileID: 0}
 --- !u!195 &5834463209310474339
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2799,33 +2816,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5834463209310474338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7972984222351854363}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45b293ce113e4c94da27efb85264d35e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  chaseRange: 10
---- !u!114 &5834463209310474343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7972984222351854363}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e2ce2ec8ce935c4a93e56931474891f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hitpoints: 100
 --- !u!1 &8155679763238091674
 GameObject:
   m_ObjectHideFlags: 0
