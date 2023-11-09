@@ -4371,6 +4371,7 @@ GameObject:
   - component: {fileID: 7021956120414370245}
   - component: {fileID: 6515512178825685574}
   - component: {fileID: 1352510553190613867}
+  - component: {fileID: 2595006220408307662}
   m_Layer: 0
   m_Name: CrabMonster 1
   m_TagString: Enemy
@@ -4442,11 +4443,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3efd5622813beb04d95b62be3dad59c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _target: {fileID: 0}
+  _health: 100
+  _name: DamageableEntity
+  _aggroTarget: {fileID: 0}
+  _isAggro: 0
   _aggroRange: Infinity
   _navMeshAgent: {fileID: 0}
   _distanceToTarget: Infinity
-  _isAggro: 0
   attackSound: {fileID: 8300000, guid: 644a18cb1795c0f42b3b81e107a9a1f4, type: 3}
 --- !u!114 &7103249163179257433
 MonoBehaviour:
@@ -4460,8 +4463,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94a6475fca0922f4794330ea14b9d1ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitpoints: 200
-  maxHealth: 200
+  _hitpoints: 100
+  _maxHealth: 100
 --- !u!195 &7021956120414370245
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4514,6 +4517,19 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 1.4, z: 0}
+--- !u!135 &2595006220408307662
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5792744366562842766}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5792748071347383548
 GameObject:
   m_ObjectHideFlags: 0
