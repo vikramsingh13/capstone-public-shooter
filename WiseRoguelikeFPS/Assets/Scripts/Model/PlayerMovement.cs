@@ -1,11 +1,15 @@
                                                                                                                                                                       using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.InputSystem.XInput;
+using UnityEngine.UIElements;
 
-public class MovementController : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     //Player Variables
-    private CharacterController controller;
+    [SerializeField]
+    private CharacterController _characterController;
 
 
     //Movement Variables
@@ -47,10 +51,20 @@ public class MovementController : MonoBehaviour
     //private bool isSliding = false;         //If player is sliding by command (Sprint + Crouch)
     private bool isGrounded = false;        //If player is touching the ground
 
-    private void Start()
+
+    void Start()
     {
-        Debug.Log("Got here");
-        controller = GetComponent<CharacterController>();
+        _characterController = GetComponent<CharacterController>();
+    }
+
+    void Update()
+    {
+        if(_characterController == null)
+        {
+            _characterController = GetComponent<CharacterController>();
+            Debug.Log($"char controller: {_characterController}");
+        }
+
     }
 
     public void Move(float x = 0, 
@@ -63,7 +77,6 @@ public class MovementController : MonoBehaviour
         bool crouchInput = false,
         bool jumpInput = false)
     {
-        //Debug.Log("Got Here");
         Gravity();
 
         HandleSprintCrouchSlideInput(sprintInput, crouchInput, moveSpeed);
@@ -89,7 +102,7 @@ public class MovementController : MonoBehaviour
 
         currentMoveSpeed = movement.magnitude;
 
-        controller.Move(movement * Time.deltaTime);
+        _characterController.Move(movement * Time.deltaTime);
 
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -224,7 +237,7 @@ public class MovementController : MonoBehaviour
             float angle = Vector3.Angle(hitInfo.normal, Vector3.up);
             //Debug.Log("Slope Angle: " + angle);
 
-            if (angle >= controller.slopeLimit)
+            if (angle >= _characterController.slopeLimit)
             {
                 slopeSlideVelocity = Vector3.ProjectOnPlane(new Vector3(0, ySpeed, 0), hitInfo.normal);
                 isSteepSliding = true;
