@@ -7,7 +7,7 @@ public class PlaGunGlowScript : MonoBehaviour
 {
 
     public GameObject PlasmaGun;
-    public GunController PlasmaGunScript;
+    public Weapon PlasmaGunScript;
 
     [SerializeField] private float BatteryLightBlinkInterval = 0.4f;
     private float BatteryLightBlinkTimer = 0.0f;
@@ -30,7 +30,7 @@ public class PlaGunGlowScript : MonoBehaviour
     void Start()
     {
 
-        PlasmaGunScript = PlasmaGun.GetComponent<GunController>();
+        PlasmaGunScript = PlasmaGun.GetComponent<Weapon>();
         CoilMat = coilToChange.GetComponent<Renderer>().material;
 
         BatteryMat = batteryToChange.GetComponent<Renderer>().material;

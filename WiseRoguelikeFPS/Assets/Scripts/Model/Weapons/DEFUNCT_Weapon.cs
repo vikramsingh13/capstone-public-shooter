@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class DEFUNCT_Weapon : MonoBehaviour
 {
     [SerializeField] Camera FPCamera;        // The first-person camera that will be used for raycasting
     [SerializeField] float range = 100f;    // The maximum range of the raycast

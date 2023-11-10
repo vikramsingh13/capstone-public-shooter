@@ -24,17 +24,17 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        BulletMovement();
+        Move();
 
         projectileLife -= Time.deltaTime;
 
-        if (projectileLife < 0)
+        if (projectileLife <= 0)
         {
             Destroy(gameObject);
         }
     }
 
-    private void BulletMovement()
+    private void Move()
     {
         projectileBody.velocity = transform.forward * speed;
         

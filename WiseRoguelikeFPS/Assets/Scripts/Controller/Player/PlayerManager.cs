@@ -53,6 +53,7 @@ public class PlayerManager : Singleton<PlayerManager>
     //instantiates a new player object in the scene with player data
     private void FindPlayerObjectOrSpawnIt()
     {
+        Debug.Log("Getting player now");
         if( _player == null ) 
         {
             _player = GameObject.FindWithTag("Player");

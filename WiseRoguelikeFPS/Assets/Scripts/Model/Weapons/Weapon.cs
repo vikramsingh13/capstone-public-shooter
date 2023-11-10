@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Zenject;
+using System;
 
-public class GunController : MonoBehaviour
+public class Weapon : MonoBehaviour
 {
     //Public Inspector Variables-----------------------------------------------------------------------------
-    //Specifications for the GunController
+    //Specifications for the Weapon
     [Space(4)]
-    [Header("GunController Specifications")]
+    [Header("Weapon Specifications")]
 
     [Tooltip("True means the gun will fire as long as the fire button is held down")]
     public bool automaticFiring;
@@ -48,13 +50,14 @@ public class GunController : MonoBehaviour
     [Tooltip("Activates when the weapon is unavailable, either due to reloading or overheating.")]
     public bool weaponUnavailable = false;
 
-    //Required Attributes for the GunController
+    //Required Attributes for the Weapon
 
     [Space(4)]
     [Header("Required Gun Attributes to function")]
 
     [Tooltip("Required for raycasting and bullet accuracy")]
-    public Transform myCameraHead;
+    [SerializeField]
+    private Transform _playerEyes;
 
     [Space(1)]
     [Header("   Bullet Attributes")]
@@ -92,7 +95,6 @@ public class GunController : MonoBehaviour
     private int currentBulletsShot = 0;
     public float currentHeat;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -102,32 +104,43 @@ public class GunController : MonoBehaviour
             automaticFiring = true;
         }
 
-        StartCoroutine(PassiveCooldown());
+        StartCoroutine(HeatCooldown());
 
-        if (myCameraHead == null)
+        //TODO: this will be passed to weapon when equipping.
+        //for now grab the reference with Tag
+        try
         {
-            Debug.LogError("myCameraHead variable is not assigned!");
+            _playerEyes = GameObject.FindWithTag("PlayerEyes").transform;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Following Exception occurred trying to get playerEyes : {_playerEyes} in Weapon::Start : {ex.Message}");
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        try
+        {
+            _playerEyes = GameObject.FindWithTag("PlayerEyes").transform;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Following Exception occurred trying to get playerEyes : {_playerEyes} in Weapon::Start : {ex.Message}");
+        }
+
         Shoot();
         GunManager();
         heatText.text = "Heat:\n" + currentHeat + " / " + maxHeat;
         
         if(weaponUnavailable)
         {
-
             heatMonitorText.text = "!!!";
-
         }
         else
         {
-
             heatMonitorText.text = currentHeat.ToString("0");
-
         }
 
     }
@@ -154,28 +167,10 @@ public class GunController : MonoBehaviour
     //Beefy method that 
     private void Shoot()
     {
-        
-        FireModeCheck();
-        MainFireShoot();
-        
+        UsePrimaryFire();
     }
 
-    private void FireModeCheck()
-    {
-
-        //If the weapon is set to fire automatically, otherwise set it to fire once per trigger
-        if (automaticFiring)
-        {
-            shooting = Input.GetMouseButton(0);
-        }
-        else
-        {
-            shooting = Input.GetMouseButtonDown(0);
-        }
-
-    }
-
-    private void MainFireShoot()
+    private void UsePrimaryFire()
     {
 
         //If the player shoots, the gun is able to shoot, and they are not in the process of reloading
@@ -205,7 +200,7 @@ public class GunController : MonoBehaviour
 
             //Raycast from the center of the players UI to the nearest point based on the retical
             //If hits nothing (shooting in air) Raycast to a limited distance of 50f away (bullet will delete itself by the time it gets that far)
-            if (Physics.Raycast(myCameraHead.position, myCameraHead.forward, out hit, 100f))
+            if (Physics.Raycast(_playerEyes.position, _playerEyes.forward, out hit, 100f))
             {
                 if (hitScan)
                 {
@@ -240,7 +235,7 @@ public class GunController : MonoBehaviour
             {
                 if (!hitScan)
                 {
-                    firePosition.LookAt(myCameraHead.position + (myCameraHead.forward * 100f));
+                    firePosition.LookAt(_playerEyes.position + (_playerEyes.forward * 100f));
                 }
             }
 
@@ -296,7 +291,8 @@ public class GunController : MonoBehaviour
     }
 
     //This coroutine is in charge of slowly reducing heat when the player is NOT shooting
-    private IEnumerator PassiveCooldown()
+    //TODO: REFACTOR THIS TO PLAYER.CS
+    private IEnumerator HeatCooldown()
     {
         float cooldownTime = 0.1f; // cooldown time in seconds
         float deductionAmount = coolDownPerSecond * cooldownTime;
@@ -323,6 +319,7 @@ public class GunController : MonoBehaviour
     }
 
     //If the player reloads, wait the reload time then call the Reload() function
+    //TODO: REFACTOR THIS COROUTINE SO IT'S REUSABLE
     private IEnumerator ReloadCoroutine()
     {
         weaponUnavailable = true;

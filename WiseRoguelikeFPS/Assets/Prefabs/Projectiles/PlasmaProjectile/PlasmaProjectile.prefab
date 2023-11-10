@@ -112,8 +112,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 70
-  projectileLife: 0
-  projectileDamage: 0
+  projectileLife: 10
+  projectileDamage: 10
   hasAreaOfEffect: 1
   splashDamage: 30
   splashDistance: 3

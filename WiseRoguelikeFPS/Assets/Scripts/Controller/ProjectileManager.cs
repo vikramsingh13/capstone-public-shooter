@@ -6,8 +6,6 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class ProjectileManager : Singleton<ProjectileManager>
 {
-    //Dictionary to hold the projectile prefabs with their addressable keys
-    private Dictionary<string, GameObject> projectilePrefabs = new Dictionary<string, GameObject>();
     //List that holds all the activeProjectiles. Nulls will be removed at update
     private List<GameObject> activeProjectiles = new List<GameObject>();
 
@@ -30,7 +28,6 @@ public class ProjectileManager : Singleton<ProjectileManager>
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
                 GameObject projectilePrefab = handle.Result;
-                projectilePrefabs[projectilePrefab.name] = projectilePrefab;
 
                 GameObject projectile = Instantiate(projectilePrefab, position, rotation);
                 activeProjectiles.Add(projectile);
