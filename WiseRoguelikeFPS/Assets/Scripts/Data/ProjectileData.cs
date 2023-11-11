@@ -1,14 +1,15 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ProjectileData", menuName = "ScriptableObjects/ProjectileData", order = 1)]
+[CreateAssetMenu(fileName = "ProjectileData", menuName = "ScriptableObjects/ProjectileData")]
 public class ProjectileData : ScriptableObject
 {
-    public float speed;
-    public float damage;
-    public float timeToLive;
-    public string prefabAddress;
-    public bool doesSplashDamage;
-    public float splashDamageRadius;
+    [Header("Required attributes.")]
+    public float speed = 1;
+    public float timeToLive = 1;
+    public string projectilePrefabAddress = string.Empty;
+    [Header("Optional attributes.")]
+    [Tooltip("If the projectile did splash damage, what radius would it have.")]
+    public float splashDamageRadius = 0f;
     public bool isAffectedByGravity;
     public float gravityStrength;
     public bool isDamageDelayed;

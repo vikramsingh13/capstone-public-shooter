@@ -26,7 +26,7 @@ public class PlaGunGlowScript : MonoBehaviour
 
     [SerializeField] private Material BatteryMat;
     [SerializeField] private Renderer batteryToChange;
-
+    /*
     void Start()
     {
 
@@ -83,6 +83,6 @@ public class PlaGunGlowScript : MonoBehaviour
             BatteryMat.SetColor("_EmissionColor", baseColor * MagLightBaseIntensity);
         }
 
-    }
+    }*/
 
 }

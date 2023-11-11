@@ -25,8 +25,9 @@ public class PlayerManager : Singleton<PlayerManager>
     [Inject]
     public void Construct(GameManager gameManager)
     {
+        Debug.Log("_playerManager ++++ init: ");
         _gameManager = gameManager;
-
+        Debug.Log("after play manager Game: ++++: " + _gameManager);
     }
 
     // Start is called before the first frame update

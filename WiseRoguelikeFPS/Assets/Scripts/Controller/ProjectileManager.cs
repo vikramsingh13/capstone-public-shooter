@@ -3,11 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using Zenject;
 
 public class ProjectileManager : Singleton<ProjectileManager>
 {
     //List that holds all the activeProjectiles. Nulls will be removed at update
     private List<GameObject> activeProjectiles = new List<GameObject>();
+    
+    private GameManager _gameManager;
+
+    [Inject]
+    public void Construct(GameManager gameManager)
+    {
+        _gameManager = gameManager;
+    }
 
     void Update()
     {
