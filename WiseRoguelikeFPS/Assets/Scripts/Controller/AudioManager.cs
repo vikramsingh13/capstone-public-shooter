@@ -5,9 +5,6 @@ using Zenject;
 
 public class AudioManager : Singleton<AudioManager>
 {
-
-    public static AudioManager instance;
-
     private AudioSource musicSource;
 
     private bool musicPaused;

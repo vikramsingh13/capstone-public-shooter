@@ -19,6 +19,9 @@ public class Weapon : MonoBehaviour
     private WeaponData _weaponData;
     private ProjectileManager _projectileManager;
 
+    [Header("Set isEquipped to true only if you're manually adding this to player.")]
+    private bool _isEquipped = false;
+
     [Inject]
     public void Construct(ProjectileManager projectileManager)
     {
@@ -179,7 +182,10 @@ public class Weapon : MonoBehaviour
                 {
                     Vector3 directionOfTravel = (_mainCameraTransform.forward).normalized;
                     string projectileData = !useSecondaryFire ? _weaponData.primaryProjectileAddress : _weaponData.secondaryProjectileAddress;
-                    await _projectileManager.LoadAndInstantiateProjectile(projectileData, directionOfTravel, Quaternion.identity, _projectileOrigin.transform);
+                    float projectileDamage = !useSecondaryFire ? _weaponData.damagePerPrimaryProjectile : _weaponData.damagePerSecondaryProjectile;
+                    
+                    //TODO: find a better approach to access the Player gameobject instead of using transform.parent.parent.gameObject
+                    await _projectileManager.LoadAndInstantiateProjectile(projectileData, directionOfTravel, Quaternion.identity, _projectileOrigin.transform, transform.parent.parent.gameObject, projectileDamage, true);
                 }
                 else
                 {
@@ -217,6 +223,10 @@ public class Weapon : MonoBehaviour
     public void Reload()
     {
 
+    }
+
+    public void Equip()
+    {
 
     }
 
