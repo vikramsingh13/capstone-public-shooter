@@ -344,7 +344,7 @@ GameObject:
   - component: {fileID: 5387452159966649167}
   - component: {fileID: 5570577047464782432}
   - component: {fileID: 5570577047464782494}
-  - component: {fileID: 5570577047464782433}
+  - component: {fileID: 1235542594617349317}
   m_Layer: 0
   m_Name: Plasma Gun
   m_TagString: Untagged
@@ -484,7 +484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlasmaGun: {fileID: 4724209620015989237}
-  PlasmaGunScript: {fileID: 5570577047464782433}
+  PlasmaGunScript: {fileID: 0}
   BatteryLightBlinkInterval: 0.25
   RedLightColor: {r: 1, g: 0, b: 0, a: 0}
   MagLightBaseIntensity: 2
@@ -494,7 +494,7 @@ MonoBehaviour:
   coilToChange: {fileID: 8889546950722167177}
   BatteryMat: {fileID: 0}
   batteryToChange: {fileID: 5793866552165480798}
---- !u!114 &5570577047464782433
+--- !u!114 &1235542594617349317
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -506,30 +506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecdd6b10614a9bf499f60359b4064062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  automaticFiring: 0
-  fireRate: 200
-  burstFiring: 1
-  burstFireDelay: 400
-  bulletsPerBurst: 4
-  maxHeat: 100
-  heatPerShot: 4
-  coolDownPerSecond: 5
-  overheatCooldown: 10000
-  manualCooldown: 4000
-  weaponUnavailable: 0
-  myCameraHead: {fileID: 0}
-  bullet: {fileID: 3318529881749646553, guid: c2cb2250cb9bd4d48a63e3a44b2f2789, type: 3}
-  firePosition: {fileID: 5570577047072333112}
-  muzzleFlash: {fileID: 9180252451429880590}
-  heatText: {fileID: 0}
-  heatMonitorText: {fileID: 0}
-  hitScan: 0
-  damage: 25
-  hitEffect: {fileID: 0}
-  audioSource: {fileID: 5570577047464782432}
-  gunShot: {fileID: 8300000, guid: c6c5505d6e096ba4d9768c5fa2796ec2, type: 3}
-  overheatAlarm: {fileID: 0}
-  currentHeat: 0
+  _weaponData: {fileID: 11400000, guid: 15c0508cf572c494bbc0ea3b2bc05fdd, type: 2}
 --- !u!1 &5570577047064363409
 GameObject:
   m_ObjectHideFlags: 0
@@ -638,7 +615,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5570577047072333112}
   m_Layer: 0
-  m_Name: ProjLaunchPoint
+  m_Name: ProjectileOrigin1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -655,8 +632,7 @@ Transform:
   m_LocalPosition: {x: -0.116, y: 0.09, z: 2.346}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7148162872004637761}
+  m_Children: []
   m_Father: {fileID: 5387452159966649167}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -909,74 +885,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1001 &5570577047163437650
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 5570577047072333112}
-    m_Modifications:
-    - target: {fileID: 113037269559750531, guid: 2eace70065ffae34187109a9ca3acef5, type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3350055855090824723, guid: 2eace70065ffae34187109a9ca3acef5, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3350055855090824723, guid: 2eace70065ffae34187109a9ca3acef5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.23139995
-      objectReference: {fileID: 0}
-    - target: {fileID: 3350055855090824723, guid: 2eace70065ffae34187109a9ca3acef5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.0029000314
-      objectReference: {fileID: 0}
-    - target: {fileID: 3350055855090824723, guid: 2eace70065ffae34187109a9ca3acef5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.0020000415
-      objectReference: {fileID: 0}
-    - target: {fileID: 3350055855090824723, guid: 2eace70065ffae34187109a9ca3acef5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.6975278
-      objectReference: {fileID: 0}
-    - target: {fileID: 3350055855090824723, guid: 2eace70065ffae34187109a9ca3acef5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3350055855090824723, guid: 2eace70065ffae34187109a9ca3acef5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.71655774
-      objectReference: {fileID: 0}
-    - target: {fileID: 3350055855090824723, guid: 2eace70065ffae34187109a9ca3acef5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3350055855090824723, guid: 2eace70065ffae34187109a9ca3acef5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3350055855090824723, guid: 2eace70065ffae34187109a9ca3acef5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 91.54201
-      objectReference: {fileID: 0}
-    - target: {fileID: 3350055855090824723, guid: 2eace70065ffae34187109a9ca3acef5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3360542172024696037, guid: 2eace70065ffae34187109a9ca3acef5, type: 3}
-      propertyPath: m_Name
-      value: Muzzle Flash
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2eace70065ffae34187109a9ca3acef5, type: 3}
---- !u!4 &7148162872004637761 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3350055855090824723, guid: 2eace70065ffae34187109a9ca3acef5, type: 3}
-  m_PrefabInstance: {fileID: 5570577047163437650}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &9180252451429880590 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 3614249443508621660, guid: 2eace70065ffae34187109a9ca3acef5, type: 3}
-  m_PrefabInstance: {fileID: 5570577047163437650}
-  m_PrefabAsset: {fileID: 0}

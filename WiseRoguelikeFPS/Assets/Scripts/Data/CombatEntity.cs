@@ -7,15 +7,15 @@ public class CombatEntity : ScriptableObject
     public float health;
     public float damage;
     public float defense;
-    public GameObject entityPrefab;
+    public string prefabAddress;
     //TODO: types, damage types, etc. 
 
-    public void Init(string name, float hp, float attack, float def, GameObject prefab)
+    public void Init(string name, float hp, float attack, float def, string prefabKey)
     {
         entityName = name;
         health = hp;
         damage = attack;
         defense = def;
-        entityPrefab = prefab;
+        prefabAddress = prefabKey;
     }
 }

@@ -21,6 +21,34 @@ MonoBehaviour:
     m_Address: Assets/Prefabs/Bullets/Bullet.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 2eace70065ffae34187109a9ca3acef5
+    m_Address: Assets/Prefabs/Plasma Gun/Muzzle Flash.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d9277c699fa49494aa2c79d59cbed9cd
+    m_Address: Assets/Prefabs/Plasma Gun/Plasma Gun.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 15c0508cf572c494bbc0ea3b2bc05fdd
+    m_Address: Assets/Data/Weapons/PlasmaGun.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c2cb2250cb9bd4d48a63e3a44b2f2789
+    m_Address: Assets/Prefabs/Projectiles/PlasmaProjectile/PlasmaProjectile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d438793bf5562de4a95314911eb7ea08
+    m_Address: Assets/Audio/WeaponSounds/Nerf Gun Firing.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: dc2365fd9be0270458ca545f30ee7b6d
+    m_Address: Assets/Data/Projectiles/BluePlasmaProjectile.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: de0fc2041bf601f448f726aed051fb20
+    m_Address: Assets/Prefabs/Player/PlayerObject.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 079d18b28a6061645af4ee9165bcf176, type: 2}
   m_SchemaSet:

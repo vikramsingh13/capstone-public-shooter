@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
-public class Level1Manager : MonoBehaviour
+public class Level1Manager : Singleton<Level1Manager>
 {
-
-    public static Level1Manager Instance;
-
     [SerializeField] private int KeysCollected;
     [SerializeField] private int TotalKeys;
 
@@ -24,24 +22,23 @@ public class Level1Manager : MonoBehaviour
     public GameObject losePanel;
     public GameObject gameUIPanel;
 
+    private AudioManager _audioManager;
+
+    [Inject]
+    void Construct(AudioManager audioManager)
+    {
+        _audioManager = audioManager;
+        Debug.Log("Starting up the Level1Manager!");
+
+    }
+
     // Start is called before the first frame update
     void Start()
     {
 
-        if (Instance == null)
-        {
-
-            Instance = this;
-
-        }
-        else
-        {
-
-            Destroy(this.gameObject);
-
-        }
-
-        AudioManager.instance.StartMusic(StandardMusic);
+        //TODO REFACTOR ALL MANUAL ASSIGN 
+        //USE PROGRAMMATICAL APPROACH
+        _audioManager.StartMusic(StandardMusic);
 
     }
 
@@ -86,7 +83,9 @@ public class Level1Manager : MonoBehaviour
         {
 
             EndgameToggle = true;
-            AudioManager.instance.StartMusic(EndgameMusic);
+            //TODO REFACTOR ALL MANUAL ASSIGN 
+            //USE PROGRAMMATICAL APPROACH
+            _audioManager.StartMusic(EndgameMusic);
 
         }
 

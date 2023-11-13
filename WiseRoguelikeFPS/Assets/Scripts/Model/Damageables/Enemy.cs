@@ -81,7 +81,6 @@ public class Enemy : DamageableEntity
         {
             AttackTarget();
         }
-
     }
 
     private void ChaseTarget()
@@ -123,5 +122,4 @@ public class Enemy : DamageableEntity
             _isAggro = true;
         }
     }
-
 }

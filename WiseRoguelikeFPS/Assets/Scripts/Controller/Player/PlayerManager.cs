@@ -25,14 +25,15 @@ public class PlayerManager : Singleton<PlayerManager>
     [Inject]
     public void Construct(GameManager gameManager)
     {
+        Debug.Log("_playerManager ++++ init: ");
         _gameManager = gameManager;
-
+        Debug.Log("after play manager Game: ++++: " + _gameManager);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        FindPlayerObjectOrSpawnIt();
+        //FindPlayerObjectOrSpawnIt();
     }
 
     // Update is called once per frame
@@ -43,7 +44,7 @@ public class PlayerManager : Singleton<PlayerManager>
         {
             if( _player == null)
             {
-                FindPlayerObjectOrSpawnIt();
+                //FindPlayerObjectOrSpawnIt();
             }
         }
     }
@@ -53,6 +54,7 @@ public class PlayerManager : Singleton<PlayerManager>
     //instantiates a new player object in the scene with player data
     private void FindPlayerObjectOrSpawnIt()
     {
+        Debug.Log("Getting player now");
         if( _player == null ) 
         {
             _player = GameObject.FindWithTag("Player");

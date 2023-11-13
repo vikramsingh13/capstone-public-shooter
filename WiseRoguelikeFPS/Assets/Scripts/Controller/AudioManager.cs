@@ -1,44 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : Singleton<AudioManager>
 {
+    private AudioSource musicSource;
 
-    public static AudioManager instance;
+    private bool musicPaused;
 
-    public AudioSource musicSource;
+    private AudioSource ambienceSource;
 
-    public bool musicPaused;
+    private bool ambiencePaused;
 
-    public AudioSource ambienceSource;
+    private float musicVolume = 0.5f;
 
-    public bool ambiencePaused;
+    private float ambienceVolume = 0.5f;
 
-    public float musicVolume = 0.5f;
+    private float effectsVolume = 0.5f;
 
-    public float ambienceVolume = 0.5f;
-
-    public float effectsVolume = 0.5f;
-
-
-    private void Awake()
+    [Inject]
+    public void Construct()
     {
+
+        Debug.Log("Starting up the AudioManager!");       
+
+    }
+
+    private void Start()
+    {      
         
-        if(instance == null)
+        musicSource = GameObject.Find("MusicSource").gameObject.GetComponent<AudioSource>();
+        ambienceSource = GameObject.Find("AmbienceSource").gameObject.GetComponent<AudioSource>();
+
+        if (musicSource != null)
         {
 
-            instance = this;
+            Debug.Log("Found the music source!");
 
         }
-        else
+
+        if (ambienceSource != null)
         {
 
-            Destroy(gameObject);
+            Debug.Log("Found the ambience source!");
 
         }
 
     }
+
 
     void Update()
     {

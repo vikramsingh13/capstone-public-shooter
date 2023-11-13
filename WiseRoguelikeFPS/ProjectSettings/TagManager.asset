@@ -8,6 +8,8 @@ TagManager:
   - HealthBar
   - Enemy
   - Obstacle
+  - Ground
+  - PlayerEyes
   layers:
   - Default
   - TransparentFX
