@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem.XInput;
 using UnityEngine.ProBuilder;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
 
 public class Player : DamageableEntity
@@ -14,6 +16,7 @@ public class Player : DamageableEntity
     private PlayerManager _playerManager;
     private AudioManager _audioManager;
     private GameManager _gameManager;
+    private DiContainer _diContainer;
 
     //Weapons and heat
     private GameObject _equippedWeaponGameObject;
@@ -38,8 +41,9 @@ public class Player : DamageableEntity
     private KeyCode kc_crouch = KeyCode.LeftControl;
 
     [Inject]
-    public void Construct(PlayerManager playerManager, GameManager gameManager, AudioManager audioManager)
+    public void Construct(PlayerManager playerManager, GameManager gameManager, AudioManager audioManager, DiContainer diContainer)
     {
+        _diContainer = diContainer;
         Debug.Log("_player init: ");
         _playerManager = playerManager;
         Debug.Log("_player init manager: " + _playerManager);
@@ -53,8 +57,9 @@ public class Player : DamageableEntity
     }
 
     //when we need to dynamically init the player
-    public void Init(PlayerManager playerManager, GameManager gameManager, AudioManager audioManager)
+    public void Init(PlayerManager playerManager, GameManager gameManager, AudioManager audioManager, DiContainer diContainer)
     {
+        _diContainer = diContainer;
         Debug.Log("_player init: ");
         _playerManager = playerManager;
         Debug.Log("_player init manager: " + _playerManager);
@@ -69,7 +74,8 @@ public class Player : DamageableEntity
     void Start()
     {
         _playerMovement = GetComponent<PlayerMovement>();
-        Debug.Log("player movement: " + _playerMovement);
+        //find the equipped weapon at the start
+        //TODO: refactor to support weapon swapping
     }
 
     // Update is called once per frame
@@ -86,6 +92,14 @@ public class Player : DamageableEntity
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
         {
             FireWeapon(Input.GetMouseButtonDown(1));
+        }
+
+        //TODO: REFACTOR THIS for manually added weapons
+        //get equipped weapon if it's missing
+        if(_equippedWeaponGameObject == null)
+        {
+            this.LoadAndAttachWeapon("Assets/Data/Weapons/PlasmaGun.asset");
+
         }
 
         //Movement checks for PlayerMovement class
@@ -142,6 +156,46 @@ public class Player : DamageableEntity
         {
             _currentHeat = 0;
         }
+    }
+
+    //TEMP CODE FOR DI INSTANTIATE WEAPONS MANUALLY ADDED TO THE SCENE
+    public void LoadAndAttachWeapon(string weaponDataAddressableKey)
+    {
+        Addressables.LoadAssetAsync<WeaponData>(weaponDataAddressableKey).Completed += weaponDataHandle =>
+        {
+            if (weaponDataHandle.Status == AsyncOperationStatus.Succeeded)
+            {
+                WeaponData weaponData = weaponDataHandle.Result;
+                Addressables.InstantiateAsync(weaponData.weaponPrefabAddress).Completed += weaponPrefabHandle =>
+                {
+                    if (weaponPrefabHandle.Status == AsyncOperationStatus.Succeeded)
+                    {
+                        GameObject weaponPrefab = weaponPrefabHandle.Result;
+                        Transform gunParentTransform = transform.Find("GunParent");
+                        if (gunParentTransform != null)
+                        {
+                            weaponPrefab.transform.SetParent(gunParentTransform, false);
+                            _diContainer.InjectGameObjectForComponent<Weapon>(weaponPrefab);
+
+                            //set the newly loaded weapon as equipped
+                            _equippedWeaponGameObject = weaponPrefab;
+                        }
+                        else
+                        {
+                            Debug.LogError("Gun Parent not found");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to instantiate weapon prefab");
+                    }
+                };
+            }
+            else
+            {
+                Debug.LogError("Failed to load WeaponData");
+            }
+        };
     }
 
     //This coroutine is in charge of slowly reducing heat when the player is NOT shooting

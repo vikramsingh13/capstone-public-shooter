@@ -344,7 +344,7 @@ GameObject:
   - component: {fileID: 5387452159966649167}
   - component: {fileID: 5570577047464782432}
   - component: {fileID: 5570577047464782494}
-  - component: {fileID: 5570577047464782433}
+  - component: {fileID: 1235542594617349317}
   m_Layer: 0
   m_Name: Plasma Gun
   m_TagString: Untagged
@@ -484,7 +484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlasmaGun: {fileID: 4724209620015989237}
-  PlasmaGunScript: {fileID: 5570577047464782433}
+  PlasmaGunScript: {fileID: 0}
   BatteryLightBlinkInterval: 0.25
   RedLightColor: {r: 1, g: 0, b: 0, a: 0}
   MagLightBaseIntensity: 2
@@ -494,7 +494,7 @@ MonoBehaviour:
   coilToChange: {fileID: 8889546950722167177}
   BatteryMat: {fileID: 0}
   batteryToChange: {fileID: 5793866552165480798}
---- !u!114 &5570577047464782433
+--- !u!114 &1235542594617349317
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

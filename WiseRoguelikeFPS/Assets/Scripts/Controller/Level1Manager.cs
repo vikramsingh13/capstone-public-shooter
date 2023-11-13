@@ -41,7 +41,9 @@ public class Level1Manager : MonoBehaviour
 
         }
 
-        AudioManager.instance.StartMusic(StandardMusic);
+        //TODO REFACTOR ALL MANUAL ASSIGN 
+        //USE PROGRAMMATICAL APPROACH
+        //AudioManager.instance.StartMusic(StandardMusic);
 
     }
 
@@ -86,7 +88,9 @@ public class Level1Manager : MonoBehaviour
         {
 
             EndgameToggle = true;
-            AudioManager.instance.StartMusic(EndgameMusic);
+            //TODO REFACTOR ALL MANUAL ASSIGN 
+            //USE PROGRAMMATICAL APPROACH
+            //AudioManager.instance.StartMusic(EndgameMusic);
 
         }
 

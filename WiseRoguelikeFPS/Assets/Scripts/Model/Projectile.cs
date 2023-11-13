@@ -4,31 +4,37 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    [SerializeField] public Rigidbody _projectileBody;
 
-    public float speed;
-    public float projectileLife;
-    public int projectileDamage;
+    [SerializeField] private ProjectileData _projectileData;
+    [SerializeField] private Vector3 _directionOfTravel;
+    private float _timeToLive = 1f;
 
-    public bool hasAreaOfEffect;
-    public float splashDamage;
-    public float splashDistance;
-
-
-    public Rigidbody projectileBody;
-
-    public void Init()
+    public void Init(ProjectileData projectileData,Vector3 directionOfTravel)
     {
+        _projectileData = projectileData;
+        _directionOfTravel = directionOfTravel;
+        _timeToLive = _projectileData.timeToLive;
+    }
 
+    void Start()
+    {
+        _projectileBody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();
+        if (_projectileBody == null)
+        {
+            _projectileBody = gameObject.AddComponent<Rigidbody>();
+        }
 
-        projectileLife -= Time.deltaTime;
+        this.Move();
 
-        if (projectileLife <= 0)
+        _timeToLive -= Time.deltaTime;
+
+        if (_timeToLive <= 0)
         {
             Destroy(gameObject);
         }
@@ -36,7 +42,9 @@ public class Projectile : MonoBehaviour
 
     private void Move()
     {
-        projectileBody.velocity = transform.forward * speed;
+        //Note: no need for Time.deltaTime here since physics engine
+        //already accounts for it
+        _projectileBody.velocity = _directionOfTravel * _projectileData.speed;
         
     }
 

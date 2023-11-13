@@ -1,9 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
+using System.Threading.Tasks;
 
 public class ProjectileManager : Singleton<ProjectileManager>
 {
@@ -30,23 +30,38 @@ public class ProjectileManager : Singleton<ProjectileManager>
         }
     }
 
-    public void LoadAndInstantiateProjectile(string addressableKey, Vector3 position, Quaternion rotation)
+    public async Task LoadAndInstantiateProjectile(string projectileDataAddressable, Vector3 directionOfTravel, Quaternion quaternionRotation, Transform projectileOrigin)
     {
-        Addressables.LoadAssetAsync<GameObject>(addressableKey).Completed += (handle) =>
+        //Load the ScriptableObject that contains the address to the projectile prefab
+        Addressables.LoadAssetAsync<ProjectileData>(projectileDataAddressable).Completed += (handle) =>
         {
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
-                GameObject projectilePrefab = handle.Result;
+                ProjectileData projectileData = handle.Result;
+                string projectilePrefabAddressable = projectileData.projectilePrefabAddress;
 
-                GameObject projectile = Instantiate(projectilePrefab, position, rotation);
-                activeProjectiles.Add(projectile);
+                //Load and instantiate the projectile prefab
+                Addressables.LoadAssetAsync<GameObject>(projectilePrefabAddressable).Completed += (prefabHandle) =>
+                {
+                    if (prefabHandle.Status == AsyncOperationStatus.Succeeded)
+                    {
+                        GameObject projectilePrefab = prefabHandle.Result;
 
-                // Assuming the projectile has a component script with an Init method
-                projectile.GetComponent<Projectile>().Init();
+                        GameObject projectile = Instantiate(projectilePrefab, projectileOrigin.position, quaternionRotation);
+                        activeProjectiles.Add(projectile);
+
+                        //Pass the direction of travel and projectile data to the projectile
+                        projectile.GetComponent<Projectile>().Init(projectileData, directionOfTravel);
+                    }
+                    else
+                    {
+                        Debug.LogError($"Failed to load projectile data in ProjectileManager::LoadAndInstantiateProjectile for address: {projectilePrefabAddressable}");
+                    }
+                };
             }
             else
             {
-                Debug.LogError($"Failed to load projectile: {handle.Status}");
+                Debug.LogError($"Failed to load projectile data in ProjectileManager::LoadAndInstantiateProjectile for address: {projectileDataAddressable}");
             }
         };
     }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f4fa87b638b7340b5981f5e3e9ce3c, type: 3}
   m_Name: BluePlasmaProjectile
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 50
   timeToLive: 5
   projectilePrefabAddress: Assets/Prefabs/Projectiles/PlasmaProjectile/PlasmaProjectile.prefab
   splashDamageRadius: 0

@@ -17,6 +17,13 @@ public class Weapon : MonoBehaviour
     [Header("Only need to be attached manually \n when manually adding weapons to maps or prefabs.")]
     [SerializeField]
     private WeaponData _weaponData;
+    private ProjectileManager _projectileManager;
+
+    [Inject]
+    public void Construct(ProjectileManager projectileManager)
+    {
+        _projectileManager = projectileManager;
+    }
 
     //Initializes the gun; loads the data from SO
     public void Init(WeaponData weaponData)
@@ -43,7 +50,14 @@ public class Weapon : MonoBehaviour
 
         if(_weaponData == null)
         {
-            Debug.LogError("No weapon data found in Weapon::Update.");
+            try
+            {
+                _weaponData = gameObject.GetComponent<WeaponData>();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("No weapon data found in Weapon::Update.");
+            }
         }
 
         if(_projectileOrigin == null)
@@ -132,6 +146,7 @@ public class Weapon : MonoBehaviour
                     //Instantiate a projectile that travels towards the crosshair position when fired
                     // Vector3 directionOfTravel = _mainCameraTransform.position + _mainCameraTransform.forward;
                     // Instantiate(bulletPrefab, maxRangePoint, Quaternion.identity);
+                    this.GenerateProjectile();
 
                 }
 
@@ -139,8 +154,46 @@ public class Weapon : MonoBehaviour
             }
 
         }
+        else
+        {
+            Debug.LogError($"No Weapon Data found in Weapon::Fire : {_weaponData}.");
+        }
 
         return 0;
+    }
+
+    //Takes a boolean useSecondaryFire.
+    //Calls ProjectileManager to load and int a projectile
+    //based on the projectileData in weaponData file
+    //at the location of the projectileOrigin on the weapon prefab.
+    //Direction of travel of the projectile is set towards the main
+    //camera center point at the time of firing.
+    private async void GenerateProjectile(bool useSecondaryFire = false)
+    {
+        try
+        {
+            if (_projectileManager != null)
+            {
+                if(_projectileOrigin != null)
+                {
+                    Vector3 directionOfTravel = (_mainCameraTransform.forward).normalized;
+                    string projectileData = !useSecondaryFire ? _weaponData.primaryProjectileAddress : _weaponData.secondaryProjectileAddress;
+                    await _projectileManager.LoadAndInstantiateProjectile(projectileData, directionOfTravel, Quaternion.identity, _projectileOrigin.transform);
+                }
+                else
+                {
+                    Debug.LogError($"No Projectile Origin gameObject found in Weapon::GenerateProjectile for weapon prefab: {_weaponData.weaponPrefabAddress}.");
+                }
+            }
+            else
+            {
+                Debug.LogError($"No Projectile Manager reference found in Weapon::GenerateProjectile for weapon: {_weaponData.weaponName}.");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.ToString());
+        }
     }
 
     private void PlayMuzzleFlash(bool useSecondaryFire = false)

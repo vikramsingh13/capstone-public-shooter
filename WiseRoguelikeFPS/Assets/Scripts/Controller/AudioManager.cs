@@ -40,6 +40,7 @@ public class AudioManager : MonoBehaviour
 
     }
 
+    /* TODO REFACTOR ALL MANUALL ASSIGNS
     void Update()
     {
 
@@ -194,5 +195,6 @@ public class AudioManager : MonoBehaviour
         effectSource.PlayOneShot(audioClip, effectsVolume);
 
     }
+    */
 
 }
