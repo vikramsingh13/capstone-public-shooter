@@ -30,7 +30,7 @@ public class ProjectileManager : Singleton<ProjectileManager>
         }
     }
 
-    public async Task LoadAndInstantiateProjectile(string projectileDataAddressable, Vector3 directionOfTravel, Quaternion quaternionRotation, Transform projectileOrigin)
+    public async Task LoadAndInstantiateProjectile(string projectileDataAddressable, Vector3 directionOfTravel, Quaternion quaternionRotation, Transform projectileOrigin, GameObject firedByGameObject, float projectileDamage, bool isFiredByPlayer = true)
     {
         //Load the ScriptableObject that contains the address to the projectile prefab
         Addressables.LoadAssetAsync<ProjectileData>(projectileDataAddressable).Completed += (handle) =>
@@ -51,7 +51,7 @@ public class ProjectileManager : Singleton<ProjectileManager>
                         activeProjectiles.Add(projectile);
 
                         //Pass the direction of travel and projectile data to the projectile
-                        projectile.GetComponent<Projectile>().Init(projectileData, directionOfTravel);
+                        projectile.GetComponent<Projectile>().Init(projectileData, directionOfTravel, firedByGameObject, projectileDamage, isFiredByPlayer);
                     }
                     else
                     {

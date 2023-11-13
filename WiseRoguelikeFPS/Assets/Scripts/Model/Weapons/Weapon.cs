@@ -19,6 +19,9 @@ public class Weapon : MonoBehaviour
     private WeaponData _weaponData;
     private ProjectileManager _projectileManager;
 
+    [Header("Set isEquipped to true only if you're manually adding this to player.")]
+    private bool _isEquipped = false;
+
     [Inject]
     public void Construct(ProjectileManager projectileManager)
     {
@@ -97,6 +100,11 @@ public class Weapon : MonoBehaviour
     {
         if( _weaponData != null)
         {
+            //return early if player is trying to use secondary fire and the weapon doesn't have secondary fire
+            if (useSecondaryFire && !_weaponData.hasSecondaryFire)
+            {
+                return 0f;
+            }
             if (!_isReloading && _canFire)
             {
                 PlayMuzzleFlash();
@@ -140,14 +148,10 @@ public class Weapon : MonoBehaviour
                     }*/
                     }
                 }
+                //Handle projectile logic for either fire mode
                 else
                 {
-                    //TODO: projectile logic
-                    //Instantiate a projectile that travels towards the crosshair position when fired
-                    // Vector3 directionOfTravel = _mainCameraTransform.position + _mainCameraTransform.forward;
-                    // Instantiate(bulletPrefab, maxRangePoint, Quaternion.identity);
                     this.GenerateProjectile();
-
                 }
 
                 return !useSecondaryFire ? _weaponData.heatPerPrimaryFire : _weaponData.heatPerSecondaryFire;
@@ -178,7 +182,10 @@ public class Weapon : MonoBehaviour
                 {
                     Vector3 directionOfTravel = (_mainCameraTransform.forward).normalized;
                     string projectileData = !useSecondaryFire ? _weaponData.primaryProjectileAddress : _weaponData.secondaryProjectileAddress;
-                    await _projectileManager.LoadAndInstantiateProjectile(projectileData, directionOfTravel, Quaternion.identity, _projectileOrigin.transform);
+                    float projectileDamage = !useSecondaryFire ? _weaponData.damagePerPrimaryProjectile : _weaponData.damagePerSecondaryProjectile;
+                    
+                    //TODO: find a better approach to access the Player gameobject instead of using transform.parent.parent.gameObject
+                    await _projectileManager.LoadAndInstantiateProjectile(projectileData, directionOfTravel, Quaternion.identity, _projectileOrigin.transform, transform.parent.parent.gameObject, projectileDamage, true);
                 }
                 else
                 {
@@ -216,6 +223,10 @@ public class Weapon : MonoBehaviour
     public void Reload()
     {
 
+    }
+
+    public void Equip()
+    {
 
     }
 

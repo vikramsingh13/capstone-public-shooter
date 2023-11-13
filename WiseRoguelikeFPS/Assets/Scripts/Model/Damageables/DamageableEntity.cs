@@ -21,8 +21,6 @@ public class DamageableEntity : MonoBehaviour
     private void Die()
     {
         Debug.Log(_name + " was killed.");
-
-        //destroy the GameObject or let combatManager handle it
-        // Destroy(gameObject);
+        Destroy(gameObject);
     }
 }
