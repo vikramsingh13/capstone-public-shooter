@@ -97,6 +97,11 @@ public class Weapon : MonoBehaviour
     {
         if( _weaponData != null)
         {
+            //return early if player is trying to use secondary fire and the weapon doesn't have secondary fire
+            if (useSecondaryFire && !_weaponData.hasSecondaryFire)
+            {
+                return 0f;
+            }
             if (!_isReloading && _canFire)
             {
                 PlayMuzzleFlash();
@@ -140,14 +145,10 @@ public class Weapon : MonoBehaviour
                     }*/
                     }
                 }
+                //Handle projectile logic for either fire mode
                 else
                 {
-                    //TODO: projectile logic
-                    //Instantiate a projectile that travels towards the crosshair position when fired
-                    // Vector3 directionOfTravel = _mainCameraTransform.position + _mainCameraTransform.forward;
-                    // Instantiate(bulletPrefab, maxRangePoint, Quaternion.identity);
                     this.GenerateProjectile();
-
                 }
 
                 return !useSecondaryFire ? _weaponData.heatPerPrimaryFire : _weaponData.heatPerSecondaryFire;
