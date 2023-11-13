@@ -33,7 +33,7 @@ public class PlayerManager : Singleton<PlayerManager>
     // Start is called before the first frame update
     void Start()
     {
-        FindPlayerObjectOrSpawnIt();
+        //FindPlayerObjectOrSpawnIt();
     }
 
     // Update is called once per frame
@@ -44,7 +44,7 @@ public class PlayerManager : Singleton<PlayerManager>
         {
             if( _player == null)
             {
-                FindPlayerObjectOrSpawnIt();
+                //FindPlayerObjectOrSpawnIt();
             }
         }
     }
