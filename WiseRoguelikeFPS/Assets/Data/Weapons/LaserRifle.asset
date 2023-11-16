@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 114cdd1eafb02b74e8b0d016d5aad2b3, type: 3}
-  m_Name: WeaponData
+  m_Name: LaserRifle
   m_EditorClassIdentifier: 
-  weaponName: 
-  weaponPrefabAddress: Assets/Prefabs/Plasma Gun/Plasma Gun.prefab
+  weaponName: LaserRifle
+  weaponPrefabAddress: Assets/Prefabs/Weapon/Plasma Gun/Plasma Gun.prefab
+  weaponIconAddress: Assets/Images/Icons/WeaponIcons/LaserRifle.png
   delayBetweenPrimaryFire: 5
   isPrimaryFireHitscan: 0
   projectilesPerPrimaryFire: 1
@@ -27,7 +28,7 @@ MonoBehaviour:
   heatPerSecondaryFire: 1
   primaryProjectileAddress: Assets/Data/Projectiles/BluePlasmaProjectile.asset
   secondaryProjectileAddress: 
-  primaryMuzzleFlashAddress: Assets/Prefabs/Plasma Gun/Muzzle Flash.prefab
+  primaryMuzzleFlashAddress: Assets/Prefabs/VFX/Muzzle Flash.prefab
   secondaryMuzzleFlashAddress: 
   primaryFireAudioAddress: Assets/Audio/WeaponSounds/Nerf Gun Firing.mp3
   secondaryFireAudioAddress: 

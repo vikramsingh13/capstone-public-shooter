@@ -18,11 +18,8 @@ public class AudioManager : Singleton<AudioManager>
     private float _effectsVolume = 1f;
     //static event other scripts can subscribe to when music volume is changed
     public delegate void MusicVolumeChangedEvent(float volume);
-    public static event MusicVolumeChangedEvent OnMusicVolumeChangedEvent;
     public delegate void EffectsVolumeChangedEvent(float volume);
-    public static event EffectsVolumeChangedEvent OnEffectsVolumeChangedEvent; 
     public delegate void AmbienceVolumeChangedEvent(float volume);
-    public static event AmbienceVolumeChangedEvent OnAmbienceVolumeChangedEvent;
 
     [Inject]
     public void Construct()
