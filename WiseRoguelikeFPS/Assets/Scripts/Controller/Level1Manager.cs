@@ -25,7 +25,7 @@ public class Level1Manager : Singleton<Level1Manager>
     private AudioManager _audioManager;
 
     [Inject]
-    void Construct(AudioManager audioManager)
+    public void Construct(AudioManager audioManager)
     {
         _audioManager = audioManager;
         Debug.Log("Starting up the Level1Manager!");

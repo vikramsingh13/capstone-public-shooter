@@ -6,6 +6,7 @@ public class WeaponData : ScriptableObject
     [Header("Unique weapon name will be used as hash map key \n by our Drop Manager. So make sure \n the weapon name here is unique.")]
     public string weaponName = string.Empty;
     public string weaponPrefabAddress = string.Empty;
+    public string weaponIconAddress = string.Empty;
 
     [Header("Weapon Specifications")]
     public float delayBetweenPrimaryFire = 5;

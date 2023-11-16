@@ -1,97 +1,79 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
 public class AudioManager : Singleton<AudioManager>
 {
-    private AudioSource musicSource;
+    private AudioSource _musicSource;
+    private bool _isMusicPaused;
+    private AudioSource _ambienceSource;
+    private bool _isAmbiencePaused;
 
-    private bool musicPaused;
-
-    private AudioSource ambienceSource;
-
-    private bool ambiencePaused;
-
-    private float musicVolume = 0.5f;
-
-    private float ambienceVolume = 0.5f;
-
-    private float effectsVolume = 0.5f;
+    [SerializeField]
+    private float _musicVolume = 1f;
+    private float _ambienceVolume = 1f;
+    private float _effectsVolume = 1f;
+    //static event other scripts can subscribe to when music volume is changed
+    public delegate void MusicVolumeChangedEvent(float volume);
+    public delegate void EffectsVolumeChangedEvent(float volume);
+    public delegate void AmbienceVolumeChangedEvent(float volume);
 
     [Inject]
     public void Construct()
-    {
-
-        Debug.Log("Starting up the AudioManager!");       
+    {    
 
     }
 
     private void Start()
-    {      
-        
-        musicSource = GameObject.Find("MusicSource").gameObject.GetComponent<AudioSource>();
-        ambienceSource = GameObject.Find("AmbienceSource").gameObject.GetComponent<AudioSource>();
+    {
+        //Get the audio sources from the main camera at start
+        GetAudioSourcesFromMainCamera();
 
-        if (musicSource != null)
-        {
+        //handle the volume change events
+        Menu.MusicVolumeChangedEvent += HandleMusicVolumeChanged;
+        Menu.AmbienceVolumeChangedEvent += HandleAmbienceVolumeChanged;
+        Menu.EffectsVolumeChangedEvent += HandleEffectsVolumeChanged;
 
-            Debug.Log("Found the music source!");
-
-        }
-
-        if (ambienceSource != null)
-        {
-
-            Debug.Log("Found the ambience source!");
-
-        }
 
     }
 
-
     void Update()
     {
+        if( _musicSource == null || _ambienceSource == null)
+        {
+            GetAudioSourcesFromMainCamera();
+        }
+    }
 
-        musicSource.volume = musicVolume;
-        ambienceSource.volume = ambienceVolume;
-        
+    private void GetAudioSourcesFromMainCamera()
+    {
+        //Get the audio sources from the main camera
+        _musicSource = Camera.main.transform.Find("MusicSource").gameObject.GetComponent<AudioSource>();
+        _ambienceSource = Camera.main.transform.Find("AmbienceSource").gameObject.GetComponent<AudioSource>();
     }
 
     //Music Related Properites
     public void StartMusic(AudioClip music)
     {
-
-        musicSource.Stop();
-        musicSource.PlayOneShot(music);
-
-    }
-
-    public void MuteMusic()
-    {
-
-        musicVolume = 0.0f;
-
+        _musicSource.Stop();
+        _musicSource.PlayOneShot(music);
     }
 
     public void ToggleMusic()
     {
+        _isMusicPaused = !_isMusicPaused;
 
-        musicPaused = !musicPaused;
-
-        if(musicPaused)
+        if(_isMusicPaused)
         {
-
-            musicSource.Pause();
-
+            _musicSource.Pause();
         }
         else
         {
-
-            musicSource.UnPause();
-
+            _musicSource.UnPause();
         }
-
     }
 
     public void SetMusicVolume(float volume)
@@ -99,110 +81,93 @@ public class AudioManager : Singleton<AudioManager>
 
         if(volume < 0.0f)
         {
-
             volume = 0.0f;
-
         }
 
         if(volume > 1.0f) { 
-        
             volume = 1.0f;
-        
         }
 
-        musicVolume = volume;
-
-        musicSource.volume = musicVolume;
-
+        _musicVolume = volume;
+        _musicSource.volume = _musicVolume;
     }
 
     //Ambience Related Properties
     public void StartAmbience()
     {
-
-        ambienceSource.Play();
-
-    }
-
-    public void MuteAmbience()
-    {
-
-        ambienceVolume = 0.0f;
-
+        _ambienceSource.Play();
     }
 
     public void ToggleAmbience()
     {
 
-        ambiencePaused = !ambiencePaused;
+        _isAmbiencePaused = !_isAmbiencePaused;
 
-        if (ambiencePaused)
+        if (_isAmbiencePaused)
         {
-
-            ambienceSource.Pause();
-
+            _ambienceSource.Pause();
         }
         else
         {
-
-            ambienceSource.UnPause();
-
+            _ambienceSource.UnPause();
         }
 
     }
 
     public void SetAmbienceVolume(float volume)
     {
-
         if (volume < 0.0f)
         {
-
             volume = 0.0f;
-
         }
 
         if (volume > 1.0f)
         {
-
             volume = 1.0f;
-
         }
 
-        ambienceVolume = volume;
-
-        ambienceSource.volume = ambienceVolume;
-
+        _ambienceVolume = volume;
+        _ambienceSource.volume = _ambienceVolume;
     }
 
-    //Sound Effect Related Properties
-    public void SetSFXVolume(float volume)
+    //Effects Related Properties
+    public void SetEffectsVolume(float volume)
     {
 
         if (volume < 0.0f)
         {
-
             volume = 0.0f;
-
         }
 
         if (volume > 1.0f)
         {
-
             volume = 1.0f;
-
         }
-
-        effectsVolume = volume;
-
+        _effectsVolume = volume;
     }
 
     //Invoked by a gameObject with its own effect source and clip.
-    public void PlaySFX(AudioSource effectSource, AudioClip audioClip)
+    public void PlayEffectAudioClip(AudioSource effectSource, AudioClip audioClip)
     {
-
         //Plays the effect from the effectSource of the object calling it, with the volume adjusted by this script.
-        effectSource.PlayOneShot(audioClip, effectsVolume);
-
+        effectSource.PlayOneShot(audioClip, _effectsVolume);
     }
 
+
+    //Event Handlers
+    public void HandleMusicVolumeChanged(float volume)
+    {
+        Debug.Log("Music Volume Changed to " + volume);
+        SetMusicVolume(volume);
+    }
+
+    public void HandleAmbienceVolumeChanged(float volume)
+    {
+        SetAmbienceVolume(volume);
+    }
+
+    public void HandleEffectsVolumeChanged(float volume)
+    {
+        SetEffectsVolume(volume);
+    }
 }

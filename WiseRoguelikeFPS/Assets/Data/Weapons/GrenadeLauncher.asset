@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 114cdd1eafb02b74e8b0d016d5aad2b3, type: 3}
-  m_Name: PlasmaGun
+  m_Name: GrenadeLauncher
   m_EditorClassIdentifier: 
-  weaponName: PlasmaGun
+  weaponName: GrenadeLauncher
   weaponPrefabAddress: Assets/Prefabs/Weapon/Plasma Gun/Plasma Gun.prefab
-  weaponIconAddress: Assets/Images/Icons/WeaponIcons/PlasmaGun.png
+  weaponIconAddress: Assets/Images/Icons/WeaponIcons/GrenadeLauncher.png
   delayBetweenPrimaryFire: 5
   isPrimaryFireHitscan: 0
   projectilesPerPrimaryFire: 1

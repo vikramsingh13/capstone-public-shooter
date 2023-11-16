@@ -14,16 +14,11 @@ public class GameManager : Singleton<GameManager>
         get { return _isPaused; }
         set { _isPaused = value; }
     }
-    private AudioManager _audioManager;
-    public virtual AudioManager GetAudioManager
-    {
-        get { return _audioManager; }
-    }
 
     [Inject]
-    public void Construct(AudioManager audioManager)
+    public void Construct()
     {
-        _audioManager = audioManager;
+
     }
 
     // Start is called before the first frame update

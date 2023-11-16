@@ -17,10 +17,12 @@ public class Weapon : MonoBehaviour
     [Header("Only need to be attached manually \n when manually adding weapons to maps or prefabs.")]
     [SerializeField]
     private WeaponData _weaponData;
+    //getter for weaponData
+    public WeaponData GetWeaponData
+    {
+        get { return _weaponData; }
+    }
     private ProjectileManager _projectileManager;
-
-    [Header("Set isEquipped to true only if you're manually adding this to player.")]
-    private bool _isEquipped = false;
 
     [Inject]
     public void Construct(ProjectileManager projectileManager)
@@ -34,6 +36,7 @@ public class Weapon : MonoBehaviour
         //weapon data will be provided by drop manager 
         //TODO: make sure weapons can be manually added to map by attaching weaponData
         _weaponData = weaponData;
+        Debug.Log($"WeaponData loaded in Weapon::Init : {_weaponData.weaponName}.");
     }
 
     // Start is called before the first frame update

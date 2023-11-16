@@ -26,7 +26,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: d9277c699fa49494aa2c79d59cbed9cd
-    m_Address: Assets/Prefabs/Plasma Gun/Plasma Gun.prefab
+    m_Address: Assets/Prefabs/Weapon/Plasma Gun/Plasma Gun.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 15c0508cf572c494bbc0ea3b2bc05fdd
@@ -47,6 +47,46 @@ MonoBehaviour:
     m_SerializedLabels: []
   - m_GUID: de0fc2041bf601f448f726aed051fb20
     m_Address: Assets/Prefabs/Player/PlayerObject.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e5fbb6025eaf1f24dbe77fafcf002216
+    m_Address: Assets/Data/Settings/SettingsData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 982036d653ea3b34ba78ffffd71b8a14
+    m_Address: Assets/Prefabs/UI/HUD/HUD.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4a60d8477aafac045a1f56d3a60c7813
+    m_Address: Assets/Prefabs/VFX/Muzzle Flash.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b185bc94997c95f4589933edefab34b5
+    m_Address: Assets/Images/Icons/WeaponIcons/RocketLauncher.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 41e336243615efe48af70ff1709d1326
+    m_Address: Assets/Images/Icons/WeaponIcons/PlasmaGun.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d4b2fcfd0ce560d44b75a9a71138a6ea
+    m_Address: Assets/Images/Icons/WeaponIcons/LaserRifle.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 079820c3044b150499b3ea62eefa46ca
+    m_Address: Assets/Images/Icons/WeaponIcons/GrenadeLauncher.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b5cd4bb4000929e4ea052d8c8cb06cac
+    m_Address: Assets/Data/Weapons/GrenadeLauncher.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 794594f8bfbd8954686b3d890182d066
+    m_Address: Assets/Data/Weapons/LaserRifle.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 385252a82ae99d14f85d465681028e69
+    m_Address: Assets/Data/Weapons/RocketLauncher 1.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
