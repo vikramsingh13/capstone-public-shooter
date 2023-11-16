@@ -94,7 +94,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 4bdfabb6576445f438f5f1e154e1c6a0
-    m_Address: Assets/Data/Enemies/CrabRanged.asset
+    m_Address: Assets/Data/Enemies/RangedCrab.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 8c3cdc3974e890f448dbd9a4d609c047

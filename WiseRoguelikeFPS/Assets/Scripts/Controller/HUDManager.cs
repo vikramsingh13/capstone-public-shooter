@@ -19,8 +19,10 @@ public class HUDManager : Singleton<HUDManager>
     private GameObject _activeWeaponSlot;
 
     public delegate void WeaponSwapEvent(int index);
+    public static event WeaponSwapEvent OnWeaponSwapEvent;
     //For now invoked when the weapon loadout is set/changed
     public delegate void SetWeaponLoadoutEvent(List<GameObject> weaponLoadoutList);
+    public static event SetWeaponLoadoutEvent OnSetWeaponLoadoutEvent;
 
     
 
@@ -32,8 +34,8 @@ public class HUDManager : Singleton<HUDManager>
 
     void Start()
     {
-        Player.WeaponSwapEvent += HandleActiveWeaponSwapEvent;
-        Player.SetWeaponLoadoutEvent += HandleSetWeaponLoadoutEvent;
+        Player.OnWeaponSwapEvent += HandleActiveWeaponSwapEvent;
+        Player.OnSetWeaponLoadoutEvent += HandleSetWeaponLoadoutEvent;
         GetWeaponLoadoutParentAndSlots();
         AsyncLoadHUD();
 

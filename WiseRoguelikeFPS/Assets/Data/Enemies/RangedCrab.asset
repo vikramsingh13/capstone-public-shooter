@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28db454424a493c4fac93f6831be8d67, type: 3}
-  m_Name: CrabRanged
+  m_Name: RangedCrab
   m_EditorClassIdentifier: 
   entityName: CrabMonster
   prefabAddressKey: Assets/Prefabs/Enemy/CrabMonster/Prefabs/CrabMonster.prefab
@@ -26,6 +26,7 @@ MonoBehaviour:
   gettingHitAnimation: 
   runAnimation: 
   deathAnimation: 
+  aggroRange: 50
   attackType:
   - Ranged
   attackDamage:

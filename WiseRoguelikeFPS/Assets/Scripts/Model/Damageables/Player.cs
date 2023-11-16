@@ -8,6 +8,7 @@ using UnityEngine.InputSystem.XInput;
 using UnityEngine.ProBuilder;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
+using static HUDManager;
 
 public class Player : DamageableEntity
 {
@@ -49,8 +50,8 @@ public class Player : DamageableEntity
     private Task _asyncSetWeaponLoadoutTask;
 
     //weapon swap event in HUD manager to start the active weapon change logic and UI change
-    public static event HUDManager.WeaponSwapEvent WeaponSwapEvent;
-    public static event HUDManager.SetWeaponLoadoutEvent SetWeaponLoadoutEvent;
+    public static HUDManager.WeaponSwapEvent OnWeaponSwapEvent;
+    public static HUDManager.SetWeaponLoadoutEvent OnSetWeaponLoadoutEvent;
 
     //Input keys can be refactored to scriptable objects 
     //this way player modified settings can be saved. 
@@ -122,8 +123,8 @@ public class Player : DamageableEntity
             {
                 Debug.Log($"loadout weapons count: {_listOfLoadoutWeaponsGameObjects.Count}");
                 _activeWeaponGameObject = _listOfLoadoutWeaponsGameObjects[0];
-                SetWeaponLoadoutEvent?.Invoke(_listOfLoadoutWeaponsGameObjects);
-                WeaponSwapEvent?.Invoke(0);
+                OnSetWeaponLoadoutEvent?.Invoke(_listOfLoadoutWeaponsGameObjects);
+                OnWeaponSwapEvent?.Invoke(0);
             }
             else
             {
@@ -337,7 +338,7 @@ public class Player : DamageableEntity
                     {
                         _listOfLoadoutWeaponsGameObjects[i].SetActive(true);
                         _activeWeaponGameObject = _listOfLoadoutWeaponsGameObjects[index];
-                        WeaponSwapEvent?.Invoke(index);
+                        OnWeaponSwapEvent?.Invoke(index);
                         Debug.Log($"Swapped equipped weapon to index: {index}");
                     }
                     else

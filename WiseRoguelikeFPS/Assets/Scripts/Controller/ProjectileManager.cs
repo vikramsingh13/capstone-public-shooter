@@ -4,6 +4,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
 using System.Threading.Tasks;
+using System;
 
 public class ProjectileManager : Singleton<ProjectileManager>
 {
@@ -35,31 +36,34 @@ public class ProjectileManager : Singleton<ProjectileManager>
         //Load the ScriptableObject that contains the address to the projectile prefab
         Addressables.LoadAssetAsync<ProjectileData>(projectileDataAddressable).Completed += (handle) =>
         {
-            if (handle.Status == AsyncOperationStatus.Succeeded)
+            try
             {
-                ProjectileData projectileData = handle.Result;
-                string projectilePrefabAddressable = projectileData.projectilePrefabAddress;
-
-                //Load and instantiate the projectile prefab
-                Addressables.LoadAssetAsync<GameObject>(projectilePrefabAddressable).Completed += (prefabHandle) =>
+                if (handle.Status == AsyncOperationStatus.Succeeded)
                 {
-                    if (prefabHandle.Status == AsyncOperationStatus.Succeeded)
-                    {
-                        GameObject projectilePrefab = prefabHandle.Result;
+                    ProjectileData projectileData = handle.Result;
+                    string projectilePrefabAddressable = projectileData.projectilePrefabAddress;
 
-                        GameObject projectile = Instantiate(projectilePrefab, projectileOrigin.position, quaternionRotation);
-                        activeProjectiles.Add(projectile);
-
-                        //Pass the direction of travel and projectile data to the projectile
-                        projectile.GetComponent<Projectile>().Init(projectileData, directionOfTravel, firedByGameObject, projectileDamage, isFiredByPlayer);
-                    }
-                    else
+                    //Load and instantiate the projectile prefab
+                    Addressables.LoadAssetAsync<GameObject>(projectilePrefabAddressable).Completed += (prefabHandle) =>
                     {
-                        Debug.LogError($"Failed to load projectile data in ProjectileManager::LoadAndInstantiateProjectile for address: {projectilePrefabAddressable}");
-                    }
-                };
+                        if (prefabHandle.Status == AsyncOperationStatus.Succeeded)
+                        {
+                            GameObject projectilePrefab = prefabHandle.Result;
+
+                            GameObject projectile = Instantiate(projectilePrefab, projectileOrigin.position, quaternionRotation);
+                            activeProjectiles.Add(projectile);
+
+                            //Pass the direction of travel and projectile data to the projectile
+                            projectile.GetComponent<Projectile>().Init(projectileData, directionOfTravel, firedByGameObject, projectileDamage, isFiredByPlayer);
+                        }
+                        else
+                        {
+                            Debug.LogError($"Failed to load projectile data in ProjectileManager::LoadAndInstantiateProjectile for address: {projectilePrefabAddressable}");
+                        }
+                    };
+                }
             }
-            else
+            catch (Exception e)
             {
                 Debug.LogError($"Failed to load projectile data in ProjectileManager::LoadAndInstantiateProjectile for address: {projectileDataAddressable}");
             }

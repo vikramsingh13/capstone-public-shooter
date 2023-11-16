@@ -26,8 +26,9 @@ MonoBehaviour:
   gettingHitAnimation: 
   runAnimation: 
   deathAnimation: 
+  aggroRange: 50
   attackType:
-  - Ranged
+  - melee
   attackDamage:
   - 33
   attackCooldown:

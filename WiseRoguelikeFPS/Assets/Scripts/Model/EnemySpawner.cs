@@ -70,6 +70,9 @@ public class EnemySpawner : MonoBehaviour
                         GameObject enemyPrefab = handle.Result;
                         _diContainer.InstantiatePrefab(enemyPrefab, spawnPosition, Quaternion.identity, null);
                         enemyPrefab.GetComponent<Enemy>().Init(enemyData);
+
+                        //reset delay check
+                        waitingForDelay = false;
                     }
                     else
                     {
