@@ -15,9 +15,11 @@ public class Rikayon : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		//what even is this?
+		/*
         if (Input.GetKeyDown(KeyCode.Space)) {
             animator.SetTrigger("attack");
         }
-
+		*/
 	}
 }

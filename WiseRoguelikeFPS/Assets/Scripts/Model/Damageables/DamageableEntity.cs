@@ -10,6 +10,7 @@ public class DamageableEntity : MonoBehaviour
     public void TakeDamage(float damageAmount)
     {
         _health -= damageAmount;
+        Debug.Log(_name + " took " + damageAmount + " damage. Health is now " + _health + ".");
 
         if (_health <= 0)
         {

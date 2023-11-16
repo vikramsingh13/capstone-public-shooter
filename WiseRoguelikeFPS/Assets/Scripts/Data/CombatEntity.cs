@@ -4,18 +4,24 @@ using UnityEngine;
 public class CombatEntity : ScriptableObject
 {
     public string entityName;
-    public float health;
-    public float damage;
-    public float defense;
-    public string prefabAddress;
-    //TODO: types, damage types, etc. 
+    public string prefabAddressKey;
 
-    public void Init(string name, float hp, float attack, float def, string prefabKey)
-    {
-        entityName = name;
-        health = hp;
-        damage = attack;
-        defense = def;
-        prefabAddress = prefabKey;
-    }
+    [Header("Combat Entity Specifications")]
+    public float healthFlatValue;
+    public float healthPercentageIncrease;
+    public float movementSpeedFlatValue;
+    public float movementSpeedPercentageIncrease;
+
+    [Header("Combat Entity audio")]
+    public string idleAudioAddress;
+    public string hitAudioAddress;
+    public string runAudioAddress;
+    public string deathAudioAddress;
+
+    [Header("Combat Entity effects")]
+    public string idleAnimation;
+    public string gettingHitAnimation;
+    public string runAnimation;
+    public string deathAnimation;
+
 }

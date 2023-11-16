@@ -89,6 +89,22 @@ MonoBehaviour:
     m_Address: Assets/Data/Weapons/RocketLauncher 1.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 4e7afdf31c20ebf419ea38bf1d358719
+    m_Address: Assets/Prefabs/Enemy/CrabMonster/Prefabs/CrabMonster.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4bdfabb6576445f438f5f1e154e1c6a0
+    m_Address: Assets/Data/Enemies/CrabRanged.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8c3cdc3974e890f448dbd9a4d609c047
+    m_Address: Assets/Data/Projectiles/EnemyBluePlasma.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0ee6c8385655d724ba94d1f4b3ffc73d
+    m_Address: Assets/Data/Enemies/MeleeCrab.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 079d18b28a6061645af4ee9165bcf176, type: 2}
   m_SchemaSet:

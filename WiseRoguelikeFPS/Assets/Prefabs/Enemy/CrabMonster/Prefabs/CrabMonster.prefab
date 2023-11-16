@@ -4373,7 +4373,7 @@ GameObject:
   - component: {fileID: 1352510553190613867}
   - component: {fileID: 2595006220408307662}
   m_Layer: 0
-  m_Name: CrabMonster 1
+  m_Name: CrabMonster
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4447,7 +4447,7 @@ MonoBehaviour:
   _name: DamageableEntity
   _aggroTarget: {fileID: 0}
   _isAggro: 0
-  _aggroRange: Infinity
+  _aggroRange: 30
   _navMeshAgent: {fileID: 0}
   _distanceToTarget: Infinity
   attackSound: {fileID: 8300000, guid: 644a18cb1795c0f42b3b81e107a9a1f4, type: 3}
@@ -4528,7 +4528,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 20
+  m_Radius: 30
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5792748071347383548
 GameObject:
