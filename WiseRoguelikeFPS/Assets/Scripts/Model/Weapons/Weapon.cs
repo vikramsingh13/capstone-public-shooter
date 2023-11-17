@@ -36,7 +36,6 @@ public class Weapon : MonoBehaviour
         //weapon data will be provided by drop manager 
         //TODO: make sure weapons can be manually added to map by attaching weaponData
         _weaponData = weaponData;
-        Debug.Log($"WeaponData loaded in Weapon::Init : {_weaponData.weaponName}.");
     }
 
     // Start is called before the first frame update

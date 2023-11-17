@@ -122,8 +122,7 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            //destroy the projectile if it hits anything else
-            Destroy(gameObject);
+            //TODO: check what are the different things projectiles can hit and should be destroyed e.g. navmesh obstacles, indestrutible objects like walls, etc. Then implement the logic here.
         }   
     }
 

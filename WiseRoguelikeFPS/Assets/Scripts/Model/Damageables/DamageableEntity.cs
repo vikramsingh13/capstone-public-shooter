@@ -3,25 +3,29 @@ using UnityEngine;
 public class DamageableEntity : MonoBehaviour
 {
     [SerializeField]
-    protected float _health = 100f;
+    protected float _currentHealth = 100f;
     [SerializeField]
     protected string _name = "DamageableEntity";
 
-    public void TakeDamage(float damageAmount)
+    public virtual void TakeDamage(float damageAmount)
     {
-        _health -= damageAmount;
-        Debug.Log(_name + " took " + damageAmount + " damage. Health is now " + _health + ".");
+        _currentHealth -= damageAmount;
+        Debug.Log(_name + " took " + damageAmount + " damage. Health is now " + _currentHealth + ".");
 
-        if (_health <= 0)
+        if (_currentHealth <= 0)
         {
-            _health = 0;
+            _currentHealth = 0;
             Die();
         }
     }
 
-    private void Die()
+    protected void Die()
     {
         Debug.Log(_name + " was killed.");
-        Destroy(gameObject);
+        //temp: dont delete the player for now
+        if(_name != "Player")
+        {
+            Destroy(gameObject);
+        }
     }
 }

@@ -32,6 +32,7 @@ public class Enemy : DamageableEntity
     private string _nextAttackType = "";
     private GameObject _aggroRangeIndicator;
     private bool _isAttacking = false;
+    private Transform _projectileOrigin;
 
     [Inject]
     public void Construct(PlayerManager playerManager, ProjectileManager projectileManager)
@@ -76,7 +77,10 @@ public class Enemy : DamageableEntity
         _navMeshAgent = GetComponent<NavMeshAgent>();
         // Get the NavMeshObstacle component attached to this GameObject
         _navMeshObstacle = GetComponent<NavMeshObstacle>();
-        _navMeshObstacle.enabled = false; // Disable it initially
+        _navMeshObstacle.enabled = false;
+        //check if the enemy prefab has a child called ProjectileOrigin. If it does, use that as the projectile origin, otherwise use the enemy prefab itself as the projectile origin
+        _projectileOrigin = transform.Find("ProjectileOrigin")?.gameObject.transform;
+        _projectileOrigin = _projectileOrigin != null ? _projectileOrigin : transform;
         GetMeleeAttackHitbox();
         PickNextAttackIndexAndType();
 
@@ -198,7 +202,7 @@ public class Enemy : DamageableEntity
             else if (_nextAttackType.ToLower() == "ranged")
             {
                 //get projectile data from enemy data, and pass it to the projectile manager, direction of travel should be towards the aggro target transform
-                _projectileManager.LoadAndInstantiateProjectile(_enemyData.attackProjectileDataAddress[_nextAttackIndex], _aggroTarget.transform.position - transform.position, Quaternion.identity, transform, gameObject, _enemyData.attackDamage[_nextAttackIndex], false);
+                _projectileManager.LoadAndInstantiateProjectile(_enemyData.attackProjectileDataAddress[_nextAttackIndex], _aggroTarget.transform.position - transform.position, Quaternion.identity, _projectileOrigin, gameObject, _enemyData.attackDamage[_nextAttackIndex], false);
             }
             //Coroutine to set the attack on cooldown if the enemy is not dead yet
             if (_enemyData != null && _enemyData.attackCooldown != null &&

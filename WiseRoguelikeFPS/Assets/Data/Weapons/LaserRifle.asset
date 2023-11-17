@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LaserRifle
   m_EditorClassIdentifier: 
   weaponName: LaserRifle
-  weaponPrefabAddress: Assets/Prefabs/Weapon/Plasma Gun/Plasma Gun.prefab
+  weaponPrefabAddress: Assets/Prefabs/Weapon/LaserRifle/LaserRifle.prefab
   weaponIconAddress: Assets/Images/Icons/WeaponIcons/LaserRifle.png
   delayBetweenPrimaryFire: 5
   isPrimaryFireHitscan: 0

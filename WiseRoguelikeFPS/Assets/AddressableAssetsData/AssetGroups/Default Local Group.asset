@@ -105,6 +105,10 @@ MonoBehaviour:
     m_Address: Assets/Data/Enemies/MeleeCrab.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 6e8c64bef6a5afb41ab2d5d0df39c367
+    m_Address: Assets/Prefabs/Weapon/LaserRifle/LaserRifle.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 079d18b28a6061645af4ee9165bcf176, type: 2}
   m_SchemaSet:

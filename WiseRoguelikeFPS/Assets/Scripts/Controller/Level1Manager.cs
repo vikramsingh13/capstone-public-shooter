@@ -28,7 +28,6 @@ public class Level1Manager : Singleton<Level1Manager>
     public void Construct(AudioManager audioManager)
     {
         _audioManager = audioManager;
-        Debug.Log("Starting up the Level1Manager!");
 
     }
 
