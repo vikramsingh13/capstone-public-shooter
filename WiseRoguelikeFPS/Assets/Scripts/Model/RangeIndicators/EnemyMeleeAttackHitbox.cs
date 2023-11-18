@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class EnemyMeleeAttackHitbox : MonoBehaviour
+public class EnemyMeleeAttackHitbox : RangeIndicator
 {
     private Enemy _enemy;
     private float _attackDamage;
@@ -19,7 +19,10 @@ public class EnemyMeleeAttackHitbox : MonoBehaviour
     {
         if(other.gameObject.GetComponent<DamageableEntity>() != null)
         {
-            _enemy.InvokeCombatEvent(other.gameObject, _attackDamage);
+            if (other.gameObject.GetComponent<Player>())
+            {
+                _enemy.InvokeCombatEvent(other.gameObject, _attackDamage);
+            }
         }
     }
 }
