@@ -52,7 +52,7 @@ public class Level1Manager : Singleton<Level1Manager>
 
         }
 
-        if(Player.GetComponent<PlayerStats>().HitPoints <= 0)
+        /*if(Player.GetComponent<PlayerStats>().HitPoints <= 0)
         {
 
             GameLose();
@@ -71,7 +71,7 @@ public class Level1Manager : Singleton<Level1Manager>
 
             LevelEnd.gameObject.GetComponent<TeleporterMainScript>().EnableEndTrigger();
 
-        }
+        }*/
 
     }
 
