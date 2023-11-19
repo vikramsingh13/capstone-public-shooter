@@ -4371,7 +4371,6 @@ GameObject:
   - component: {fileID: 7021956120414370245}
   - component: {fileID: 6515512178825685574}
   - component: {fileID: 1352510553190613867}
-  - component: {fileID: -8487965241298215328}
   m_Layer: 0
   m_Name: CrabMonster
   m_TagString: Enemy
@@ -4446,7 +4445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3efd5622813beb04d95b62be3dad59c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 100
+  _currentHealth: 100
   _name: DamageableEntity
   _aggroTarget: {fileID: 0}
   _isAggro: 0
@@ -4521,19 +4520,6 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 1.4, z: 0}
---- !u!135 &-8487965241298215328
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5792744366562842766}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 30
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5792748071347383548
 GameObject:
   m_ObjectHideFlags: 0
@@ -5071,24 +5057,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 962e913077c1ea146964eeea64fb4e8a, type: 3}
---- !u!1 &6578498290291081801 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2158365929741086089, guid: 962e913077c1ea146964eeea64fb4e8a, type: 3}
-  m_PrefabInstance: {fileID: 5097946374194163648}
-  m_PrefabAsset: {fileID: 0}
---- !u!135 &2256440181112403603
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6578498290291081801}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 30
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &6767707665048291438 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1969253312078358446, guid: 962e913077c1ea146964eeea64fb4e8a, type: 3}
@@ -5169,15 +5137,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8865816168045793713, guid: 40ca2a3ff6cabc94ba6b227ee5570657, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 644.11053
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8865816168045793713, guid: 40ca2a3ff6cabc94ba6b227ee5570657, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -117
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8865816168045793713, guid: 40ca2a3ff6cabc94ba6b227ee5570657, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 248
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8865816168045793713, guid: 40ca2a3ff6cabc94ba6b227ee5570657, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5209,7 +5177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8865816168045793742, guid: 40ca2a3ff6cabc94ba6b227ee5570657, type: 3}
       propertyPath: m_Radius
-      value: 69
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8865816168045793743, guid: 40ca2a3ff6cabc94ba6b227ee5570657, type: 3}
       propertyPath: m_Name

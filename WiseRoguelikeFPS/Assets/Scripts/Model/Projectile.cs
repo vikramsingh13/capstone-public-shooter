@@ -94,7 +94,7 @@ public class Projectile : MonoBehaviour
     {
         //Keep it simple with Damageables: enemy and player
         //delete if it hits anything else
-        if ( other.GetComponent<DamageableEntity>() != null)
+        if ( other.GetComponent<DamageableEntity>() != null && other.GetComponent<RangeIndicator>() == null)
         {
             //if the projectile is fired by the player
             if( _isFiredByPlayer )

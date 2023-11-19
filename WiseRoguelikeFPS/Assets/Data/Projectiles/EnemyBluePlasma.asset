@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyBluePlasma
   m_EditorClassIdentifier: 
   speed: 50
-  timeToLive: 5
+  timeToLive: 6
   projectilePrefabAddress: Assets/Prefabs/Projectiles/PlasmaProjectile/PlasmaProjectile.prefab
   splashDamageRadius: 0
   isAffectedByGravity: 0

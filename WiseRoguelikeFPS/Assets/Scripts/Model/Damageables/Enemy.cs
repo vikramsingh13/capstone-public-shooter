@@ -12,7 +12,7 @@ public class Enemy : DamageableEntity
     [SerializeField]
     private bool _isAggro = false; //whether the enemy is currently aggro'd by player
     [SerializeField]
-    private float _aggroRange = Mathf.Infinity;
+    private float _aggroRange = 30f;
     [SerializeField]
     private NavMeshAgent _navMeshAgent;
     [SerializeField]
@@ -30,7 +30,7 @@ public class Enemy : DamageableEntity
     private GameObject _meleeAttackHitbox;
     private int _nextAttackIndex = 0;
     private string _nextAttackType = "";
-    private GameObject _aggroRangeIndicator;
+    private AggroRangeIndicator _aggroRangeIndicator;
     private bool _isAttacking = false;
     private Transform _projectileOrigin;
 
@@ -48,26 +48,7 @@ public class Enemy : DamageableEntity
 
         //Set the aggro range of the enemy
         _aggroRange = _enemyData.aggroRange;
-
-        //find the child named "AggroRangeIndicator" and get it's sphere collider if it has it, or add a sphere collider, and set the radius to aggrorange
-        _aggroRangeIndicator = transform.Find("AggroRangeIndicator")?.gameObject;
-        if (_aggroRangeIndicator != null)
-        {
-            SphereCollider aggroSphere = _aggroRangeIndicator.GetComponent<SphereCollider>();
-            if (aggroSphere != null)
-            {
-                aggroSphere.radius = _aggroRange;
-            }
-            else
-            {
-                _aggroRangeIndicator.AddComponent<SphereCollider>();
-                _aggroRangeIndicator.GetComponent<SphereCollider>().radius = _aggroRange;
-            }
-        }
-        else
-        {
-            Debug.Log($"AggroRangeIndicator not found in {gameObject.name}");
-        }
+        Debug.Log($"Enemy::Init() - Aggro range set to {_aggroRange} for {gameObject.name}");
     }
 
     // Start is called before the first frame update
@@ -83,6 +64,7 @@ public class Enemy : DamageableEntity
         _projectileOrigin = _projectileOrigin != null ? _projectileOrigin : transform;
         GetMeleeAttackHitbox();
         PickNextAttackIndexAndType();
+        GetAggroRangeIndicator();
 
     }
 
@@ -130,6 +112,20 @@ public class Enemy : DamageableEntity
         else
         {
             Debug.LogError($"Melee attack hitbox not found in {gameObject.name}");
+        }
+    }
+
+    public void GetAggroRangeIndicator()
+    {
+        //find the child named "AggroRangeIndicator" and get it's sphere collider if it has it, or add a sphere collider, and set the radius to aggrorange
+        _aggroRangeIndicator = transform.GetComponentInChildren<AggroRangeIndicator>();
+        if (_aggroRangeIndicator != null)
+        {
+            _aggroRangeIndicator.Init(this, _aggroRange);
+        }
+        else
+        {
+            Debug.Log($"AggroRangeIndicator not found in {gameObject.name}");
         }
     }
 
@@ -260,7 +256,7 @@ public class Enemy : DamageableEntity
     }
 
     //Aggro and target player when player enters the aggro range of the mob
-    void OnTriggerEnter(Collider other)
+    public void HandleAggroRangeIndicatorCollisions(Collider other)
     {
         if (other.gameObject.GetComponent<Player>() != null)
         {
