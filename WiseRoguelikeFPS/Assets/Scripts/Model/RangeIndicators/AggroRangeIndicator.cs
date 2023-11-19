@@ -42,7 +42,6 @@ public class AggroRangeIndicator : RangeIndicator
     public void OnTriggerEnter(Collider other)
     {
         Debug.Log($"AggroRangeIndicator::OnTriggerEnter() - {gameObject.name} collided with {other.gameObject.name}");
-        Debug.Log($"enemy in onTriggerEnter in aggro range indicator: {_enemy}");
 
         if (_enemy != null) 
         {

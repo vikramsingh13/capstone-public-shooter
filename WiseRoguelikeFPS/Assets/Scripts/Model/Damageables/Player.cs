@@ -108,9 +108,10 @@ public class Player : DamageableEntity
             //if atleast 1 weapon is found in the loadout, set the first weapon as equipped
             if (_listOfLoadoutWeaponsGameObjects.Count > 0)
             {
-                _activeWeaponGameObject = _listOfLoadoutWeaponsGameObjects[0];
+                Debug.Log($"Weapons found in Player::SetWeaponLoadout after _asyncSetWeaponLoadoutTask.IsCompleted");
                 _hudManager.HandleSetWeaponLoadoutEvent(_listOfLoadoutWeaponsGameObjects);
-                _hudManager.HandleActiveWeaponSwapEvent(0);
+                //SwapEquippedWeapon also calls hudManager.HandleActiveWeaponSwapEvent
+                SwapEquippedWeapon(0);
             }
             else
             {

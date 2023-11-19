@@ -96,6 +96,7 @@ public class Projectile : MonoBehaviour
         //delete if it hits anything else
         if ( other.GetComponent<DamageableEntity>() != null && other.GetComponent<RangeIndicator>() == null)
         {
+            Debug.Log($"On Trigger enter on Projectile.cs is making past the logic check {other.gameObject.name}");
             //if the projectile is fired by the player
             if( _isFiredByPlayer )
             {

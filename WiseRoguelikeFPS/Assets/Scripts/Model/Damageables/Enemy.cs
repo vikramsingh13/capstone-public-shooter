@@ -80,7 +80,6 @@ public class Enemy : DamageableEntity
             {
                 if(!_isAttacking)
                 {
-                    Debug.Log("Attack !!!!");
                     _isAttacking = true;
                     AttackTarget();
                 }
