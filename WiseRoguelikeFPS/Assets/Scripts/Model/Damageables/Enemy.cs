@@ -186,7 +186,6 @@ public class Enemy : DamageableEntity
         if (!_isAttackOnCooldown)
         {
             _isAttackOnCooldown = true;
-            _isAttacking = false;
             Debug.Log($"Attacking target with {_nextAttackType} attack");
             GetComponent<Animator>().SetBool("attack", true);
 
@@ -213,6 +212,9 @@ public class Enemy : DamageableEntity
 
             //_navMeshObstacle.enabled = true; // Enable the NavMeshObstacle to avoid objects
         }
+
+        //whether the attack went through or not, set isAttacking to false so the enemy can attack again
+        _isAttacking = false;
     }
 
     //Go through the attackType list and pick the index of the next attack

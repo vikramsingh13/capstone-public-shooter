@@ -12,7 +12,7 @@ public class Projectile : MonoBehaviour
     [Header("These are for testing purposes only. \n Let the code assign these.")]
     [SerializeField] private ProjectileData _projectileData;
     [SerializeField] private Vector3 _directionOfTravel;
-    private float _timeToLive = 1f;
+    private float _timeToLive = 5f;
     private bool _isFiredByPlayer = true;
     //GameObject that fired the projectile -- the PlayerObject not the weapon
     private GameObject _firedByGameObject;
@@ -114,8 +114,9 @@ public class Projectile : MonoBehaviour
             //if the projectile is fired by an enemy
             else
             {
+                Debug.Log($"On Trigger enter on Projectile.cs in !_isFiredByPlayer else: {other.gameObject.name}");
                 //if the projectile hits the player
-                if(other.GetComponent<Player>() != null)
+                if (other.GetComponent<Player>() != null)
                 {
                     InvokeCombatEvent(other.gameObject);
                 }
@@ -137,6 +138,7 @@ public class Projectile : MonoBehaviour
             Target = target,
             Damage = _projectileDamage
         };
+        Debug.Log($"Invoking CombatEvent in Projectile.cs with args: {args.Source.name}, {args.Target.name}, {args.Damage}");
         // Invoke the event
         CombatManager.onCombatEvent?.Invoke(this, args);
     }
