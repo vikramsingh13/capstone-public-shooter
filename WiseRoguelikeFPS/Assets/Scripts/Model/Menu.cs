@@ -40,6 +40,9 @@ public class Menu : MonoBehaviour
         GameObject.Find("StartButton").GetComponent<Button>().onClick.AddListener(PlayGame);
         GameObject.Find("OptionsButton").GetComponent<Button>().onClick.AddListener(ToggleOptions);
         GameObject.Find("ExitButton").GetComponent<Button>().onClick.AddListener(QuitGame);
+        
+        //test Loadout UI Layout. REMOVE LATER
+        GameObject.Find("TestButton").GetComponent<Button>().onClick.AddListener(ToggleLoadout);
 
         //add eventlisteners to the sliders and invoke Audio Manager events on value change
         _musicSlider = GameObject.Find("MusicVolumeSlider").GetComponent<Slider>();
@@ -53,6 +56,14 @@ public class Menu : MonoBehaviour
 
         //add an onclick event to the back button in the options panel
         GameObject.Find("OptionsBackButton").GetComponent<Button>().onClick.AddListener(ToggleOptions);
+
+        //add an onclick event to the save button in the loadout panel to save and start game
+        GameObject.Find("LoadoutSaveButton").GetComponent<Button>().onClick.AddListener(ToggleLoadout);
+
+
+        //selection arrows for both frames
+        GameObject.Find("GunSelectionArrowButton").GetComponent<Button>().onClick.AddListener(TestButton);
+        GameObject.Find("ActiveLoadoutArrowButton").GetComponent<Button>().onClick.AddListener(TestButton);
 
         ToggleOptions();
     }
@@ -77,6 +88,11 @@ public class Menu : MonoBehaviour
         Debug.Log("Before toggle " + _loadoutPanel.activeSelf);
         _loadoutPanel.SetActive(!_loadoutPanel.activeSelf);
         Debug.Log("After toggle: " + _loadoutPanel.activeSelf);
+    }
+
+    public void TestButton()
+    {
+        Debug.Log("Button works");
     }
 
     public void QuitGame()
