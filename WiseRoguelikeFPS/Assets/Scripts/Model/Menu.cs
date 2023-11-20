@@ -12,6 +12,8 @@ public class Menu : MonoBehaviour
     //Options panel
     private GameObject _optionsPanel;
 
+    private GameObject _loadoutPanel;
+
     //MusicVolumeSlider
     private Slider _musicSlider;
     //AmbienceVolumeSlider
@@ -31,7 +33,8 @@ public class Menu : MonoBehaviour
         _menuPanel = GameObject.Find("MenuPanel");
         //find the gameObject with "OptionsPanel" name and set it to the _optionsPanel
         _optionsPanel = GameObject.Find("OptionsPanel");
-
+        //find the gameObject with "LoadoutPanel" name and set it to the _loadoutPanel
+        _loadoutPanel = GameObject.Find("LoadoutPanel");
 
         //find the gameObjects named Start, Options and Exit buttons and add event listeners to them
         GameObject.Find("StartButton").GetComponent<Button>().onClick.AddListener(PlayGame);
@@ -66,6 +69,14 @@ public class Menu : MonoBehaviour
         _optionsPanel.SetActive(!_optionsPanel.activeSelf);
 
         Debug.Log("After toggle: " + _optionsPanel.activeSelf);
+    }
+
+    //toggle the loadout panel
+    public void ToggleLoadout()
+    {
+        Debug.Log("Before toggle " + _loadoutPanel.activeSelf);
+        _loadoutPanel.SetActive(!_loadoutPanel.activeSelf);
+        Debug.Log("After toggle: " + _loadoutPanel.activeSelf);
     }
 
     public void QuitGame()
