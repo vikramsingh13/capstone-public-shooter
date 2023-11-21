@@ -49,7 +49,7 @@ public class Level1Manager : Singleton<Level1Manager>
     void Update()
     {
         
-        if(EndgameToggle == true)
+        /*if(EndgameToggle == true)
         {
 
             EndCountdown -= Time.deltaTime;
@@ -75,7 +75,7 @@ public class Level1Manager : Singleton<Level1Manager>
 
             LevelEnd.gameObject.GetComponent<TeleporterMainScript>().EnableEndTrigger();
 
-        }
+        }*/
 
     }
 
