@@ -135,8 +135,8 @@ public class Player : DamageableEntity
         _playerMovement.Move(
             Input.GetAxis("Horizontal"),
             Input.GetAxis("Vertical"),
-            10,
-            10,
+            _stats.MovementSpeed.GetCurrentValue(),
+            _stats.JumpHeight.GetCurrentValue(),
             sprintSpeedMod,
             crouchSpeedMod,
             Input.GetKey(kc_sprint),

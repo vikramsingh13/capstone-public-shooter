@@ -8,7 +8,7 @@ public class KeyScript : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        if (other.gameObject.GetComponent<PlayerManager>())
+        if (other.CompareTag("Player"))
         {
 
             Level1Manager.Instance.KeyGet();
