@@ -5,8 +5,17 @@ using Zenject;
 
 public class Level1Manager : Singleton<Level1Manager>
 {
-    [SerializeField] private int KeysCollected;
-    [SerializeField] private int TotalKeys;
+    [SerializeField] private int _totalLevelObjectiveCompleted;
+    [SerializeField] private int _totalLevelObjectiveNeeded;
+
+    private bool _allLevelObjectivesCompleted = false;
+    public bool AllLevelObjectivesCompleted
+    {
+        get
+        {
+            return _allLevelObjectivesCompleted;
+        }
+    }
 
     private bool EndgameToggle = false;
     public bool ReadyToEnd = false;
@@ -28,17 +37,15 @@ public class Level1Manager : Singleton<Level1Manager>
     public void Construct(AudioManager audioManager)
     {
         _audioManager = audioManager;
-
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
         //TODO REFACTOR ALL MANUAL ASSIGN 
         //USE PROGRAMMATICAL APPROACH
+        //TODO: refactor to use events
         _audioManager.StartMusic(StandardMusic);
-
     }
 
     // Update is called once per frame
@@ -47,9 +54,7 @@ public class Level1Manager : Singleton<Level1Manager>
         
         if(EndgameToggle == true)
         {
-
             EndCountdown -= Time.deltaTime;
-
         }
 
         /*if(Player.GetComponent<PlayerStats>().HitPoints <= 0)
@@ -77,59 +82,43 @@ public class Level1Manager : Singleton<Level1Manager>
 
     public void StartExfiltration()
     {
-
-        if(KeysCollected == TotalKeys)
+        if(_totalLevelObjectiveCompleted == _totalLevelObjectiveNeeded)
         {
-
             EndgameToggle = true;
             //TODO REFACTOR ALL MANUAL ASSIGN 
             //USE PROGRAMMATICAL APPROACH
             _audioManager.StartMusic(EndgameMusic);
-
         }
-
     }
 
     public void ExfiltrationCheck()
     {
-
         if(EndCountdown <= 0 && EndgameToggle == true)
         {
-
             GameWin();
-
         }
-
     }
 
     public void GameWin()
     {
-
         gameUIPanel.SetActive(false);
         winPanel.SetActive(true);
-
     }
 
     public void GameLose()
     {
-
         gameUIPanel.SetActive(false);
         losePanel.SetActive(true);
-
     }
 
-    public void KeyGet()
+    public void FinishLevelObjective()
     {
-
-        KeysCollected++;
-
-        if(KeysCollected > TotalKeys)
+        _totalLevelObjectiveCompleted++;
+        if(_totalLevelObjectiveCompleted >= _totalLevelObjectiveNeeded)
         {
-
-            KeysCollected = TotalKeys;
-
+            _allLevelObjectivesCompleted = true;
+            _totalLevelObjectiveCompleted = _totalLevelObjectiveNeeded;
         }
-
     }
 
 }

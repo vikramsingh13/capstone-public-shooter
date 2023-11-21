@@ -1,38 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.AI;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
 using static UnityEngine.Rendering.DebugUI;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public class Enemy : DamageableEntity
 {
     [SerializeField]
-    private GameObject _aggroTarget;
+    protected GameObject _aggroTarget;
     [SerializeField]
-    private bool _isAggro = false; //whether the enemy is currently aggro'd by player
+    protected bool _isAggro = false; //whether the enemy is currently aggro'd by player
     [SerializeField]
-    private float _aggroRange = 30f;
+    protected float _aggroRange = 30f;
     [SerializeField]
-    private NavMeshAgent _navMeshAgent;
+    protected NavMeshAgent _navMeshAgent;
     [SerializeField]
-    private float _distanceToTarget = Mathf.Infinity;
+    protected float _distanceToTarget = Mathf.Infinity;
     [SerializeField]
-    private AudioClip attackSound;
+    protected AudioClip attackSound;
 
-    private NavMeshObstacle _navMeshObstacle; // Add a NavMeshObstacle component
+    protected NavMeshObstacle _navMeshObstacle; // Add a NavMeshObstacle component
 
-    private PlayerManager _playerManager;
+    protected PlayerManager _playerManager;
     [SerializeField]
-    private EnemyData _enemyData;
-    private ProjectileManager _projectileManager;
-    private bool _isAttackOnCooldown = false;
-    private GameObject _meleeAttackHitbox;
-    private int _nextAttackIndex = 0;
-    private string _nextAttackType = "";
-    private AggroRangeIndicator _aggroRangeIndicator;
-    private bool _isAttacking = false;
-    private Transform _projectileOrigin;
+    protected EnemyData _enemyData;
+    protected ProjectileManager _projectileManager;
+    protected bool _isAttackOnCooldown = false;
+    protected GameObject _meleeAttackHitbox;
+    protected int _nextAttackIndex = 0;
+    protected string _nextAttackType = "";
+    protected AggroRangeIndicator _aggroRangeIndicator;
+    protected bool _isAttacking = false;
+    protected Transform _projectileOrigin;
+    protected float _attackCooldown = 2f;
+    private bool _enemyDataLoaded = false;
+    private AsyncOperationHandle<EnemyData> _enemyDataLoadingTask;
 
     [Inject]
     public void Construct(PlayerManager playerManager, ProjectileManager projectileManager)
@@ -45,10 +52,8 @@ public class Enemy : DamageableEntity
     public void Init(EnemyData enemyData)
     {
         _enemyData = enemyData;
-
         //Set the aggro range of the enemy
         _aggroRange = _enemyData.aggroRange;
-        Debug.Log($"Enemy::Init() - Aggro range set to {_aggroRange} for {gameObject.name}");
     }
 
     // Start is called before the first frame update
@@ -69,10 +74,29 @@ public class Enemy : DamageableEntity
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
+        if(_enemyData == null)
+        {
+            Debug.Log($"Enemy data not loaded for {gameObject.name}");
+            return;
+        }
+        if (_enemyData.isBoss)
+        {
+            _aggroRangeIndicator.gameObject.SetActive(false);
+        }
+        if (_enemyData.isBoss && _aggroTarget == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+            if (player != null)
+            {
+                _aggroTarget = player.GetComponent<Player>().gameObject;
+            }
+        }
+
         //if aggroTarget exists and isAggro is false,
-        if(_aggroTarget != null)
+        if (_aggroTarget != null)
         {
             _navMeshAgent.SetDestination(_aggroTarget.transform.position);
             _distanceToTarget = Vector3.Distance(transform.position, _aggroTarget.transform.position);
@@ -199,16 +223,38 @@ public class Enemy : DamageableEntity
                 _projectileManager.LoadAndInstantiateProjectile(_enemyData.attackProjectileDataAddress[_nextAttackIndex], _aggroTarget.transform.position - transform.position, Quaternion.identity, _projectileOrigin, gameObject, _enemyData.attackDamage[_nextAttackIndex], false);
             }
             //Coroutine to set the attack on cooldown if the enemy is not dead yet
-            if (_enemyData != null && _enemyData.attackCooldown != null &&
-    _nextAttackIndex >= 0 && _nextAttackIndex < _enemyData.attackCooldown.Count)
+            StartCoroutine(AttackCooldownRoutine(_attackCooldown));
+            //TODO: refactor the if statement to better debug
+            /*if (_enemyData != null)
             {
-                StartCoroutine(AttackCooldownRoutine(_enemyData.attackCooldown[_nextAttackIndex]));
+                if (_enemyData.attackCooldown != null)
+                {
+                    if (_nextAttackIndex >= 0)
+                    {
+                        if (_nextAttackIndex < _enemyData.attackCooldown.Count)
+                        {
+                            StartCoroutine(AttackCooldownRoutine(_enemyData.attackCooldown[_nextAttackIndex]));
+                        }
+                        else
+                        {
+                            Debug.Log($"Attack cooldown not found for {gameObject.name}");
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log($"Attack index is less than 0 for {gameObject.name}");
+                    }
+                }
+                else
+                {
+                    Debug.Log($"EnemyData attack cooldown is null for {gameObject.name}");
+                }
             }
             else
             {
-                Debug.LogError("One or more required components are null or out of range.");
+                Debug.Log($"EnemyData is null for {gameObject.name}");
             }
-
+            */
 
             //_navMeshObstacle.enabled = true; // Enable the NavMeshObstacle to avoid objects
         }
