@@ -113,6 +113,14 @@ MonoBehaviour:
     m_Address: Assets/Prefabs/Enemy/Mech/Prefabs/BossMech.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: a93f3e75acc4c5744b77a73b2ad3f1bb
+    m_Address: Assets/Data/Enemies/BossMech.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 141e1e38239a6204ea4f5b6cb902e652
+    m_Address: Assets/Prefabs/Spawner/BossSpawner.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 079d18b28a6061645af4ee9165bcf176, type: 2}
   m_SchemaSet:

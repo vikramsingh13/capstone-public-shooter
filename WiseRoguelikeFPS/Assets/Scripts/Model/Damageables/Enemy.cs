@@ -8,31 +8,31 @@ using static UnityEngine.Rendering.DebugUI;
 public class Enemy : DamageableEntity
 {
     [SerializeField]
-    private GameObject _aggroTarget;
+    protected GameObject _aggroTarget;
     [SerializeField]
-    private bool _isAggro = false; //whether the enemy is currently aggro'd by player
+    protected bool _isAggro = false; //whether the enemy is currently aggro'd by player
     [SerializeField]
-    private float _aggroRange = 30f;
+    protected float _aggroRange = 30f;
     [SerializeField]
-    private NavMeshAgent _navMeshAgent;
+    protected NavMeshAgent _navMeshAgent;
     [SerializeField]
-    private float _distanceToTarget = Mathf.Infinity;
+    protected float _distanceToTarget = Mathf.Infinity;
     [SerializeField]
-    private AudioClip attackSound;
+    protected AudioClip attackSound;
 
-    private NavMeshObstacle _navMeshObstacle; // Add a NavMeshObstacle component
+    protected NavMeshObstacle _navMeshObstacle; // Add a NavMeshObstacle component
 
-    private PlayerManager _playerManager;
+    protected PlayerManager _playerManager;
     [SerializeField]
-    private EnemyData _enemyData;
-    private ProjectileManager _projectileManager;
-    private bool _isAttackOnCooldown = false;
-    private GameObject _meleeAttackHitbox;
-    private int _nextAttackIndex = 0;
-    private string _nextAttackType = "";
-    private AggroRangeIndicator _aggroRangeIndicator;
-    private bool _isAttacking = false;
-    private Transform _projectileOrigin;
+    protected EnemyData _enemyData;
+    protected ProjectileManager _projectileManager;
+    protected bool _isAttackOnCooldown = false;
+    protected GameObject _meleeAttackHitbox;
+    protected int _nextAttackIndex = 0;
+    protected string _nextAttackType = "";
+    protected AggroRangeIndicator _aggroRangeIndicator;
+    protected bool _isAttacking = false;
+    protected Transform _projectileOrigin;
 
     [Inject]
     public void Construct(PlayerManager playerManager, ProjectileManager projectileManager)

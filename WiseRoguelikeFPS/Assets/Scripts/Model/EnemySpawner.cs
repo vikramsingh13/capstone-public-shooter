@@ -11,6 +11,9 @@ public class EnemySpawner : MonoBehaviour
     //using the editor set the specific enemy prefab to spawn for each of them.
     [SerializeField] 
     private string _enemyDataAddress;
+    [SerializeField]
+    private bool _isBossSpawner = false;
+    private bool _bossSpawned = false;
 
     //spawn interval
     [SerializeField]
@@ -22,17 +25,20 @@ public class EnemySpawner : MonoBehaviour
     private float _spawnDelay = 5f;
 
     //List to track all the spawned enemies of each spawner
-    private List<GameObject> spawnedEnemies = new List<GameObject>();
+    private List<GameObject> _spawnedEnemies = new List<GameObject>();
 
     //delay check
     private bool waitingForDelay = false;
 
-    DiContainer _diContainer;
+    private DiContainer _diContainer;
+    private Level1Manager _level1Manager;
+
 
     [Inject]
-    public void Construct(DiContainer diContainer)
+    public void Construct(DiContainer diContainer, Level1Manager level1Manager)
     {
         _diContainer = diContainer;
+        _level1Manager = level1Manager;
     }
 
     public void Init(string enemyDataAddress)
@@ -43,10 +49,23 @@ public class EnemySpawner : MonoBehaviour
     void Update()
     {
         //If the spawned enemy objects have been destroyed and the spawner is not waiting for the delay to end, start the delay
-        if (spawnedEnemies.Count < _maxSpawnedUnits && !waitingForDelay)
+        if (!_isBossSpawner && _spawnedEnemies.Count < _maxSpawnedUnits && !waitingForDelay)
         {
             waitingForDelay = true;
-            Invoke("SpawnEnemy", _spawnDelay);
+            SpawnEnemy();
+        }
+        else if (_isBossSpawner && _spawnedEnemies.Count == 0 && !_bossSpawned && _level1Manager.AllLevelObjectivesCompleted)
+        {
+            waitingForDelay = true;
+            _bossSpawned = true;
+            SpawnEnemy();
+        }
+
+        //If max spawned units have been reached, check for null objects in the list and remove them
+        if (_spawnedEnemies.Count == _maxSpawnedUnits)
+        {
+            //iterate through _spawnedEnemies and remove all the null objects
+            _spawnedEnemies.RemoveAll(item => item == null);
         }
     }
 
@@ -70,9 +89,10 @@ public class EnemySpawner : MonoBehaviour
                         GameObject enemyPrefab = handle.Result;
                         _diContainer.InstantiatePrefab(enemyPrefab, spawnPosition, Quaternion.identity, null);
                         enemyPrefab.GetComponent<Enemy>().Init(enemyData);
-
-                        //reset delay check
-                        waitingForDelay = false;
+                        //add the spawned enemy to the list
+                        _spawnedEnemies.Add(enemyPrefab);
+                        //start the spawn delay
+                        StartCoroutine(DelaySpawn(_spawnDelay));
                     }
                     else
                     {
@@ -90,9 +110,16 @@ public class EnemySpawner : MonoBehaviour
     // Method to be called when an enemy is removed by Combat Manager
     public void EnemyRemoved(GameObject enemyToRemove)
     {
-        if (spawnedEnemies.Contains(enemyToRemove))
+        if (_spawnedEnemies.Contains(enemyToRemove))
         {
-            spawnedEnemies.Remove(enemyToRemove);
+            _spawnedEnemies.Remove(enemyToRemove);
         }
+    }
+
+    private IEnumerator DelaySpawn(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        //reset delay check
+        waitingForDelay = false;
     }
 }
