@@ -14758,7 +14758,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossMech
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3347577613818922822, guid: 2a149ce762c701c4ebfee8785b04538f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2a149ce762c701c4ebfee8785b04538f, type: 3}
 --- !u!4 &951435692 stripped
 Transform:
