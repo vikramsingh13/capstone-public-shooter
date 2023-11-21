@@ -140,7 +140,6 @@ public class HUDManager : Singleton<HUDManager>
         if(weaponLoadoutList.Count > 0)
         {
             _weaponLoadoutList = weaponLoadoutList;
-            Debug.Log("++++ weapon loadout list came through from player");
         }
     }
 

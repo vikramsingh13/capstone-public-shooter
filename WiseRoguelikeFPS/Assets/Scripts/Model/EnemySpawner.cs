@@ -88,6 +88,7 @@ public class EnemySpawner : MonoBehaviour
                     {
                         GameObject enemyPrefab = handle.Result;
                         _diContainer.InstantiatePrefab(enemyPrefab, spawnPosition, Quaternion.identity, null);
+                        Debug.Log($"Init called for {enemyPrefab.name} in spawner");
                         enemyPrefab.GetComponent<Enemy>().Init(enemyData);
                         //add the spawned enemy to the list
                         _spawnedEnemies.Add(enemyPrefab);
