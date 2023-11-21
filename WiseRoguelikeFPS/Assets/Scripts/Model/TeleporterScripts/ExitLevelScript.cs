@@ -10,7 +10,7 @@ public class ExitLevelScript : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        if (other.gameObject.GetComponent<PlayerManager>())
+        if (other.gameObject.GetComponent<Player>())
         {
 
             Teleporter.GetComponent<TeleporterMainScript>().DisableEndTrigger();

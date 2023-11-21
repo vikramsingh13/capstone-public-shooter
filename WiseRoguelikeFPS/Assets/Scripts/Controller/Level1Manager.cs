@@ -28,7 +28,6 @@ public class Level1Manager : Singleton<Level1Manager>
     public void Construct(AudioManager audioManager)
     {
         _audioManager = audioManager;
-        Debug.Log("Starting up the Level1Manager!");
 
     }
 
@@ -53,7 +52,7 @@ public class Level1Manager : Singleton<Level1Manager>
 
         }
 
-        if(Player.GetComponent<PlayerStats>().HitPoints <= 0)
+        /*if(Player.GetComponent<PlayerStats>().HitPoints <= 0)
         {
 
             GameLose();
@@ -72,7 +71,7 @@ public class Level1Manager : Singleton<Level1Manager>
 
             LevelEnd.gameObject.GetComponent<TeleporterMainScript>().EnableEndTrigger();
 
-        }
+        }*/
 
     }
 

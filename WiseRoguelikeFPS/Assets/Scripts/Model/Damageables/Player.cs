@@ -8,6 +8,7 @@ using UnityEngine.InputSystem.XInput;
 using UnityEngine.ProBuilder;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
+using static HUDManager;
 
 public class Player : DamageableEntity
 {
@@ -18,6 +19,7 @@ public class Player : DamageableEntity
     private GameManager _gameManager;
     private DiContainer _diContainer;
     private GameObject _weaponParent;
+    private HUDManager _hudManager;
 
     //Weapons and heat
     private GameObject _activeWeaponGameObject;
@@ -33,7 +35,8 @@ public class Player : DamageableEntity
     public const float BASE_SPRINTSPEEDMOD = 1.5f;
     public const float BASE_CROUCHSPEEDMOD = 0.75f;
 
-    public const float BASE_HEALTH = 100f;
+    private float _currentPlayerHealth = 100f;
+    private float _maxPlayerHealth = 100f;
 
     private float sprintSpeedMod;
     private float crouchSpeedMod;
@@ -48,10 +51,6 @@ public class Player : DamageableEntity
     //used to track the asynchronous loading of the loadout weapons
     private Task _asyncSetWeaponLoadoutTask;
 
-    //weapon swap event in HUD manager to start the active weapon change logic and UI change
-    public static event HUDManager.WeaponSwapEvent WeaponSwapEvent;
-    public static event HUDManager.SetWeaponLoadoutEvent SetWeaponLoadoutEvent;
-
     //Input keys can be refactored to scriptable objects 
     //this way player modified settings can be saved. 
     private KeyCode kc_jump = KeyCode.Space;
@@ -63,34 +62,19 @@ public class Player : DamageableEntity
     private KeyCode kc_weapon3 = KeyCode.Alpha3;
 
     [Inject]
-    public void Construct(PlayerManager playerManager, GameManager gameManager, AudioManager audioManager, DiContainer diContainer)
+    public void Construct(PlayerManager playerManager, GameManager gameManager, AudioManager audioManager, DiContainer diContainer, HUDManager hudManager)
     {
         _diContainer = diContainer;
-        Debug.Log("_player init: ");
         _playerManager = playerManager;
-        Debug.Log("_player init manager: " + _playerManager);
         _gameManager = gameManager;
         _audioManager = audioManager;
+        _hudManager = hudManager;
         _stats = GetComponent<PlayerStats>();
 
         this.sprintSpeedMod = BASE_SPRINTSPEEDMOD;
         this.crouchSpeedMod = BASE_CROUCHSPEEDMOD;
-        base._health = BASE_HEALTH;
-    }
-
-    //when we need to dynamically init the player
-    public void Init(PlayerManager playerManager, GameManager gameManager, AudioManager audioManager, DiContainer diContainer)
-    {
-        _diContainer = diContainer;
-        Debug.Log("_player init: ");
-        _playerManager = playerManager;
-        Debug.Log("_player init manager: " + _playerManager);
-        _gameManager = gameManager;
-        _audioManager = audioManager;
-
-        this.sprintSpeedMod = BASE_SPRINTSPEEDMOD;
-        this.crouchSpeedMod = BASE_CROUCHSPEEDMOD;
-        base._health = BASE_HEALTH;
+        base._currentHealth = _maxPlayerHealth;
+        base._name = "Player";
     }
 
     void Start()
@@ -100,6 +84,10 @@ public class Player : DamageableEntity
 
         //call async SetWeaponLoadout to load and attach the weapons to the player and check task status in update to set the weapon loadout UI and active weapon
         _asyncSetWeaponLoadoutTask = SetWeaponLoadoutAsync();
+
+        //set the initial player health
+        //TODO: only the hp % should be sent to the HUD. Health bar logic will be done by Player. 
+        _hudManager.SetPlayerHealth(_maxPlayerHealth);
 
         //find the equipped weapon at the start
         //TODO: refactor to support weapon swapping
@@ -120,10 +108,10 @@ public class Player : DamageableEntity
             //if atleast 1 weapon is found in the loadout, set the first weapon as equipped
             if (_listOfLoadoutWeaponsGameObjects.Count > 0)
             {
-                Debug.Log($"loadout weapons count: {_listOfLoadoutWeaponsGameObjects.Count}");
-                _activeWeaponGameObject = _listOfLoadoutWeaponsGameObjects[0];
-                SetWeaponLoadoutEvent?.Invoke(_listOfLoadoutWeaponsGameObjects);
-                WeaponSwapEvent?.Invoke(0);
+                Debug.Log($"Weapons found in Player::SetWeaponLoadout after _asyncSetWeaponLoadoutTask.IsCompleted");
+                _hudManager.HandleSetWeaponLoadoutEvent(_listOfLoadoutWeaponsGameObjects);
+                //SwapEquippedWeapon also calls hudManager.HandleActiveWeaponSwapEvent
+                SwapEquippedWeapon(0);
             }
             else
             {
@@ -304,15 +292,12 @@ public class Player : DamageableEntity
                                 Debug.LogError("Failed to instantiate weapon prefab");
                             }
                         };
-                        Debug.Log($"WeaponData loaded successfully: {weaponData.weaponPrefabAddress}");
                     }
                     else
                     {
                         Debug.LogError("Failed to load WeaponData");
                     }
                 };
-
-                Debug.Log($"WeaponData loaded successfully: {_listOfWeaponDataAddressableKeys[i]}");
             }
             Debug.Log($"SetWeaponLoadoutAsync completed");
         }
@@ -337,7 +322,7 @@ public class Player : DamageableEntity
                     {
                         _listOfLoadoutWeaponsGameObjects[i].SetActive(true);
                         _activeWeaponGameObject = _listOfLoadoutWeaponsGameObjects[index];
-                        WeaponSwapEvent?.Invoke(index);
+                        _hudManager.HandleActiveWeaponSwapEvent(index);
                         Debug.Log($"Swapped equipped weapon to index: {index}");
                     }
                     else
@@ -351,6 +336,12 @@ public class Player : DamageableEntity
         {
             Debug.Log($"Index {index} is out of bounds in Player::SwapEquippedWeapon");
         }
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        base.TakeDamage(damage);
+        _hudManager.SetPlayerHealth(_currentHealth);
     }
 
     //This coroutine is in charge of slowly reducing heat when the player is NOT shooting

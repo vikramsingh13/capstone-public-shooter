@@ -15,6 +15,9 @@ public class ProjectBindings: MonoInstaller
         Container.Bind<PlayerManager>().FromComponentInHierarchy().AsSingle().NonLazy();
         Container.Bind<CombatManager>().FromComponentInHierarchy().AsSingle().NonLazy();
         Container.Bind<ProjectileManager>().FromComponentInHierarchy().AsSingle().NonLazy();
+        Container.Bind<HUDManager>().FromComponentInHierarchy().AsSingle().NonLazy();
+        Container.Bind<Level1Manager>().FromComponentInHierarchy().AsSingle().NonLazy();
+        Container.Bind<DialogManager>().FromComponentInHierarchy().AsSingle().NonLazy();
     }
 }
 
