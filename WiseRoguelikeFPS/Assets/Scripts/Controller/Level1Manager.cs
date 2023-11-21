@@ -38,10 +38,6 @@ public class Level1Manager : Singleton<Level1Manager>
         //TODO REFACTOR ALL MANUAL ASSIGN 
         //USE PROGRAMMATICAL APPROACH
         _audioManager.StartMusic(StandardMusic);
-        Player = GameObject.FindGameObjectWithTag("Player");
-        LevelEnd = GameObject.FindGameObjectWithTag("Finish");
-        KeysCollected = 0;
-        TotalKeys = 3;
 
     }
 
@@ -56,10 +52,10 @@ public class Level1Manager : Singleton<Level1Manager>
 
         }
 
-        if(Player.GetComponent<PlayerStats>().HitPoints <= 0)
+        if(Player.GetComponent<Player>()._currentPlayerHealth <= 0)
         {
 
-            //GameLose();
+            GameLose();
 
         }
 
@@ -124,8 +120,8 @@ public class Level1Manager : Singleton<Level1Manager>
 
     public void KeyGet()
     {
-
-        KeysCollected++;
+        Debug.Log("KEY COLLECTED==============");
+        KeysCollected = 1;
 
         if(KeysCollected > TotalKeys)
         {
