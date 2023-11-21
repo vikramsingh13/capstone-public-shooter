@@ -9,17 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79a40afcc63e60e4a8470c857ecb969b, type: 3}
-  m_Name: BootsOfTraveler
+  m_Script: {fileID: 11500000, guid: 8c56cd0164112b44894dfc7e2206fdb6, type: 3}
+  m_Name: JumpBoots
   m_EditorClassIdentifier: 
-  id: 1
+  id: 2
   type: 0
-  itemName: BootsOfTraveler
-  tooltip: Increases all mobility by 5
-  stackable: 1
+  itemName: Jump Boots
+  tooltip: Jump Higher
+  stackable: 0
   quantity: 1
-  icon: {fileID: 0}
+  icon: {fileID: 21300020, guid: 56d84991286850f428b4e7df0cca7380, type: 3}
   effectByPercent: 1
   hpMod: 0
-  movementSpeedMod: 10
-  jumpHeightMod: 0
+  movementSpeedMod: 0
+  jumpHeightMod: 15
+  damageMod: 0

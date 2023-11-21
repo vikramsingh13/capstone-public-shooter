@@ -9,17 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79a40afcc63e60e4a8470c857ecb969b, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c56cd0164112b44894dfc7e2206fdb6, type: 3}
   m_Name: Boots
   m_EditorClassIdentifier: 
-  id: 0
+  id: 1
   type: 0
   itemName: Boots
-  tooltip: Makes you run 10% faster
+  tooltip: Boots of speed
   stackable: 1
-  quantity: 73
-  icon: {fileID: 0}
+  quantity: 1
+  icon: {fileID: 21300000, guid: 1bb889f6deccd704e8e4550addc68c65, type: 3}
   effectByPercent: 1
   hpMod: 0
-  movementSpeedMod: 10
-  jumpHeightMod: 20
+  movementSpeedMod: 25
+  jumpHeightMod: 0
+  damageMod: 0

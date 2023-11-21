@@ -9,17 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79a40afcc63e60e4a8470c857ecb969b, type: 3}
-  m_Name: BootsOfJumper
+  m_Script: {fileID: 11500000, guid: 727060c08968e5c429aef3fbefc1e806, type: 3}
+  m_Name: NewSpecialitem
   m_EditorClassIdentifier: 
-  id: 2
-  type: 0
-  itemName: BootsOfJumper
-  tooltip: Makes u jump
-  stackable: 1
-  quantity: 1
+  id: 0
+  type: 1
+  itemName: 
+  tooltip: 
+  stackable: 0
+  quantity: 0
   icon: {fileID: 0}
-  effectByPercent: 1
-  hpMod: 0
-  movementSpeedMod: 0
-  jumpHeightMod: 10

@@ -36,7 +36,7 @@ public class Player : DamageableEntity
     public const float BASE_SPRINTSPEEDMOD = 1.5f;
     public const float BASE_CROUCHSPEEDMOD = 0.75f;
 
-    private float _currentPlayerHealth = 100f;
+    public float _currentPlayerHealth = 100f;
     private float _maxPlayerHealth = 100f;
 
     private float sprintSpeedMod;
@@ -144,8 +144,8 @@ public class Player : DamageableEntity
         _playerMovement.Move(
             Input.GetAxis("Horizontal"),
             Input.GetAxis("Vertical"),
-            10,
-            10,
+            _stats.MovementSpeed.GetCurrentValue(),
+            _stats.JumpHeight.GetCurrentValue(),
             sprintSpeedMod,
             crouchSpeedMod,
             Input.GetKey(kc_sprint),

@@ -52,12 +52,12 @@ public class Level1Manager : Singleton<Level1Manager>
     void Update()
     {
         
-        if(EndgameToggle == true)
+        /*if(EndgameToggle == true)
         {
             EndCountdown -= Time.deltaTime;
         }
 
-        /*if(Player.GetComponent<PlayerStats>().HitPoints <= 0)
+        if(Player.GetComponent<Player>()._currentPlayerHealth <= 0)
         {
 
             GameLose();
