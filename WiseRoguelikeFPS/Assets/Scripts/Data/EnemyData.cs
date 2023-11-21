@@ -4,6 +4,8 @@ using System.Collections.Generic;
 [CreateAssetMenu(fileName = "EnemyData", menuName = "Combat/Enemy", order = 1)]
 public class EnemyData: CombatEntity 
 {
+    [Header("Bosses will perma aggro on player. \n Normal enemies will only aggro if player is in aggro range.")]
+    public bool isBoss = false;
     [Header("Radius of the sphere player needs to be in to trigger the enemy.")]
     public float aggroRange = 30f;
     [Header("Enemy attack specifications. \n Following lists need to match number of rows.")]

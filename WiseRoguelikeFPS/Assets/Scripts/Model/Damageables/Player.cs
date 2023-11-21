@@ -20,6 +20,7 @@ public class Player : DamageableEntity
     private DiContainer _diContainer;
     private GameObject _weaponParent;
     private HUDManager _hudManager;
+    private Level1Manager _level1Manager;
 
     //Weapons and heat
     private GameObject _activeWeaponGameObject;
@@ -60,15 +61,23 @@ public class Player : DamageableEntity
     private KeyCode kc_weapon1 = KeyCode.Alpha1;
     private KeyCode kc_weapon2 = KeyCode.Alpha2;
     private KeyCode kc_weapon3 = KeyCode.Alpha3;
+    //cheatcodes
+    private KeyCode kc_godMode = KeyCode.G;
+    private KeyCode kc_bossBattle = KeyCode.B;
+    private KeyCode kc_highJumper = KeyCode.H;
+    private KeyCode kc_justInTime = KeyCode.J;
+
 
     [Inject]
-    public void Construct(PlayerManager playerManager, GameManager gameManager, AudioManager audioManager, DiContainer diContainer, HUDManager hudManager)
+    public void Construct(PlayerManager playerManager, GameManager gameManager, AudioManager audioManager, DiContainer diContainer, HUDManager hudManager, Level1Manager level1Manager)
     {
         _diContainer = diContainer;
         _playerManager = playerManager;
         _gameManager = gameManager;
         _audioManager = audioManager;
         _hudManager = hudManager;
+        _level1Manager = level1Manager;
+
         _stats = GetComponent<PlayerStats>();
 
         this.sprintSpeedMod = BASE_SPRINTSPEEDMOD;
@@ -108,9 +117,9 @@ public class Player : DamageableEntity
             //if atleast 1 weapon is found in the loadout, set the first weapon as equipped
             if (_listOfLoadoutWeaponsGameObjects.Count > 0)
             {
-                _activeWeaponGameObject = _listOfLoadoutWeaponsGameObjects[0];
                 _hudManager.HandleSetWeaponLoadoutEvent(_listOfLoadoutWeaponsGameObjects);
-                _hudManager.HandleActiveWeaponSwapEvent(0);
+                //SwapEquippedWeapon also calls hudManager.HandleActiveWeaponSwapEvent
+                SwapEquippedWeapon(0);
             }
             else
             {
@@ -143,6 +152,16 @@ public class Player : DamageableEntity
             Input.GetKey(kc_crouch),
             Input.GetKey(kc_jump)
         );
+
+        //TODO: refactor all cheatcodes to update game state in GameManager instead of direct calls
+        //Cheatcodes
+        if (Input.GetKey(kc_bossBattle))
+        {
+            //TODO: refactor to use events -- helps avoid dealing with protection levels and direct calls
+            _level1Manager.FinishLevelObjective();
+            _level1Manager.FinishLevelObjective();
+            _level1Manager.FinishLevelObjective();
+        }
 
         //Weapon swap checks
         if (Input.GetKeyDown(kc_weapon1))
