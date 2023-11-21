@@ -35,7 +35,7 @@ public class Player : DamageableEntity
     public const float BASE_SPRINTSPEEDMOD = 1.5f;
     public const float BASE_CROUCHSPEEDMOD = 0.75f;
 
-    private float _currentPlayerHealth = 100f;
+    public float _currentPlayerHealth = 100f;
     private float _maxPlayerHealth = 100f;
 
     private float sprintSpeedMod;
