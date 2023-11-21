@@ -8,12 +8,10 @@ public class KeyScript : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        if (other.gameObject.GetComponent<PlayerManager>())
+        if (other.gameObject.GetComponent<Player>())
         {
-
             Level1Manager.Instance.KeyGet();
             Destroy(this.gameObject);
-
         }
 
     }
