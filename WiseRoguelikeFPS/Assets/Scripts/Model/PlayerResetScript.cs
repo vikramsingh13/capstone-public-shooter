@@ -15,9 +15,9 @@ public class PlayerResetScript : MonoBehaviour
 
         Debug.Log("Something hit me!");
         Debug.Log(collision.gameObject.tag.ToString());
-        Debug.Log(collision.gameObject.GetComponent<PlayerManager>());
+        Debug.Log(collision.gameObject.GetComponent<Player>());
 
-        if (collision.gameObject.GetComponent<PlayerManager>())
+        if (collision.gameObject.GetComponent<Player>())
         {
 
             Debug.Log("Resetting player.");

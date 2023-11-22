@@ -1,38 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.AI;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
 using static UnityEngine.Rendering.DebugUI;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public class Enemy : DamageableEntity
 {
     [SerializeField]
-    private GameObject _aggroTarget;
+    protected GameObject _aggroTarget;
     [SerializeField]
-    private bool _isAggro = false; //whether the enemy is currently aggro'd by player
+    protected bool _isAggro = false; //whether the enemy is currently aggro'd by player
     [SerializeField]
-    private float _aggroRange = Mathf.Infinity;
+    protected float _aggroRange = 30f;
     [SerializeField]
-    private NavMeshAgent _navMeshAgent;
+    protected NavMeshAgent _navMeshAgent;
     [SerializeField]
-    private float _distanceToTarget = Mathf.Infinity;
+    protected float _distanceToTarget = Mathf.Infinity;
     [SerializeField]
-    private AudioClip attackSound;
+    protected AudioClip attackSound;
 
-    private NavMeshObstacle _navMeshObstacle; // Add a NavMeshObstacle component
+    protected NavMeshObstacle _navMeshObstacle; // Add a NavMeshObstacle component
 
-    private PlayerManager _playerManager;
+    protected PlayerManager _playerManager;
     [SerializeField]
-    private EnemyData _enemyData;
-    private ProjectileManager _projectileManager;
-    private bool _isAttackOnCooldown = false;
-    private GameObject _meleeAttackHitbox;
-    private int _nextAttackIndex = 0;
-    private string _nextAttackType = "";
-    private GameObject _aggroRangeIndicator;
-    private bool _isAttacking = false;
-    private Transform _projectileOrigin;
+    protected EnemyData _enemyData;
+    protected ProjectileManager _projectileManager;
+    protected bool _isAttackOnCooldown = false;
+    protected GameObject _meleeAttackHitbox;
+    protected int _nextAttackIndex = 0;
+    protected string _nextAttackType = "";
+    protected AggroRangeIndicator _aggroRangeIndicator;
+    protected bool _isAttacking = false;
+    protected Transform _projectileOrigin;
+    protected float _attackCooldown = 2f;
+    private bool _enemyDataLoaded = false;
+    private AsyncOperationHandle<EnemyData> _enemyDataLoadingTask;
 
     [Inject]
     public void Construct(PlayerManager playerManager, ProjectileManager projectileManager)
@@ -45,29 +52,8 @@ public class Enemy : DamageableEntity
     public void Init(EnemyData enemyData)
     {
         _enemyData = enemyData;
-
         //Set the aggro range of the enemy
         _aggroRange = _enemyData.aggroRange;
-
-        //find the child named "AggroRangeIndicator" and get it's sphere collider if it has it, or add a sphere collider, and set the radius to aggrorange
-        _aggroRangeIndicator = transform.Find("AggroRangeIndicator")?.gameObject;
-        if (_aggroRangeIndicator != null)
-        {
-            SphereCollider aggroSphere = _aggroRangeIndicator.GetComponent<SphereCollider>();
-            if (aggroSphere != null)
-            {
-                aggroSphere.radius = _aggroRange;
-            }
-            else
-            {
-                _aggroRangeIndicator.AddComponent<SphereCollider>();
-                _aggroRangeIndicator.GetComponent<SphereCollider>().radius = _aggroRange;
-            }
-        }
-        else
-        {
-            Debug.Log($"AggroRangeIndicator not found in {gameObject.name}");
-        }
     }
 
     // Start is called before the first frame update
@@ -83,14 +69,34 @@ public class Enemy : DamageableEntity
         _projectileOrigin = _projectileOrigin != null ? _projectileOrigin : transform;
         GetMeleeAttackHitbox();
         PickNextAttackIndexAndType();
+        GetAggroRangeIndicator();
 
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
+        if(_enemyData == null)
+        {
+            Debug.Log($"Enemy data not loaded for {gameObject.name}");
+            return;
+        }
+        if (_enemyData.isBoss)
+        {
+            _aggroRangeIndicator.gameObject.SetActive(false);
+        }
+        if (_enemyData.isBoss && _aggroTarget == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+            if (player != null)
+            {
+                _aggroTarget = player.GetComponent<Player>().gameObject;
+            }
+        }
+
         //if aggroTarget exists and isAggro is false,
-        if(_aggroTarget != null)
+        if (_aggroTarget != null)
         {
             _navMeshAgent.SetDestination(_aggroTarget.transform.position);
             _distanceToTarget = Vector3.Distance(transform.position, _aggroTarget.transform.position);
@@ -98,7 +104,6 @@ public class Enemy : DamageableEntity
             {
                 if(!_isAttacking)
                 {
-                    Debug.Log("Attack !!!!");
                     _isAttacking = true;
                     AttackTarget();
                 }
@@ -130,6 +135,20 @@ public class Enemy : DamageableEntity
         else
         {
             Debug.LogError($"Melee attack hitbox not found in {gameObject.name}");
+        }
+    }
+
+    public void GetAggroRangeIndicator()
+    {
+        //find the child named "AggroRangeIndicator" and get it's sphere collider if it has it, or add a sphere collider, and set the radius to aggrorange
+        _aggroRangeIndicator = transform.GetComponentInChildren<AggroRangeIndicator>();
+        if (_aggroRangeIndicator != null)
+        {
+            _aggroRangeIndicator.Init(this, _aggroRange);
+        }
+        else
+        {
+            Debug.Log($"AggroRangeIndicator not found in {gameObject.name}");
         }
     }
 
@@ -191,7 +210,6 @@ public class Enemy : DamageableEntity
         if (!_isAttackOnCooldown)
         {
             _isAttackOnCooldown = true;
-            _isAttacking = false;
             Debug.Log($"Attacking target with {_nextAttackType} attack");
             GetComponent<Animator>().SetBool("attack", true);
 
@@ -205,19 +223,44 @@ public class Enemy : DamageableEntity
                 _projectileManager.LoadAndInstantiateProjectile(_enemyData.attackProjectileDataAddress[_nextAttackIndex], _aggroTarget.transform.position - transform.position, Quaternion.identity, _projectileOrigin, gameObject, _enemyData.attackDamage[_nextAttackIndex], false);
             }
             //Coroutine to set the attack on cooldown if the enemy is not dead yet
-            if (_enemyData != null && _enemyData.attackCooldown != null &&
-    _nextAttackIndex >= 0 && _nextAttackIndex < _enemyData.attackCooldown.Count)
+            StartCoroutine(AttackCooldownRoutine(_attackCooldown));
+            //TODO: refactor the if statement to better debug
+            /*if (_enemyData != null)
             {
-                StartCoroutine(AttackCooldownRoutine(_enemyData.attackCooldown[_nextAttackIndex]));
+                if (_enemyData.attackCooldown != null)
+                {
+                    if (_nextAttackIndex >= 0)
+                    {
+                        if (_nextAttackIndex < _enemyData.attackCooldown.Count)
+                        {
+                            StartCoroutine(AttackCooldownRoutine(_enemyData.attackCooldown[_nextAttackIndex]));
+                        }
+                        else
+                        {
+                            Debug.Log($"Attack cooldown not found for {gameObject.name}");
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log($"Attack index is less than 0 for {gameObject.name}");
+                    }
+                }
+                else
+                {
+                    Debug.Log($"EnemyData attack cooldown is null for {gameObject.name}");
+                }
             }
             else
             {
-                Debug.LogError("One or more required components are null or out of range.");
+                Debug.Log($"EnemyData is null for {gameObject.name}");
             }
-
+            */
 
             //_navMeshObstacle.enabled = true; // Enable the NavMeshObstacle to avoid objects
         }
+
+        //whether the attack went through or not, set isAttacking to false so the enemy can attack again
+        _isAttacking = false;
     }
 
     //Go through the attackType list and pick the index of the next attack
@@ -260,7 +303,7 @@ public class Enemy : DamageableEntity
     }
 
     //Aggro and target player when player enters the aggro range of the mob
-    void OnTriggerEnter(Collider other)
+    public void HandleAggroRangeIndicatorCollisions(Collider other)
     {
         if (other.gameObject.GetComponent<Player>() != null)
         {

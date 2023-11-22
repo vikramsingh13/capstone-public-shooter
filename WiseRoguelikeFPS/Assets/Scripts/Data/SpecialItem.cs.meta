@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:WiseRoguelikeFPS/Assets/Scripts/Data/SpecialItem.cs.meta
+guid: 6fa2dc6721feb004cabfe8cc5a30d459
+========
+guid: e9f008d7fdc9ccd4b979c965cbbd3d16
+>>>>>>>> 8309e3e2429df5178a4dc09826ca447e8b4a4689:WiseRoguelikeFPS/Assets/Scripts/Model/RangeIndicators/AggroRangeIndicator.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

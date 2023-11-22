@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
@@ -29,6 +31,15 @@ public class Inventory : MonoBehaviour
     //Dictionariy of all items the player has
     public Dictionary<int, Item> items = new();
 
+    //For Item GUI on the HUD of the player
+    public Transform inventoryItemGUI;
+    public GameObject inventoryItemPrefab;
+
+    private void Start()
+    {
+        ListItems();
+    }
+
     //Add item method to add an item to the inventory, then fire the relavent event
     public void AddItem(Item item)
     {
@@ -43,7 +54,7 @@ public class Inventory : MonoBehaviour
         }
         else
         {
-            item.quantity++;
+            item.quantity = 1;
             items.Add(item.id, item);
         }
 
@@ -53,8 +64,8 @@ public class Inventory : MonoBehaviour
             Debug.Log("Item Event Invoked");
             onItemAddedCallback.Invoke(item);
         }
-            
-        
+
+        ListItems();
     }
 
     //If the item already exists in inventory and has more than one, decrease quantity, else remove item then fire relavent event
@@ -77,5 +88,33 @@ public class Inventory : MonoBehaviour
             if (onItemRemovedCallback != null)
                 onItemRemovedCallback.Invoke(item);
         }
+
+        ListItems();
     }
+
+    public void ListItems()
+    {
+        foreach (Transform item in inventoryItemGUI)
+        {
+            Destroy(item.gameObject);
+
+        }
+
+        foreach (KeyValuePair<int, Item> item in items)
+        {
+            GameObject obj = Instantiate(inventoryItemPrefab, inventoryItemGUI);
+            var itemCount = obj.transform.Find("ItemCount").GetComponent<TMP_Text>();
+            var itemSprite = obj.transform.Find("ItemSprite").GetComponent<Image>();
+
+            itemCount.text = item.Value.quantity.ToString() + "x";
+            //Debug.Log("ITEMSPRITE TYPE" + itemSprite.GetType());
+            //Debug.Log("ITEMICON TYPE" + item.Value.icon.GetType());
+
+            itemSprite.sprite = item.Value.icon;
+
+        }
+    }
+
 }
+
+
