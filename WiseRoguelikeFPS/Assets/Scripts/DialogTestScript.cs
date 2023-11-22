@@ -15,8 +15,6 @@ public class DialogTestScript : MonoBehaviour
 
         if(testTimer >= 5 && hasSpoken == false)
         {
-
-            Debug.Log("Bump!");
             DialogManager.Instance.NewAnnouncement("Oof!", "Sorry there!");
 
             hasSpoken = true;

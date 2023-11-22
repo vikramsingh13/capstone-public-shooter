@@ -141,6 +141,9 @@ public class Projectile : MonoBehaviour
         Debug.Log($"Invoking CombatEvent in Projectile.cs with args: {args.Source.name}, {args.Target.name}, {args.Damage}");
         // Invoke the event
         CombatManager.onCombatEvent?.Invoke(this, args);
+
+        //projectile can be destroyed after invoking the combat event
+        Destroy(gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)

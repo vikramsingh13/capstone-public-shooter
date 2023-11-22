@@ -32,6 +32,9 @@ public class EnemySpawner : MonoBehaviour
 
     private DiContainer _diContainer;
     private Level1Manager _level1Manager;
+    
+    //try to store the enemy data in the spawner class to help with async loading issues
+    private EnemyData _enemyData;
 
 
     [Inject]
@@ -79,17 +82,21 @@ public class EnemySpawner : MonoBehaviour
         {
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
-                //async load the enemy prefab from the enemy data
-                EnemyData enemyData = handle.Result;
+                if( _enemyData == null)
+                {
+                    _enemyData = handle.Result;
+                }
 
-                Addressables.LoadAssetAsync<GameObject>(enemyData.prefabAddressKey).Completed += (handle) =>
+                //async load the enemy prefab from the enemy data
+                Addressables.LoadAssetAsync<GameObject>(_enemyData.prefabAddressKey).Completed += (handle) =>
                 {
                     if(handle.Status == AsyncOperationStatus.Succeeded)
                     {
                         GameObject enemyPrefab = handle.Result;
                         _diContainer.InstantiatePrefab(enemyPrefab, spawnPosition, Quaternion.identity, null);
                         Debug.Log($"Init called for {enemyPrefab.name} in spawner");
-                        enemyPrefab.GetComponent<Enemy>().Init(enemyData);
+                        Debug.Log($"Enemy data : {_enemyData}");
+                        enemyPrefab.GetComponent<Enemy>().Init(_enemyData);
                         //add the spawned enemy to the list
                         _spawnedEnemies.Add(enemyPrefab);
                         //start the spawn delay

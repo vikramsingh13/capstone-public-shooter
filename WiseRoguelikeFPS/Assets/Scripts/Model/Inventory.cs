@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    //Singleton format, add this script to an empty game object "GameManager" or something
+    //Singleton format. This doesn't remove the other instances. Make this class inherit from Singleton<T> class. 
     #region Singleton
     public static Inventory instance;
 

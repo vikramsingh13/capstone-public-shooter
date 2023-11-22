@@ -10,7 +10,7 @@ public class DamageableEntity : MonoBehaviour
     public virtual void TakeDamage(float damageAmount)
     {
         _currentHealth -= damageAmount;
-        Debug.Log(_name + " took " + damageAmount + " damage. Health is now " + _currentHealth + ".");
+        //Debug.Log(_name + " took " + damageAmount + " damage. Health is now " + _currentHealth + ".");
 
         if (_currentHealth <= 0)
         {

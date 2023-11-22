@@ -3,6 +3,7 @@ using Zenject;
 using System;
 using TMPro;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class DialogManager : Singleton<DialogManager>
 {
@@ -22,6 +23,13 @@ public class DialogManager : Singleton<DialogManager>
 
     private void Start()
     {
+
+        //For the videoAssignment: the name of the scene is Menu or LoadoutMenu then skip update
+        //TODO: refactor to use events for game state changes
+        if (SceneManager.GetActiveScene().name == "Menu" || SceneManager.GetActiveScene().name == "LoadoutMenu")
+        {
+            return;
+        }
 
         DialogBox = GameObject.Find("DialogBoxAssembly");
         HeaderText = GameObject.Find("DialogHeaderText").GetComponent<TextMeshProUGUI>();

@@ -51,6 +51,7 @@ public class Enemy : DamageableEntity
     //Init will be used to initialize an ememy mob in runtime
     public void Init(EnemyData enemyData)
     {
+        Debug.Log($"Initializing enemy {gameObject.name}");
         _enemyData = enemyData;
         //Set the aggro range of the enemy
         _aggroRange = _enemyData.aggroRange;
