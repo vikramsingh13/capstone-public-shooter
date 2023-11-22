@@ -108,7 +108,7 @@ public class HUDManager : Singleton<HUDManager>
         {
             try
             {
-                Debug.Log($"Updating player health bar in HUDManager::UpdatePlayerHealthBar with _currentPlayerHealth: {_currentPlayerHealth} and _newPlayerHealth: {_newPlayerHealth}.");
+                //Debug.Log($"Updating player health bar in HUDManager::UpdatePlayerHealthBar with _currentPlayerHealth: {_currentPlayerHealth} and _newPlayerHealth: {_newPlayerHealth}.");
                 //division by hard coded 100f since the slider is set to 0-1
                 _playerHealthBarUIParent.GetComponentInChildren<Slider>().value = _currentPlayerHealth / 100f;
             }

@@ -93,13 +93,14 @@ public class Inventory : MonoBehaviour
     }
 
     public void ListItems()
-    {
+    {   
         foreach (Transform item in inventoryItemGUI)
         {
             Destroy(item.gameObject);
 
         }
-
+        
+        /* This is causing null reference error and needs to be fixed 
         foreach (KeyValuePair<int, Item> item in items)
         {
             GameObject obj = Instantiate(inventoryItemPrefab, inventoryItemGUI);
@@ -113,6 +114,7 @@ public class Inventory : MonoBehaviour
             itemSprite.sprite = item.Value.icon;
 
         }
+        */
     }
 
 }
