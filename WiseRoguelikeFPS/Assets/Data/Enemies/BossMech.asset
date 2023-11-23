@@ -37,7 +37,7 @@ MonoBehaviour:
   attackRange:
   - 300
   attackProjectileDataAddress:
-  - Assets/Data/Projectiles/EnemyBluePlasma.asset
+  - Assets/Data/Projectiles/EnemyLargePinkPlasma.asset
   canAttackSplash: 
   attackMaxTarget: []
   attackSplashRadius: []

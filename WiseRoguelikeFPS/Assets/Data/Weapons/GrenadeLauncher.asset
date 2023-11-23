@@ -15,16 +15,16 @@ MonoBehaviour:
   weaponName: GrenadeLauncher
   weaponPrefabAddress: Assets/Prefabs/Weapon/Plasma Gun/Plasma Gun.prefab
   weaponIconAddress: Assets/Images/Icons/WeaponIcons/GrenadeLauncher.png
-  delayBetweenPrimaryFire: 1
+  delayBetweenPrimaryFire: 0.5
   isPrimaryFireHitscan: 0
   projectilesPerPrimaryFire: 1
-  damagePerPrimaryProjectile: 30
+  damagePerPrimaryProjectile: 50
   hasSecondaryFire: 0
   delayBetweenSecondaryFire: 5
   isSecondaryFireHitscan: 0
   projectilesPerSecondaryFire: 1
   damagePerSecondaryProjectile: 10
-  heatPerPrimaryFire: 20
+  heatPerPrimaryFire: 10
   heatPerSecondaryFire: 1
   primaryProjectileAddress: Assets/Data/Projectiles/GrenadeProjectile.asset
   secondaryProjectileAddress: 

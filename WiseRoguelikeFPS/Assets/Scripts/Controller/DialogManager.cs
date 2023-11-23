@@ -77,6 +77,13 @@ public class DialogManager : Singleton<DialogManager>
 
             NewAnnouncement("Notice!", $"You have collected {_currentLevelObjectiveCompleted} out of {_level1Manager.TotalLevelObjectiveNeeded}");
         }
+
+        //demo announcements
+        if (_level1Manager.EndgameSequenceStarted && !_sentEndDialog)
+        {
+            NewAnnouncement("!ATTENTION!", $"READING MULTIPLE ENERGY SPIKES ACROSS THE PLANET! THAT STRUCTURE MAY BE CONNECTED.");
+            _sentEndDialog = true;
+        }
     }
 
 

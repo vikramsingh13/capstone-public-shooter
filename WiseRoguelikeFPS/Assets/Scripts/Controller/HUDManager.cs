@@ -121,7 +121,6 @@ public class HUDManager : Singleton<HUDManager>
             {
                 //if the values mismatch
                 //iterate through the _newWeaponHeat list and update the _currentWeaponHeat list
-                Debug.Log($"+++++++++++++++++++++++++++++++++++++.");
                 for (int i = 0; i < _newWeaponHeat.Count; i++)
                 {
                     _currentWeaponHeat[i] = _newWeaponHeat[i];
@@ -151,6 +150,7 @@ public class HUDManager : Singleton<HUDManager>
     //TODO: refactor to take the final hp% for the slider value. All health logic should be done by player.
     public void SetPlayerHealth(float playerHealth)
     {
+        //TODO: fix the mismatch in hp numbers in various places. 
         _newPlayerHealth = playerHealth;
     }
     public void SetRocketBoosterEnergy(float rocketBoosterEnergy)
@@ -198,7 +198,7 @@ public class HUDManager : Singleton<HUDManager>
                 _weaponLoadoutSlots.Add(_weaponLoadoutParent.transform.GetChild(i).gameObject);
                 _weaponLoadoutParent.transform.transform.GetChild(i).gameObject.GetComponentInChildren<Slider>().value = 0;
             }
-            Debug.Log("Loaded weapon loadout slots in HUDManager::GetWeaponLoadoutParentAndSlots");
+            //Debug.Log("Loaded weapon loadout slots in HUDManager::GetWeaponLoadoutParentAndSlots");
         }
     }
 
@@ -263,7 +263,6 @@ public class HUDManager : Singleton<HUDManager>
         if (GameObject.Find("HUD"))
         {
             _HUDPanel = GameObject.Find("HUD");
-            Debug.Log("Found HUD");
             return;
         }
         Debug.Log("Can't find HUD. Trying to instantiate the prefab now.");

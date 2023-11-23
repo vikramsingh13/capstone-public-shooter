@@ -61,7 +61,6 @@ public class Projectile : MonoBehaviour
 
     private void Move()
     {
-        Debug.Log($"++++++++++++++++++++++++++++++++++++++++++++++ {_projectileData.isAffectedByGravity}");
         //Note: no need for Time.deltaTime here since physics engine
         //already accounts for it
         //_projectileBody.velocity = _directionOfTravel * _projectileData.speed;
@@ -166,12 +165,20 @@ public class Projectile : MonoBehaviour
             Target = target,
             Damage = _projectileDamage
         };
-        Debug.Log($"Invoking CombatEvent in Projectile.cs with args: {args.Source.name}, {args.Target.name}, {args.Damage}");
-        // Invoke the event
-        CombatManager.onCombatEvent?.Invoke(this, args);
+        try
+        {
+            Debug.Log($"Invoking CombatEvent in Projectile.cs with args: {args.Source.name}, {args.Target.name}, {args.Damage}");
+            // Invoke the event
+            CombatManager.onCombatEvent?.Invoke(this, args);
 
-        //projectile can be destroyed after invoking the combat event
-        Destroy(gameObject);
+            //projectile can be destroyed after invoking the combat event
+            Destroy(gameObject);
+        }
+        catch
+        {
+            Debug.Log($"Failed to invoke CombatEvent in Projectile.cs with args: ");
+        }
+
     }
 
     private void OnCollisionEnter(Collision collision)

@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5784cb5a04177449cb873f124a5580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyDataAddress: Assets/Data/Enemies/CrabRanged.asset
+  _enemyDataAddress: Assets/Data/Enemies/RangedCrab.asset
+  _isBossSpawner: 0
   _spawnOffset: 1
   _maxSpawnedUnits: 5
   _spawnDelay: 2

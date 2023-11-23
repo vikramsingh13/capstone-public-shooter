@@ -31,12 +31,13 @@ public class Level1Manager : Singleton<Level1Manager>
             return _allLevelObjectivesCompleted;
         }
     }
-
     private bool EndgameToggle = false;
-    public bool ReadyToEnd = false;
-    public float EndCountdown;
+    private bool ReadyToEnd = false;
+    //TODO: grab this from Level specific scriptable object data files 
+    private float EndCountdown = 20f;
 
-    [SerializeField] private GameObject Player;
+    //TODO: fix this grab reference from PlayerManager
+    //[SerializeField] private GameObject Player;
     [SerializeField] private GameObject LevelEnd;
 
     [SerializeField]
@@ -68,6 +69,10 @@ public class Level1Manager : Singleton<Level1Manager>
             return _previousSceneName;
         }
     }
+    public virtual bool EndgameSequenceStarted
+    {
+        get { return EndgameToggle; }
+    }
 
     [Inject]
     public void Construct(AudioManager audioManager)
@@ -87,7 +92,7 @@ public class Level1Manager : Singleton<Level1Manager>
     // Update is called once per frame
     void Update()
     {
-        //scene tracking for demo
+        //DEMO: scene tracking for demo
         if(SceneManager.GetActiveScene().name != _currentSceneName)
         {
             _previousSceneName = _currentSceneName;
@@ -99,31 +104,42 @@ public class Level1Manager : Singleton<Level1Manager>
             _audioManager.StartMusic(StandardMusic);
             _backgroundMusicStarted = true;
         }*/
-        /*if(EndgameToggle == true)
+
+        //TODO: refactor to remove all the manual assignments
+        if(LevelEnd == null)
         {
-            EndCountdown -= Time.deltaTime;
+            LevelEnd = GameObject.FindWithTag("Finish");
         }
-
-        if(Player.GetComponent<Player>()._currentPlayerHealth <= 0)
+        else
         {
+            if(EndgameToggle == true)
+            {
+                EndCountdown -= Time.deltaTime;
+            }
 
-            GameLose();
+            /*TODO: refactor to use events in conjunction with game state updates
+            if(Player.GetComponent<Player>()._currentPlayerHealth <= 0)
+            {
 
+                GameLose();
+
+            }*/
+
+            if(_totalLevelObjectiveCompleted == _totalLevelObjectiveNeeded && EndgameToggle == false)
+            {
+
+                LevelEnd.gameObject.GetComponent<TeleporterMainScript>().EnableSequenceStartTrigger();
+
+            }
+
+        
+            if(EndCountdown <= 0)
+            {
+                Debug.Log("EndgameToggle: " + EndgameToggle);
+                LevelEnd.gameObject.GetComponent<TeleporterMainScript>().EnableEndTrigger();
+
+            }
         }
-
-        if(KeysCollected == TotalKeys && EndgameToggle == false)
-        {
-
-            LevelEnd.gameObject.GetComponent<TeleporterMainScript>().EnableSequenceStartTrigger();
-
-        }
-
-        if(EndCountdown <= 0)
-        {
-
-            LevelEnd.gameObject.GetComponent<TeleporterMainScript>().EnableEndTrigger();
-
-        }*/
 
     }
 

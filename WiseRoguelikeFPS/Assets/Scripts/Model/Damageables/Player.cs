@@ -47,12 +47,16 @@ public class Player : DamageableEntity
     public const float BASE_SPRINTSPEEDMOD = 1.5f;
     public const float BASE_CROUCHSPEEDMOD = 0.75f;
 
-    public float _currentPlayerHealth = 100f;
-    private float _maxPlayerHealth = 100f;
+    public float _currentPlayerHealth = 10000f;
+    private float _maxPlayerHealth = 10000f;
 
     private float sprintSpeedMod;
     private float crouchSpeedMod;
     private float _rocketJumpHeight = 100f;
+
+    //TEMP for demo
+    [SerializeField]
+    private AudioSource _rocketBoostAudioSource;
 
     //list of hardcoded weaponData addressable keys
     private List<string> _listOfWeaponDataAddressableKeys = new List<string>()
@@ -112,6 +116,7 @@ public class Player : DamageableEntity
         //TODO: only the hp % should be sent to the HUD. Health bar logic will be done by Player. 
         _hudManager.SetPlayerHealth(_maxPlayerHealth);
         UpdateRocketBoosterEnergy();
+        _rocketBoostAudioSource = GetComponent<AudioSource>();
 
         //find the equipped weapon at the start
         //TODO: refactor to support weapon swapping
@@ -170,7 +175,7 @@ public class Player : DamageableEntity
             FireWeapon(Input.GetMouseButtonDown(1));
         }
 
-        //reuses the PlayerMovement::move() method to move the player up with the rocket booster
+        //DEMO: reuses the PlayerMovement::move() method to move the player up with the rocket booster
         if (Input.GetKeyDown(kc_rocketBoost) && _currentRocketBoosterEnergy >= _requiredRocketBoosterEnergy)
         {
             _playerMovement.Move(
@@ -186,6 +191,7 @@ public class Player : DamageableEntity
             );
             _currentRocketBoosterEnergy = _currentRocketBoosterEnergy - _requiredRocketBoosterEnergy;
             UpdateRocketBoosterEnergy();
+            _rocketBoostAudioSource.Play();
         }
 
         //Movement checks for PlayerMovement class
@@ -209,6 +215,12 @@ public class Player : DamageableEntity
             _level1Manager.FinishLevelObjective();
             _level1Manager.FinishLevelObjective();
             _level1Manager.FinishLevelObjective();
+        }
+        //insta heal
+        if (Input.GetKey(KeyCode.H))
+        {
+            _currentHealth = _maxPlayerHealth;
+            _hudManager.SetPlayerHealth(_currentHealth);
         }
 
         //Weapon swap checks
@@ -244,7 +256,7 @@ public class Player : DamageableEntity
                 }
                 catch (Exception ex)
                 {
-                    Debug.LogError($"Encountered the following exception trying to use Weapon::Fire from _equippedWeaponGameObject : {_activeWeaponGameObject}. Exception message: " + ex.Message);
+                    Debug.Log($"Encountered the following exception trying to use Weapon::Fire from _equippedWeaponGameObject : {_activeWeaponGameObject}. Exception message: " + ex.Message);
                 }
             }
             else

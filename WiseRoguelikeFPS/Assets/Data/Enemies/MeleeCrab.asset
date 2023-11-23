@@ -26,6 +26,7 @@ MonoBehaviour:
   gettingHitAnimation: 
   runAnimation: 
   deathAnimation: 
+  isBoss: 0
   aggroRange: 50
   attackType:
   - melee
@@ -36,7 +37,7 @@ MonoBehaviour:
   attackRange:
   - 20
   attackProjectileDataAddress:
-  - Assets/Data/Projectiles/EnemyBluePlasma.asset
+  - Assets/Data/Projectiles/EnemyPinkPlasma.asset
   canAttackSplash: 
   attackMaxTarget: []
   attackSplashRadius: []

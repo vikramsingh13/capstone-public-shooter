@@ -67,12 +67,21 @@ public class ProjectileManager : Singleton<ProjectileManager>
                                     directionOfTravel.z += randomZ;
                                 }
 
+                                //by the time the async operation is complete, the projectileOrigin may have been destroyed
+                                try
+                                {
+
                                 //Instantiate the projectile prefab
                                 GameObject projectile = Instantiate(projectilePrefab, projectileOrigin.position, quaternionRotation);
                                 activeProjectiles.Add(projectile);
 
                                 //Pass the direction of travel and projectile data to the projectile
                                 projectile.GetComponent<Projectile>().Init(projectileData, directionOfTravel, firedByGameObject, projectileDamage, isFiredByPlayer);
+                                }
+                                catch (Exception e)
+                                {
+                                    Debug.Log($"Failed to instantiate projectile prefab: {projectilePrefabAddressable} for {e}");
+                                }
                             }
                         }
                         else

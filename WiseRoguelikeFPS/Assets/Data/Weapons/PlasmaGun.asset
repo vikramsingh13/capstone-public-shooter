@@ -24,8 +24,8 @@ MonoBehaviour:
   isSecondaryFireHitscan: 0
   projectilesPerSecondaryFire: 6
   damagePerSecondaryProjectile: 60
-  heatPerPrimaryFire: 5
-  heatPerSecondaryFire: 10
+  heatPerPrimaryFire: 1
+  heatPerSecondaryFire: 5
   primaryProjectileAddress: Assets/Data/Projectiles/BluePlasmaProjectile.asset
   secondaryProjectileAddress: Assets/Data/Projectiles/LargeBluePlasmaProjectile 1.asset
   primaryMuzzleFlashAddress: Assets/Prefabs/VFX/Muzzle Flash.prefab

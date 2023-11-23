@@ -213,6 +213,26 @@ MonoBehaviour:
     m_Address: Assets/Prefabs/Projectiles/PlasmaProjectile/LargePlasmaProjectile.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 6845fe051d10dd74aaa188ea8ed26fb9
+    m_Address: Assets/Data/Projectiles/EnemyPinkPlasma.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: df8f3d0a242d3494f81beef4be0dd2f2
+    m_Address: Assets/Prefabs/Projectiles/PlasmaProjectile/PinkPlasmaProjectile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a2417366f8803e44b88fcf58075523fa
+    m_Address: Assets/Data/Projectiles/EnemyLargePinkPlasma.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2f0ec23ad390534448dca73a24f2d061
+    m_Address: Assets/Prefabs/Projectiles/PlasmaProjectile/LargePinkPlasmaProjectile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b63ed855c3f89ab4aa26a11a0115fca2
+    m_Address: Assets/Prefabs/Projectiles/PlasmaProjectile/BossPinkPlasma.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 079d18b28a6061645af4ee9165bcf176, type: 2}
   m_SchemaSet:
