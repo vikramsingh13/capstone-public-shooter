@@ -1,15 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 public class Level1Manager : Singleton<Level1Manager>
 {
-    [SerializeField] private int _totalLevelObjectiveCompleted;
-    [SerializeField] private int _totalLevelObjectiveNeeded;
+    [SerializeField] private int _totalLevelObjectiveCompleted = 0;
+    public virtual int TotalLevelObjectiveCompleted
+    {
+        get
+        {
+            return _totalLevelObjectiveCompleted;
+        }
+    }
+    [SerializeField] private int _totalLevelObjectiveNeeded = 3;
+    public virtual int TotalLevelObjectiveNeeded
+    {
+        get
+        {
+            return _totalLevelObjectiveNeeded;
+        }
+    }
 
     private bool _allLevelObjectivesCompleted = false;
-    public bool AllLevelObjectivesCompleted
+    public virtual bool AllLevelObjectivesCompleted
     {
         get
         {
@@ -24,14 +39,35 @@ public class Level1Manager : Singleton<Level1Manager>
     [SerializeField] private GameObject Player;
     [SerializeField] private GameObject LevelEnd;
 
-    public AudioClip StandardMusic;
-    public AudioClip EndgameMusic;
+    [SerializeField]
+    private string StandardMusic = "Assets/Audio/BackgroundMusic.mp3";
+    [SerializeField]
+    private string EndgameMusic = "Assets/Audio/IntoTheUnknown Ending Edit.mp3";
 
     public GameObject winPanel;
     public GameObject losePanel;
     public GameObject gameUIPanel;
 
     private AudioManager _audioManager;
+    private bool _backgroundMusicStarted = false;
+
+    //scene tracking for demo
+    private string _currentSceneName = "";
+    public virtual string CurrentSceneName
+    {
+        get
+        {
+            return _currentSceneName;
+        }
+    }
+    private string _previousSceneName = "";
+    public virtual string PreviousSceneName
+    {
+        get
+        {
+            return _previousSceneName;
+        }
+    }
 
     [Inject]
     public void Construct(AudioManager audioManager)
@@ -45,13 +81,24 @@ public class Level1Manager : Singleton<Level1Manager>
         //TODO REFACTOR ALL MANUAL ASSIGN 
         //USE PROGRAMMATICAL APPROACH
         //TODO: refactor to use events
-        _audioManager.StartMusic(StandardMusic);
+        //_audioManager.StartMusic(StandardMusic);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        //scene tracking for demo
+        if(SceneManager.GetActiveScene().name != _currentSceneName)
+        {
+            _previousSceneName = _currentSceneName;
+            _currentSceneName = SceneManager.GetActiveScene().name;
+        }
+
+        /*if(_currentSceneName == "TestFirstLevelScene" && !_backgroundMusicStarted)
+        {
+            _audioManager.StartMusic(StandardMusic);
+            _backgroundMusicStarted = true;
+        }*/
         /*if(EndgameToggle == true)
         {
             EndCountdown -= Time.deltaTime;
@@ -87,6 +134,7 @@ public class Level1Manager : Singleton<Level1Manager>
             EndgameToggle = true;
             //TODO REFACTOR ALL MANUAL ASSIGN 
             //USE PROGRAMMATICAL APPROACH
+            Debug.Log("This is the endgame music: " + EndgameMusic);
             _audioManager.StartMusic(EndgameMusic);
         }
     }

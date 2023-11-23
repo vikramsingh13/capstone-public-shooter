@@ -121,6 +121,98 @@ MonoBehaviour:
     m_Address: Assets/Prefabs/Spawner/BossSpawner.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 169df469f4bd79d44814ba4d5ef85ffe
+    m_Address: Assets/Audio/BackgroundMusic.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5e249677f05cbfb4baefdae05d29cbd9
+    m_Address: Assets/Audio/IntoTheUnknown Ending Edit.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: eea01b428df33234ca3cf158f305c1a8
+    m_Address: Assets/Audio/boss fight sound.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 530381c25c9e4d24a9791635cd9da0a2
+    m_Address: Assets/Audio/click button sound.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6d2104cca0aec7e4a8c698eb0cc11500
+    m_Address: Assets/Audio/Epic_Non_Copyrighted_Music.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2dd9ba1da0db1484b9aaf5581bfb071b
+    m_Address: Assets/Audio/Menu Music by Zimo Music Library.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 644a18cb1795c0f42b3b81e107a9a1f4
+    m_Address: Assets/Audio/MonsterSound1.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2ec11c35f8b322340b308bc1a04b4c00
+    m_Address: Assets/Audio/player damage sound.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cc9b889d95cde6640aae431ef60ca9ae
+    m_Address: Assets/Audio/rocket boost jump.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c6c5505d6e096ba4d9768c5fa2796ec2
+    m_Address: Assets/Audio/SciFiSound1.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fe55d45f52d03b14e912c704fc56af78
+    m_Address: Assets/Audio/Item Sounds/click button sound.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0c62c5d4ef73a064889adcbb3f25667d
+    m_Address: Assets/Audio/Item Sounds/close item sound.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b77ce040a85ae5143a9268634af8fc87
+    m_Address: Assets/Audio/Item Sounds/item-weapon drop sound 2.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 13dc1c84afb12c34db22c26623028741
+    m_Address: Assets/Audio/Item Sounds/item-weapon drop sound.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6de49d7601b90c04b8c3073dff350b93
+    m_Address: Assets/Audio/Portal Sounds/Portal Start Charging Sound.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 347149d4a14ab26418147fde7d0d6773
+    m_Address: Assets/Audio/Portal Sounds/portal charged sound effect.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 675c860af8a2765439e3941234646311
+    m_Address: Assets/Audio/WeaponSounds/gernade explosion sound.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0e6f8388f3cc97340b242012d6336f74
+    m_Address: Assets/Audio/WeaponSounds/gernande launcher shot sound.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ea42a622dc9a28b4aa86677ac86b4c42
+    m_Address: Assets/Audio/WeaponSounds/Gun cock sound.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3a23b339573c3a04a901f9061735586b
+    m_Address: Assets/Data/Projectiles/GrenadeProjectile.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f78956c775ef7f24280ce271dc4dcbcf
+    m_Address: Assets/Prefabs/Projectiles/PlasmaProjectile/GreenPlasmaProjectile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0ae7f1f9e22a5df48a12324792727223
+    m_Address: Assets/Data/Projectiles/LargeBluePlasmaProjectile 1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ee00bd96c95018648a07e61479565be0
+    m_Address: Assets/Prefabs/Projectiles/PlasmaProjectile/LargePlasmaProjectile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 079d18b28a6061645af4ee9165bcf176, type: 2}
   m_SchemaSet:

@@ -15,8 +15,8 @@ MonoBehaviour:
   weaponName: LaserRifle
   weaponPrefabAddress: Assets/Prefabs/Weapon/LaserRifle/LaserRifle.prefab
   weaponIconAddress: Assets/Images/Icons/WeaponIcons/LaserRifle.png
-  delayBetweenPrimaryFire: 5
-  isPrimaryFireHitscan: 0
+  delayBetweenPrimaryFire: 0.1
+  isPrimaryFireHitscan: 1
   projectilesPerPrimaryFire: 1
   damagePerPrimaryProjectile: 10
   hasSecondaryFire: 0
@@ -28,7 +28,7 @@ MonoBehaviour:
   heatPerSecondaryFire: 1
   primaryProjectileAddress: Assets/Data/Projectiles/BluePlasmaProjectile.asset
   secondaryProjectileAddress: 
-  primaryMuzzleFlashAddress: Assets/Prefabs/VFX/Muzzle Flash.prefab
+  primaryMuzzleFlashAddress: 
   secondaryMuzzleFlashAddress: 
-  primaryFireAudioAddress: Assets/Audio/WeaponSounds/Nerf Gun Firing.mp3
+  primaryFireAudioAddress: Assets/Audio/WeaponSounds/Gun cock sound.mp3
   secondaryFireAudioAddress: 

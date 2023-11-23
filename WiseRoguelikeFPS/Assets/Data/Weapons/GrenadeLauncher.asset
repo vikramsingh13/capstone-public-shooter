@@ -15,20 +15,20 @@ MonoBehaviour:
   weaponName: GrenadeLauncher
   weaponPrefabAddress: Assets/Prefabs/Weapon/Plasma Gun/Plasma Gun.prefab
   weaponIconAddress: Assets/Images/Icons/WeaponIcons/GrenadeLauncher.png
-  delayBetweenPrimaryFire: 5
+  delayBetweenPrimaryFire: 1
   isPrimaryFireHitscan: 0
   projectilesPerPrimaryFire: 1
-  damagePerPrimaryProjectile: 10
+  damagePerPrimaryProjectile: 30
   hasSecondaryFire: 0
   delayBetweenSecondaryFire: 5
   isSecondaryFireHitscan: 0
   projectilesPerSecondaryFire: 1
   damagePerSecondaryProjectile: 10
-  heatPerPrimaryFire: 1
+  heatPerPrimaryFire: 20
   heatPerSecondaryFire: 1
-  primaryProjectileAddress: Assets/Data/Projectiles/BluePlasmaProjectile.asset
+  primaryProjectileAddress: Assets/Data/Projectiles/GrenadeProjectile.asset
   secondaryProjectileAddress: 
-  primaryMuzzleFlashAddress: Assets/Prefabs/VFX/Muzzle Flash.prefab
+  primaryMuzzleFlashAddress: 
   secondaryMuzzleFlashAddress: 
-  primaryFireAudioAddress: Assets/Audio/WeaponSounds/Nerf Gun Firing.mp3
+  primaryFireAudioAddress: Assets/Audio/WeaponSounds/Gun cock sound.mp3
   secondaryFireAudioAddress: 

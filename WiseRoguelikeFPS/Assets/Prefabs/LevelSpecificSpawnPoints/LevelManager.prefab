@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 488701494987199976}
-  - component: {fileID: 488701494987199979}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -32,26 +31,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &488701494987199979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 488701494987199977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 662b7944147d1f04592a3aa37f52b375, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _totalLevelObjectiveCompleted: 0
-  _totalLevelObjectiveNeeded: 0
-  ReadyToEnd: 0
-  EndCountdown: 60
-  Player: {fileID: 0}
-  LevelEnd: {fileID: 0}
-  StandardMusic: {fileID: 8300000, guid: 6d2104cca0aec7e4a8c698eb0cc11500, type: 3}
-  EndgameMusic: {fileID: 8300000, guid: 5e249677f05cbfb4baefdae05d29cbd9, type: 3}
-  winPanel: {fileID: 0}
-  losePanel: {fileID: 0}
-  gameUIPanel: {fileID: 0}

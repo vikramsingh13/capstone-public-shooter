@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17f4fa87b638b7340b5981f5e3e9ce3c, type: 3}
-  m_Name: EnemyBluePlasma
+  m_Name: GrenadeProjectile
   m_EditorClassIdentifier: 
   speed: 50
-  timeToLive: 12
-  projectilePrefabAddress: Assets/Prefabs/Projectiles/PlasmaProjectile/PlasmaProjectile.prefab
+  timeToLive: 3
+  projectilePrefabAddress: Assets/Prefabs/Projectiles/PlasmaProjectile/GreenPlasmaProjectile.prefab
   splashDamageRadius: 0
-  isAffectedByGravity: 0
-  gravityStrength: 0
+  isAffectedByGravity: 1
+  gravityStrength: 20
   isDamageDelayed: 0
   timeTillDamage: 0
   doesSelfDamage: 0

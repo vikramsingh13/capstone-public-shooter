@@ -238,7 +238,7 @@ public class Player : DamageableEntity
             {
                 try
                 {
-                    float heatGenerated = await _activeWeaponGameObject.GetComponent<Weapon>().Fire(useSecondaryFire);
+                    float heatGenerated = await _activeWeaponGameObject.GetComponent<Weapon>().Fire(this.gameObject, useSecondaryFire);
                     Debug.Log($"Heat generated from weapon {_activeWeaponIndex} fire: {heatGenerated}");
                     ModifyCurrentHeat(_activeWeaponIndex, heatGenerated);
                 }

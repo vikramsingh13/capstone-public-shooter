@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6934308142296391924}
   - component: {fileID: 3172077666723878372}
   m_Layer: 0
-  m_Name: GreenPlasmaProjectile
+  m_Name: LargePlasmaProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 3318529881749646553}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 124.453, y: 103.302, z: 124.003}
-  m_LocalScale: {x: 0.48903564, y: 0.48903564, z: 0.48903564}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2e84e324c88975240a645ed4b224c9ce, type: 2}
+  - {fileID: 2100000, guid: 83dbd2a5c9ac81d4da9cef52b224470a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,7 +94,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3318529881749646553}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17f4fa87b638b7340b5981f5e3e9ce3c, type: 3}
-  m_Name: EnemyBluePlasma
+  m_Name: LargeBluePlasmaProjectile 1
   m_EditorClassIdentifier: 
-  speed: 50
-  timeToLive: 12
-  projectilePrefabAddress: Assets/Prefabs/Projectiles/PlasmaProjectile/PlasmaProjectile.prefab
+  speed: 100
+  timeToLive: 5
+  projectilePrefabAddress: Assets/Prefabs/Projectiles/PlasmaProjectile/LargePlasmaProjectile.prefab
   splashDamageRadius: 0
   isAffectedByGravity: 0
   gravityStrength: 0

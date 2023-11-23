@@ -289,10 +289,8 @@ public class HUDManager : Singleton<HUDManager>
     {
         _currentWeaponHeat[index] = heat < 0 ? 0 : heat;
         _currentWeaponHeat[index] = heat > 100 ? 100 : heat;
-        Debug.Log($"Updating weapon heat in HUDManager::UpdateWeaponHeat with index: {index} and heat: {heat}.");
         if(_isWeaponLoadoutSet)
         {
-            Debug.Log($"Updating weapon heat in HUDManager::UpdateWeaponHeat with index: {index} and heat: {heat}.");
             _weaponLoadoutSlots[index].transform.GetComponentInChildren<Slider>().value = heat;
         }
     }
@@ -305,7 +303,6 @@ public class HUDManager : Singleton<HUDManager>
         _currentRocketBoosterEnergy = energy > 100 ? 100 : energy;
         if (_playerRocketBoosterBarUIParent != null)
         {
-            Debug.Log($"Updating rocket booster energy in HUDManager::UpdateRocketBoosterEnergy with energy: {_currentRocketBoosterEnergy}.");
             _playerRocketBoosterBarUIParent.GetComponentInChildren<Slider>().value = _currentRocketBoosterEnergy;
         }
     }
