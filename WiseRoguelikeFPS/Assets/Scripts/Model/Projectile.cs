@@ -18,7 +18,8 @@ public class Projectile : MonoBehaviour
     private GameObject _firedByGameObject;
     //How much dmg a projectile will do is determined by WeaponData + PlayerData or EnemyData
     private float _projectileDamage = 10f;
-    
+    private bool _hasInitialized = false;
+
 
     public void Init(ProjectileData projectileData,Vector3 directionOfTravel, GameObject firedBy, float projectileDamage, bool isFiredByPlayer)
     {
@@ -44,7 +45,11 @@ public class Projectile : MonoBehaviour
             _projectileBody = gameObject.AddComponent<Rigidbody>();
         }
 
-        this.Move();
+        if (!_hasInitialized)
+        {
+            Move();
+            _hasInitialized = true;
+        }
 
         _timeToLive -= Time.deltaTime;
 
@@ -58,8 +63,30 @@ public class Projectile : MonoBehaviour
     {
         //Note: no need for Time.deltaTime here since physics engine
         //already accounts for it
-        _projectileBody.velocity = _directionOfTravel * _projectileData.speed;
-        
+        //_projectileBody.velocity = _directionOfTravel * _projectileData.speed;
+
+
+        // Calculate the initial horizontal component of the velocity
+        Vector3 horizontalVelocity = _directionOfTravel.normalized * _projectileData.speed;
+
+        // Calculate the vertical (upward) component of the initial velocity
+        float initialVerticalSpeed = Mathf.Sin(Mathf.Deg2Rad * 45) * _projectileData.speed;
+
+        // Apply the horizontal component of the initial velocity
+        _projectileBody.velocity = horizontalVelocity;
+
+        if (_projectileData.isAffectedByGravity)
+        {
+            initialVerticalSpeed = Mathf.Sin(Mathf.Deg2Rad * 45) * _projectileData.speed / 10;
+            // Apply gravity separately in the vertical direction
+            Vector3 gravityForce = Vector3.down * _projectileData.gravityStrength;
+            _projectileBody.AddForce(gravityForce, ForceMode.Force);
+
+            // Apply the vertical component of the initial velocity
+            Vector3 verticalVelocity = Vector3.up * initialVerticalSpeed;
+            _projectileBody.velocity += verticalVelocity;
+        }
+
     }
 
     //Make sure that the projectile has a collider and is a trigger
@@ -138,9 +165,20 @@ public class Projectile : MonoBehaviour
             Target = target,
             Damage = _projectileDamage
         };
-        Debug.Log($"Invoking CombatEvent in Projectile.cs with args: {args.Source.name}, {args.Target.name}, {args.Damage}");
-        // Invoke the event
-        CombatManager.onCombatEvent?.Invoke(this, args);
+        try
+        {
+            Debug.Log($"Invoking CombatEvent in Projectile.cs with args: {args.Source.name}, {args.Target.name}, {args.Damage}");
+            // Invoke the event
+            CombatManager.onCombatEvent?.Invoke(this, args);
+
+            //projectile can be destroyed after invoking the combat event
+            Destroy(gameObject);
+        }
+        catch
+        {
+            Debug.Log($"Failed to invoke CombatEvent in Projectile.cs with args: ");
+        }
+
     }
 
     private void OnCollisionEnter(Collision collision)

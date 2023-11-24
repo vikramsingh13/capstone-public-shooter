@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
 
 public class AudioManager : Singleton<AudioManager>
@@ -51,17 +53,45 @@ public class AudioManager : Singleton<AudioManager>
     private void GetAudioSourcesFromMainCamera()
     {
         //Get the audio sources from the main camera
-        _musicSource = Camera.main.transform.Find("MusicSource").gameObject.GetComponent<AudioSource>();
-        _ambienceSource = Camera.main.transform.Find("AmbienceSource").gameObject.GetComponent<AudioSource>();
+        _musicSource = GameObject.FindWithTag("MusicSource")?.GetComponent<AudioSource>();
+        _ambienceSource = GameObject.FindWithTag("AmbienceSource")?.GetComponent<AudioSource>();
+        Debug.Log("Audio Sources found: " + _musicSource + " " + _ambienceSource);
     }
 
     //Music Related Properites
-    public void StartMusic(AudioClip music)
+    public IEnumerator LoadAndPlayMusic(string musicAddress)
+    {
+        AsyncOperationHandle<AudioClip> handle = Addressables.LoadAssetAsync<AudioClip>(musicAddress);
+
+        yield return handle;
+
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+        {
+            AudioClip music = handle.Result;
+            _musicSource.Stop();
+            _musicSource.PlayOneShot(music);
+        }
+        else
+        {
+            Debug.LogError($"Failed to load music in AudioManager::LoadAndPlayMusic for address: {musicAddress}");
+        }
+
+        // Release the handle when you're done to avoid resource leaks.
+        Addressables.Release(handle);
+    }
+    
+    public void StartMusic(string musicAddress)
     {
         _musicSource.Stop();
-        _musicSource.PlayOneShot(music);
+        StartCoroutine(WaitForThreeBeforePlayingMusic(musicAddress));
     }
 
+    //Demo: hack to avoid no merge mode errors
+    public IEnumerator WaitForThreeBeforePlayingMusic(string musicAddress, float seconds = 3f)
+    {
+        yield return new WaitForSecondsRealtime(seconds);
+        StartCoroutine(LoadAndPlayMusic(musicAddress));
+    }
     public void ToggleMusic()
     {
         _isMusicPaused = !_isMusicPaused;

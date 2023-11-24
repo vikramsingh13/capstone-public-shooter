@@ -8,6 +8,7 @@ public class DialogTestScript : MonoBehaviour
     private float testTimer;
     private bool hasSpoken;
 
+    /* test purpose only
     private void Update()
     {
 
@@ -15,14 +16,13 @@ public class DialogTestScript : MonoBehaviour
 
         if(testTimer >= 5 && hasSpoken == false)
         {
+            //DialogManager.Instance.NewAnnouncement("Oof!", "Sorry there!");
 
-            Debug.Log("Bump!");
-            DialogManager.Instance.NewAnnouncement("Oof!", "Sorry there!");
-             
             hasSpoken = true;
 
         }
 
     }
+    */
 
 }

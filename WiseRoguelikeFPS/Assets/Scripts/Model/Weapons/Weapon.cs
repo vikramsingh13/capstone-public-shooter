@@ -98,7 +98,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public async Task<float> Fire(bool useSecondaryFire = false)
+    public async Task<float> Fire(GameObject player, bool useSecondaryFire = false)
     {
         if( _weaponData != null)
         {
@@ -120,40 +120,45 @@ public class Weapon : MonoBehaviour
 
                     //Raycast from the center of the players UI to the nearest point based on the retical
                     //If hits nothing (shooting in air) Raycast to a limited distance of 50f away (bullet will delete itself by the time it gets that far)
-                    if (Physics.Raycast(_mainCameraTransform.position, _mainCameraTransform.forward, out hit, 100f))
+                    if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 100f))
                     {
 
                         /*
                         //TODO: Fix hiteffect. Add it to weaponData
                         GameObject impact = Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
                         Destroy(impact, .1F);  // Destroy the hit effect after a short delay
-
-                        //TODO: Delegate combat calc to combat manager if the hit object is Damageable
                         */
+                        //Delegate combat calc to combat manager if the hit object is Damageable
+                        InvokeCombatEvent(player, hit.collider.gameObject, 10);
+                        _canFire = false;
+                        StartCoroutine(FireCooldown(!useSecondaryFire ? _weaponData.delayBetweenPrimaryFire : _weaponData.delayBetweenSecondaryFire));
                     }
                     else
                     {
-                        /*TODO implement the logic when raycast hits nothing
+                        //TODO implement the logic when raycast hits nothing
                         //If the player isnt standing really close to something, shoot the bullet towards the object the raycast hit or the center 50f away
-                    /*
-                    if (Vector3.Distance(myCameraHead.position, hit.point) > 2f)
-                    {
-                        //Make the bullet travel along the raycast line
-                        firePosition.LookAt(hit.point);
-
-                        //If object was hit and it has a bullethole associated with it, instantiate the bullethole
-                        string tag = hit.collider.gameObject.tag;
-                        if (StaticData.particleDictionary.ContainsKey(tag))
+                        
+                        if (Vector3.Distance(Camera.main.transform.position, hit.point) > 2f)
                         {
-                            Instantiate(StaticData.particleDictionary[tag], hit.point, Quaternion.LookRotation(hit.normal));
+                            //Make the bullet travel along the raycast line
+                            _projectileOrigin.transform.LookAt(hit.point);
+
+                            //If object was hit and it has a bullethole associated with it, instantiate the bullethole
+                            string tag = hit.collider.gameObject.tag;
+                            if (StaticData.particleDictionary.ContainsKey(tag))
+                            {
+                                Instantiate(StaticData.particleDictionary[tag], hit.point, Quaternion.LookRotation(hit.normal));
+                            }
                         }
-                    }*/
+                        InvokeCombatEvent(player, hit.collider.gameObject, 10);
+                        _canFire = false;
+                        StartCoroutine(FireCooldown(!useSecondaryFire ? _weaponData.delayBetweenPrimaryFire : _weaponData.delayBetweenSecondaryFire));
                     }
                 }
                 //Handle projectile logic for either fire mode
                 else
                 {
-                    this.GenerateProjectile();
+                    this.GenerateProjectile(useSecondaryFire);
                 }
 
                 return !useSecondaryFire ? _weaponData.heatPerPrimaryFire : _weaponData.heatPerSecondaryFire;
@@ -182,12 +187,17 @@ public class Weapon : MonoBehaviour
             {
                 if(_projectileOrigin != null)
                 {
-                    Vector3 directionOfTravel = (_mainCameraTransform.forward).normalized;
+                    Vector3 directionOfTravel = (Camera.main.transform.forward).normalized;
                     string projectileData = !useSecondaryFire ? _weaponData.primaryProjectileAddress : _weaponData.secondaryProjectileAddress;
                     float projectileDamage = !useSecondaryFire ? _weaponData.damagePerPrimaryProjectile : _weaponData.damagePerSecondaryProjectile;
+                    int totalProjectiles = !useSecondaryFire ? _weaponData.projectilesPerPrimaryFire : _weaponData.projectilesPerSecondaryFire;
+                    Debug.Log($"totalProjectiles in weapon: {totalProjectiles}");
                     
                     //TODO: find a better approach to access the Player gameobject instead of using transform.parent.parent.gameObject
-                    await _projectileManager.LoadAndInstantiateProjectile(projectileData, directionOfTravel, Quaternion.identity, _projectileOrigin.transform, transform.parent.parent.gameObject, projectileDamage, true);
+                    await _projectileManager.LoadAndInstantiateProjectile(projectileData, directionOfTravel, Quaternion.identity, _projectileOrigin.transform, transform.parent.parent.gameObject, projectileDamage, true, totalProjectiles);
+
+                    _canFire = false;
+                    StartCoroutine(FireCooldown(!useSecondaryFire ? _weaponData.delayBetweenPrimaryFire : _weaponData.delayBetweenSecondaryFire));
                 }
                 else
                 {
@@ -233,8 +243,24 @@ public class Weapon : MonoBehaviour
     }
 
     //TODO: REFACTOR COROUTINEs to central Ticker Class SO IT'S REUSABLE and pausable
-    private IEnumerator StartCoroutine(float waitInRealTimeSeconds)
+    private IEnumerator FireCooldown(float waitInRealTimeSeconds)
     {
         yield return new WaitForSecondsRealtime(waitInRealTimeSeconds);
+        _canFire = true;
+    }
+
+    //Invoke the combatManager event and delegate the combat logic
+    private void InvokeCombatEvent(GameObject player, GameObject target, float damage)
+    {
+        // Create the event args
+        CombatManager.CombatEventArgs args = new CombatManager.CombatEventArgs
+        {
+            Source = player,
+            Target = target,
+            Damage = damage
+        };
+        Debug.Log($"Invoking CombatEvent in Projectile.cs with args: {args.Source.name}, {args.Target.name}, {args.Damage}");
+        // Invoke the event
+        CombatManager.onCombatEvent?.Invoke(this, args);
     }
 }

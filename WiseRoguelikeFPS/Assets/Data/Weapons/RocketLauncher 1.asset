@@ -30,5 +30,5 @@ MonoBehaviour:
   secondaryProjectileAddress: 
   primaryMuzzleFlashAddress: Assets/Prefabs/VFX/Muzzle Flash.prefab
   secondaryMuzzleFlashAddress: 
-  primaryFireAudioAddress: Assets/Audio/WeaponSounds/Nerf Gun Firing.mp3
+  primaryFireAudioAddress: Assets/Audio/WeaponSounds/Gun cock sound.mp3
   secondaryFireAudioAddress: 

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5324662585405548810}
   - component: {fileID: 9100327879847585455}
   - component: {fileID: 6462151668337660517}
-  - component: {fileID: 5651939561211128141}
   m_Layer: 0
   m_Name: Laser Rifle Rough Solid FBX
   m_TagString: Untagged
@@ -86,23 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5651939561211128141
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4805007394383426480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c640bd9a170eeb49b23261eafd6f28b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FPCamera: {fileID: 0}
-  range: 100
-  damage: 50
-  muzzleFlash: {fileID: 8912363119114904510}
-  hitEffect: {fileID: 2708598583397607911, guid: 6398d43fe79ea0140913dc5530c646af, type: 3}
 --- !u!1 &9170210670783217935
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,10 +209,5 @@ PrefabInstance:
 --- !u!4 &7492509548552979697 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3350055855090824723, guid: 4a60d8477aafac045a1f56d3a60c7813, type: 3}
-  m_PrefabInstance: {fileID: 5298335091970208482}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &8912363119114904510 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 3614249443508621660, guid: 4a60d8477aafac045a1f56d3a60c7813, type: 3}
   m_PrefabInstance: {fileID: 5298335091970208482}
   m_PrefabAsset: {fileID: 0}

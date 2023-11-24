@@ -22,7 +22,12 @@ public class HUDManager : Singleton<HUDManager>
     private bool _isWeaponLoadoutSet = false;
     private float _currentPlayerHealth = 0f;
     private float _newPlayerHealth = 100f;
+    private float _currentRocketBoosterEnergy = 0f;
+    private float _newRocketBoosterEnergy = 100f;
+    private List<float> _currentWeaponHeat = new List<float>() { 1f, 1f, 1f };
+    private List<float> _newWeaponHeat = new List<float>() { 0f, 0f, 0f };
     private GameObject _playerHealthBarUIParent;
+    private GameObject _playerRocketBoosterBarUIParent;
 
 
 
@@ -34,9 +39,17 @@ public class HUDManager : Singleton<HUDManager>
 
     void Start()
     {
+        //For the videoAssignment: the name of the scene is Menu or LoadoutMenu then skip update
+        //TODO: refactor to use events for game state changes
+        if (SceneManager.GetActiveScene().name == "Menu" || SceneManager.GetActiveScene().name == "LoadoutMenu")
+        {
+            return;
+        }
+
         AsyncLoadHUD();
         GetWeaponLoadoutParentAndSlots();
         GetPlayerHealthBarUIParent();
+        GetPlayerRocketBoosterBarUIParent();
 
         //TODO: Refactor to this:
         //_gameManager.OnGameStateChanged.AddListener(HandleGameStateChanged);
@@ -46,6 +59,14 @@ public class HUDManager : Singleton<HUDManager>
 
     void Update()
     {
+        //For the videoAssignment: the name of the scene is Menu or LoadoutMenu then skip update
+        //TODO: refactor to use events for game state changes
+        if (SceneManager.GetActiveScene().name == "Menu" || SceneManager.GetActiveScene().name == "LoadoutMenu")
+        {
+            return;
+        }
+
+        //TODO: The following functions can all be cleaned up with better prefab design, events and game state management
         if (_HUDPanel == null)
         {
             Debug.Log("HUDPanel is null in update");
@@ -61,6 +82,11 @@ public class HUDManager : Singleton<HUDManager>
         if(_playerHealthBarUIParent == null)
         {
             GetPlayerHealthBarUIParent();
+        }
+
+        if(_playerRocketBoosterBarUIParent == null)
+        {
+            GetPlayerRocketBoosterBarUIParent();
         }
 
         if(_weaponLoadoutList.Count > 0 && _weaponLoadoutSlots.Count > 0 && !_isWeaponLoadoutSet)
@@ -83,12 +109,40 @@ public class HUDManager : Singleton<HUDManager>
             UpdatePlayerHealthBar();
         }
 
+        if(_currentRocketBoosterEnergy != _newRocketBoosterEnergy)
+        {
+            UpdateRocketBoosterEnergy(_newRocketBoosterEnergy);
+        }
+
+        //if count is same for two lists but the values per element is mismatched
+        if (_currentWeaponHeat.Count == _newWeaponHeat.Count)
+        {
+            if (!(_currentWeaponHeat[0] == _newWeaponHeat[0] && _currentWeaponHeat[1] == _newWeaponHeat[1] && _currentWeaponHeat[2] == _newWeaponHeat[2]))
+            {
+                //if the values mismatch
+                //iterate through the _newWeaponHeat list and update the _currentWeaponHeat list
+                for (int i = 0; i < _newWeaponHeat.Count; i++)
+                {
+                    _currentWeaponHeat[i] = _newWeaponHeat[i];
+                    UpdateWeaponHeat(i, _currentWeaponHeat[i]);
+                }
+            }
+        }
+
     }
 
+    //TODO: refactor with better prefab design
     private void GetPlayerHealthBarUIParent()
     {
-        //Find gameobject named WeaponLoadout as a nested child in HUDPanel
+        //Find gameobject named Player Healthbar as a nested child in HUDPanel
         _playerHealthBarUIParent = _HUDPanel.transform.Find("HudPanel")?.transform.Find("GameUI")?.transform.Find("PlayerHealthBarUIParent").gameObject;
+    }
+
+    //TODO: refactor with better prefab design
+    private void GetPlayerRocketBoosterBarUIParent()
+    {
+        //Find gameobject named Player Healthbar as a nested child in HUDPanel
+        _playerRocketBoosterBarUIParent = _HUDPanel.transform.Find("HudPanel")?.transform.Find("GameUI")?.transform.Find("PlayerRocketBoosterBarUIParent").gameObject;
     }
 
     //public accessor method for player to update the playerHealth in HUD
@@ -96,8 +150,20 @@ public class HUDManager : Singleton<HUDManager>
     //TODO: refactor to take the final hp% for the slider value. All health logic should be done by player.
     public void SetPlayerHealth(float playerHealth)
     {
+        //TODO: fix the mismatch in hp numbers in various places. 
         _newPlayerHealth = playerHealth;
     }
+    public void SetRocketBoosterEnergy(float rocketBoosterEnergy)
+    {
+        _newRocketBoosterEnergy = rocketBoosterEnergy;
+    }
+
+    public void SetWeaponHeat(List<float> heatList)
+    {
+        Debug.Log($"Setting weapon heat in HUDManager::SetWeaponHeat with heatList.Count: {heatList.Count}.");
+        _newWeaponHeat = heatList;
+    }
+
 
     private void UpdatePlayerHealthBar()
     {
@@ -108,7 +174,7 @@ public class HUDManager : Singleton<HUDManager>
         {
             try
             {
-                Debug.Log($"Updating player health bar in HUDManager::UpdatePlayerHealthBar with _currentPlayerHealth: {_currentPlayerHealth} and _newPlayerHealth: {_newPlayerHealth}.");
+                //Debug.Log($"Updating player health bar in HUDManager::UpdatePlayerHealthBar with _currentPlayerHealth: {_currentPlayerHealth} and _newPlayerHealth: {_newPlayerHealth}.");
                 //division by hard coded 100f since the slider is set to 0-1
                 _playerHealthBarUIParent.GetComponentInChildren<Slider>().value = _currentPlayerHealth / 100f;
             }
@@ -130,8 +196,9 @@ public class HUDManager : Singleton<HUDManager>
             for (int i = 0; i < _weaponLoadoutParent.transform.childCount; i++)
             {
                 _weaponLoadoutSlots.Add(_weaponLoadoutParent.transform.GetChild(i).gameObject);
+                _weaponLoadoutParent.transform.transform.GetChild(i).gameObject.GetComponentInChildren<Slider>().value = 0;
             }
-            Debug.Log("Loaded weapon loadout slots in HUDManager::GetWeaponLoadoutParentAndSlots");
+            //Debug.Log("Loaded weapon loadout slots in HUDManager::GetWeaponLoadoutParentAndSlots");
         }
     }
 
@@ -196,7 +263,6 @@ public class HUDManager : Singleton<HUDManager>
         if (GameObject.Find("HUD"))
         {
             _HUDPanel = GameObject.Find("HUD");
-            Debug.Log("Found HUD");
             return;
         }
         Debug.Log("Can't find HUD. Trying to instantiate the prefab now.");
@@ -214,5 +280,29 @@ public class HUDManager : Singleton<HUDManager>
                 Debug.LogError("Failed to load HUD prefab in HUDManager::AsyncLoadHUD");
             }
         };
+    }
+
+    //takes the exact weapon heat value percentage from player
+    //float comes in as 0-1 e.g. 0.69f
+    public void UpdateWeaponHeat(int index, float heat)
+    {
+        _currentWeaponHeat[index] = heat < 0 ? 0 : heat;
+        _currentWeaponHeat[index] = heat > 100 ? 100 : heat;
+        if(_isWeaponLoadoutSet)
+        {
+            _weaponLoadoutSlots[index].transform.GetComponentInChildren<Slider>().value = heat;
+        }
+    }
+
+    //takes the exact rocker boosters energy value percentage from player
+    //float comes in as 0-1 e.g. 0.69f
+    public void UpdateRocketBoosterEnergy(float energy)
+    {
+        _currentRocketBoosterEnergy = energy < 0 ? 0 : energy;
+        _currentRocketBoosterEnergy = energy > 100 ? 100 : energy;
+        if (_playerRocketBoosterBarUIParent != null)
+        {
+            _playerRocketBoosterBarUIParent.GetComponentInChildren<Slider>().value = _currentRocketBoosterEnergy;
+        }
     }
 }

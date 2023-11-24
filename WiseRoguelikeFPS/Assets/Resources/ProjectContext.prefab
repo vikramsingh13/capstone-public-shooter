@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49828cfa2babca24da6f8aef38a85de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _musicVolume: 1
+  _musicVolume: 0.5
 --- !u!114 &4638786276527224336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,14 +169,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662b7944147d1f04592a3aa37f52b375, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KeysCollected: 0
-  TotalKeys: 0
+  _totalLevelObjectiveCompleted: 0
+  _totalLevelObjectiveNeeded: 3
   ReadyToEnd: 0
   EndCountdown: 0
   Player: {fileID: 0}
   LevelEnd: {fileID: 0}
-  StandardMusic: {fileID: 0}
-  EndgameMusic: {fileID: 0}
+  StandardMusic: Assets/Audio/BackgroundMusic.mp3
+  EndgameMusic: Assets/Audio/IntoTheUnknown Ending Edit.mp3
   winPanel: {fileID: 0}
   losePanel: {fileID: 0}
   gameUIPanel: {fileID: 0}

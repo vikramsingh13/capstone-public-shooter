@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    //Singleton format, add this script to an empty game object "GameManager" or something
+    //Singleton format. This doesn't remove the other instances. Make this class inherit from Singleton<T> class. 
     #region Singleton
     public static Inventory instance;
 
@@ -93,13 +93,14 @@ public class Inventory : MonoBehaviour
     }
 
     public void ListItems()
-    {
+    {   
         foreach (Transform item in inventoryItemGUI)
         {
             Destroy(item.gameObject);
 
         }
-
+        
+        /* This is causing null reference error and needs to be fixed 
         foreach (KeyValuePair<int, Item> item in items)
         {
             GameObject obj = Instantiate(inventoryItemPrefab, inventoryItemGUI);
@@ -113,6 +114,7 @@ public class Inventory : MonoBehaviour
             itemSprite.sprite = item.Value.icon;
 
         }
+        */
     }
 
 }

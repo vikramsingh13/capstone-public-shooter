@@ -40,6 +40,8 @@ public class Enemy : DamageableEntity
     protected float _attackCooldown = 2f;
     private bool _enemyDataLoaded = false;
     private AsyncOperationHandle<EnemyData> _enemyDataLoadingTask;
+    private HealthBar _healthBar;
+    private EnemySpawner _enemySpawner;
 
     [Inject]
     public void Construct(PlayerManager playerManager, ProjectileManager projectileManager)
@@ -49,16 +51,20 @@ public class Enemy : DamageableEntity
     }
 
     //Init will be used to initialize an ememy mob in runtime
-    public void Init(EnemyData enemyData)
+    public void Init(EnemyData enemyData, EnemySpawner enemySpawner)
     {
+        Debug.Log($"Initializing enemy {gameObject.name}");
         _enemyData = enemyData;
         //Set the aggro range of the enemy
         _aggroRange = _enemyData.aggroRange;
+        _enemySpawner = enemySpawner;
     }
 
     // Start is called before the first frame update
     void Start()
     {
+
+        _healthBar = GetComponentInChildren<HealthBar>();
         // Get the NavMeshAgent component attached to this GameObject
         _navMeshAgent = GetComponent<NavMeshAgent>();
         // Get the NavMeshObstacle component attached to this GameObject
@@ -210,9 +216,6 @@ public class Enemy : DamageableEntity
         if (!_isAttackOnCooldown)
         {
             _isAttackOnCooldown = true;
-            Debug.Log($"Attacking target with {_nextAttackType} attack");
-            GetComponent<Animator>().SetBool("attack", true);
-
             if (_nextAttackType.ToLower() == "melee")
             {
                 UseMeleeAttack(_enemyData.attackRange[_nextAttackIndex], _enemyData.attackDamage[_nextAttackIndex]);
@@ -316,6 +319,37 @@ public class Enemy : DamageableEntity
     {
         yield return new WaitForSecondsRealtime(cooldownTime);
         _isAttackOnCooldown = false;
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        base.TakeDamage(damage);
+        //Sets the health bar value and color
+        //TODO: refactor the parent logic, so the Die() method is always called after the health bar is updated
+        //otherwise this try catch is necessary for when the game object is destroyed but the health bar is still trying to update
+        try
+        {
+            _healthBar.SetHealthBar(_maxHealth, _currentHealth);
+            Debug.Log($"Health bar updated for {gameObject.name} in Enemy:TakeDamage");
+        }
+        catch
+        {
+            Debug.Log($"Health bar not found on enemy. Might have been destroyed before the hp bar update. ");
+        }
+    }
+
+    protected override void Die()
+    {
+        if(_enemySpawner == null)
+        {
+            Debug.Log($"Enemy spawner not found for {gameObject.name}");
+        }
+        else
+        {
+            _enemySpawner.EnemyRemoved(gameObject);
+        }
+
+        Destroy(gameObject);
     }
 
     //TODO: make a reusable coroutine class

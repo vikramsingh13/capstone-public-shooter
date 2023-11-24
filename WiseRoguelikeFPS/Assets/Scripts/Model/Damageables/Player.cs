@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
@@ -24,23 +25,38 @@ public class Player : DamageableEntity
 
     //Weapons and heat
     private GameObject _activeWeaponGameObject;
+    private int _activeWeaponIndex = 0;
     //init the empty list of loadout weapons
     private List<GameObject> _listOfLoadoutWeaponsGameObjects = new List<GameObject>();
     //currently the game supports max 3 weapons in the loadout
     private const int _MaxWeaponsInLoadout = 3;
     //temporary. Grab from PlayerData
     private float _maxHeat = 100f;
-    private float _currentHeat;
+    //temporary. Grab from PlayerData
+    private float _maxRocketBoosterEnergy = 100f;
+    private float _currentRocketBoosterEnergy = 100f;
+    private float _requiredRocketBoosterEnergy = 50f;
+    //TODO: refactor to use a heat class or struct and make the heat logic more reusable
+    //init heat list with 3 0s
+    [SerializeField]
+    private List<float> _listCurrentWeaponHeat = new List<float>() { 0f, 0f, 0f };
+    //to check if the heat reduction and energy incrase coroutine is already running
+    private bool _isHeatEnergyCoroutineRunning = false;
 
     //public Transform testSlope;
     public const float BASE_SPRINTSPEEDMOD = 1.5f;
     public const float BASE_CROUCHSPEEDMOD = 0.75f;
 
-    public float _currentPlayerHealth = 100f;
-    private float _maxPlayerHealth = 100f;
+    public float _currentPlayerHealth = 10000f;
+    private float _maxPlayerHealth = 10000f;
 
     private float sprintSpeedMod;
     private float crouchSpeedMod;
+    private float _rocketJumpHeight = 100f;
+
+    //TEMP for demo
+    [SerializeField]
+    private AudioSource _rocketBoostAudioSource;
 
     //list of hardcoded weaponData addressable keys
     private List<string> _listOfWeaponDataAddressableKeys = new List<string>()
@@ -61,6 +77,8 @@ public class Player : DamageableEntity
     private KeyCode kc_weapon1 = KeyCode.Alpha1;
     private KeyCode kc_weapon2 = KeyCode.Alpha2;
     private KeyCode kc_weapon3 = KeyCode.Alpha3;
+    //rocket boost
+    private KeyCode kc_rocketBoost = KeyCode.E;
     //cheatcodes
     private KeyCode kc_godMode = KeyCode.G;
     private KeyCode kc_bossBattle = KeyCode.B;
@@ -97,6 +115,8 @@ public class Player : DamageableEntity
         //set the initial player health
         //TODO: only the hp % should be sent to the HUD. Health bar logic will be done by Player. 
         _hudManager.SetPlayerHealth(_maxPlayerHealth);
+        UpdateRocketBoosterEnergy();
+        _rocketBoostAudioSource = GetComponent<AudioSource>();
 
         //find the equipped weapon at the start
         //TODO: refactor to support weapon swapping
@@ -134,10 +154,44 @@ public class Player : DamageableEntity
         //all player updates are disabled when game is paused
         if (_gameManager != null && _gameManager.IsPaused) return;
 
+        Debug.Log($"value for _isHeatEnergyCoroutineRunning : {_isHeatEnergyCoroutineRunning}");
+        if(!_isHeatEnergyCoroutineRunning)
+        {
+            Debug.Log($"Coroutine not running. Starting coroutine to reduce heat and increase energy");
+            //loop through the list of current weapon heat and reduce it over time
+            for (int i = 0; i < _listCurrentWeaponHeat.Count; i++)
+            {
+                ModifyCurrentHeat(i, -25);
+            }
+            _currentRocketBoosterEnergy = _currentRocketBoosterEnergy + 50 >= 100 ? 100 : _currentRocketBoosterEnergy + 50;
+            UpdateRocketBoosterEnergy();
+            _isHeatEnergyCoroutineRunning = true;
+            StartCoroutine(ReduceHeatIncreaseEnergy());
+        }
+
         //Fire Weapon based on mouse button clicks
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
         {
             FireWeapon(Input.GetMouseButtonDown(1));
+        }
+
+        //DEMO: reuses the PlayerMovement::move() method to move the player up with the rocket booster
+        if (Input.GetKeyDown(kc_rocketBoost) && _currentRocketBoosterEnergy >= _requiredRocketBoosterEnergy)
+        {
+            _playerMovement.Move(
+                Input.GetAxis("Horizontal"),
+                Input.GetAxis("Vertical"),
+                _stats.MovementSpeed.GetCurrentValue(),
+                _rocketJumpHeight,
+                0,
+                0,
+                false,
+                false,
+                true
+            );
+            _currentRocketBoosterEnergy = _currentRocketBoosterEnergy - _requiredRocketBoosterEnergy;
+            UpdateRocketBoosterEnergy();
+            _rocketBoostAudioSource.Play();
         }
 
         //Movement checks for PlayerMovement class
@@ -162,6 +216,12 @@ public class Player : DamageableEntity
             _level1Manager.FinishLevelObjective();
             _level1Manager.FinishLevelObjective();
         }
+        //insta heal
+        if (Input.GetKey(KeyCode.H))
+        {
+            _currentHealth = _maxPlayerHealth;
+            _hudManager.SetPlayerHealth(_currentHealth);
+        }
 
         //Weapon swap checks
         if (Input.GetKeyDown(kc_weapon1))
@@ -185,22 +245,23 @@ public class Player : DamageableEntity
     {
         if (_activeWeaponGameObject != null)
         {
-            if(_currentHeat < _maxHeat)
+            _activeWeaponIndex = _listOfLoadoutWeaponsGameObjects.IndexOf(_activeWeaponGameObject);
+            if(_listCurrentWeaponHeat[_activeWeaponIndex] < _maxHeat)
             {
                 try
                 {
-                    float heatGenerated = await _activeWeaponGameObject.GetComponent<Weapon>().Fire(useSecondaryFire);
-
-                    ModifyCurrentHeat(heatGenerated);
+                    float heatGenerated = await _activeWeaponGameObject.GetComponent<Weapon>().Fire(this.gameObject, useSecondaryFire);
+                    Debug.Log($"Heat generated from weapon {_activeWeaponIndex} fire: {heatGenerated}");
+                    ModifyCurrentHeat(_activeWeaponIndex, heatGenerated);
                 }
                 catch (Exception ex)
                 {
-                    Debug.LogError($"Encountered the following exception trying to use Weapon::Fire from _equippedWeaponGameObject : {_activeWeaponGameObject}. Exception message: " + ex.Message);
+                    Debug.Log($"Encountered the following exception trying to use Weapon::Fire from _equippedWeaponGameObject : {_activeWeaponGameObject}. Exception message: " + ex.Message);
                 }
             }
             else
             {
-                Debug.Log($"Player current heat {_currentHeat} has reached max heat {_maxHeat} threshold. Cannot use any weapons!");
+                Debug.Log($"Player current heat {_listCurrentWeaponHeat} has reached max heat {_maxHeat} threshold. Cannot use any weapons!");
             }
         }
         else
@@ -210,14 +271,20 @@ public class Player : DamageableEntity
     }
 
     //takes heatChange as positive or negative floats
-    private void ModifyCurrentHeat(float heatChange)
+    private void ModifyCurrentHeat(int index, float heatChange)
     {
-        _currentHeat = _currentHeat + heatChange;
+        _listCurrentWeaponHeat[index] = _listCurrentWeaponHeat[index] + heatChange;
 
-        if(_currentHeat < 0)
+        if(_listCurrentWeaponHeat[index] < 0)
         {
-            _currentHeat = 0;
+            _listCurrentWeaponHeat[index] = 0;
         }
+        if (_listCurrentWeaponHeat[index] > _maxHeat)
+        {
+            _listCurrentWeaponHeat[index] = _maxHeat;
+        }
+
+        UpdateWeaponHeat();
     }
 
     //TEMP CODE FOR DI INSTANTIATE WEAPONS MANUALLY ADDED TO THE SCENE
@@ -362,31 +429,25 @@ public class Player : DamageableEntity
         _hudManager.SetPlayerHealth(_currentHealth);
     }
 
-    //This coroutine is in charge of slowly reducing heat when the player is NOT shooting
-    /*private IEnumerator HeatCooldown()
+    //The following are temp code for demo
+    //TODO: refactor to track isShooting for weapons and reduce heat after a delay out of combat and whatever other business logic
+    //Note: Rocket booster energy can be left as is or changed depending on the business logic
+    private void UpdateWeaponHeat()
     {
-        
-        float cooldownTime = 0.1f; // cooldown time in seconds
-        float deductionAmount = coolDownPerSecond * cooldownTime;
+        //calculates the heat percentage and calls the hudManager to update the heat bar of the specific weapon
+        _hudManager.SetWeaponHeat(_listCurrentWeaponHeat);
+    }
 
-        while (true)
-        {
-            if (!shooting && currentHeat < maxHeat && !reload && !singleShot)
-            {
-                // gradually decrease the heat value
-                if (currentHeat > 0)
-                {
-                    currentHeat -= deductionAmount;
-                    yield return new WaitForSeconds(cooldownTime);
-                }
-                else
-                {
-                    // make sure the currentHeat value is never negative
-                    currentHeat = 0f;
-                }
-            }
+    private void UpdateRocketBoosterEnergy()
+    {
+        //calculates the rocket booster energy percentage and calls the hudManager to update the rocket booster energy bar
+        _hudManager.SetRocketBoosterEnergy(_currentRocketBoosterEnergy);
+    }
 
-            yield return null;
-        }
-    }*/
+    //coroutine to reduce heat over time and increase rocket booster energy over time
+    private IEnumerator ReduceHeatIncreaseEnergy(float seconds = 5f)
+    {
+        yield return new WaitForSecondsRealtime(seconds);
+        _isHeatEnergyCoroutineRunning = false;
+    }
 }

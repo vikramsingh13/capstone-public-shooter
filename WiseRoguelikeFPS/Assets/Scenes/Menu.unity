@@ -523,6 +523,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainMenuCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 90900410615116091, guid: 3e5884dfd90dd0846abf76c0cca0f35d, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 90900410615116095, guid: 3e5884dfd90dd0846abf76c0cca0f35d, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -721,6 +725,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AmbienceSource
       objectReference: {fileID: 0}
+    - target: {fileID: 3598887151122653506, guid: 71d0e05d5fad0684198f2cd08db72b1e, type: 3}
+      propertyPath: m_TagString
+      value: AmbienceSource
+      objectReference: {fileID: 0}
     - target: {fileID: 3598887151122653509, guid: 71d0e05d5fad0684198f2cd08db72b1e, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -820,6 +828,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4254598521739367135, guid: 337024f2a3a666243a0ba9a2dbc90644, type: 3}
       propertyPath: m_Name
+      value: MusicSource
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254598521739367135, guid: 337024f2a3a666243a0ba9a2dbc90644, type: 3}
+      propertyPath: m_TagString
       value: MusicSource
       objectReference: {fileID: 0}
     m_RemovedComponents: []

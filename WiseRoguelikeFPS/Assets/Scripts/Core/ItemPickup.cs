@@ -11,16 +11,18 @@ public class ItemPickup : MonoBehaviour
     //Temporary Class for Item testing
     private void OnTriggerEnter(Collider other)
     {
-        if(add)
+        //Collider component needs to be checked otherwise anything entering the trigger will trigger the pickup
+        if (other.GetComponent<Player>())
         {
-            Inventory.instance.AddItem(item);
+            if (add)
+            {
+                Inventory.instance.AddItem(item);
+            }
+            else
+            {
+                Inventory.instance.RemoveItem(item);
+            }
+            Destroy(gameObject);
         }
-        else
-        {
-            Inventory.instance.RemoveItem(item);
-        }
-        
-
-        Destroy(gameObject);
     }
 }
