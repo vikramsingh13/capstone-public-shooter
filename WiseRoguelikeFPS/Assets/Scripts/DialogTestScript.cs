@@ -18,7 +18,7 @@ public class DialogTestScript : MonoBehaviour
 
             Debug.Log("Bump!");
             DialogManager.Instance.NewAnnouncement("Oof!", "Sorry there!");
-
+             
             hasSpoken = true;
 
         }
